@@ -1,5 +1,6 @@
 package io.github.maseev.alpaca.v1.account.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -52,5 +53,6 @@ public interface Account {
   boolean accountBlocked();
 
   @JsonProperty("created_at")
+  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime createdAt();
 }
