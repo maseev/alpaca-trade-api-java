@@ -1,5 +1,7 @@
 package io.github.maseev.alpaca.http;
 
+import io.github.maseev.alpaca.http.exception.APIException;
+import io.github.maseev.alpaca.http.exception.InternalException;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -16,13 +18,24 @@ public final class Listenable<T> {
   public void onComplete(ResponseHandler<T> responseHandler) {
     future.addListener(() -> {
       try {
-        Response response = future.get();
-        T entity = transformer.transform(response);
-
-        responseHandler.onSuccess(entity);
-      } catch (Exception ex) {
+        responseHandler.onSuccess(transform());
+      } catch (APIException ex) {
         responseHandler.onError(ex);
       }
     }, null);
+  }
+
+  public T await() throws APIException {
+    return transform();
+  }
+
+  private T transform() throws APIException {
+    try {
+      Response response = future.get();
+
+      return transformer.transform(response);
+    } catch (Exception ex) {
+      throw new InternalException(ex);
+    }
   }
 }
