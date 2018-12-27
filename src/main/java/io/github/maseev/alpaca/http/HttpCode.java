@@ -9,7 +9,7 @@ import org.asynchttpclient.Response;
 public enum HttpCode {
 
   OK(200),
-  UNAUTHORIZED(401, AuthenticationException::new),
+  UNAUTHENTICATED(401, AuthenticationException::new),
   TOO_MANY_REQUESTS(429, RateLimitException::new);
 
   private final int code;
@@ -23,6 +23,10 @@ public enum HttpCode {
   HttpCode(int code, Function<Response, APIException> exceptionSupplier) {
     this.code = code;
     this.exceptionSupplier = exceptionSupplier;
+  }
+
+  public int getCode() {
+    return code;
   }
 
   public void doThrow(Response response) throws APIException {

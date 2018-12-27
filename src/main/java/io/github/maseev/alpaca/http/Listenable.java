@@ -2,6 +2,8 @@ package io.github.maseev.alpaca.http;
 
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.InternalException;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -34,7 +36,10 @@ public final class Listenable<T> {
       Response response = future.get();
 
       return transformer.transform(response);
-    } catch (Exception ex) {
+    } catch (InterruptedException ex) {
+      Thread.currentThread().interrupt();
+      throw new InternalException(ex);
+    } catch (ExecutionException | CancellationException ex) {
       throw new InternalException(ex);
     }
   }
