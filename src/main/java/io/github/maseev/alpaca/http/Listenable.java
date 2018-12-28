@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.http;
 
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.InternalException;
+import io.github.maseev.alpaca.http.transformer.Transformer;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import org.asynchttpclient.ListenableFuture;

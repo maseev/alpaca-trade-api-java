@@ -1,27 +1,20 @@
-package io.github.maseev.alpaca.http;
+package io.github.maseev.alpaca.http.transformer;
 
+import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.ParsingException;
 import java.io.IOException;
 import org.asynchttpclient.Response;
 
-public class Transformer<T> {
+public abstract class Transformer<T> {
 
-  private final Class<T> clazz;
+  public abstract T transform(String responseBody) throws APIException, IOException;
 
-  public Transformer(Class<T> clazz) {
-    this.clazz = clazz;
-  }
-
-  public T transform(Response response) throws APIException {
+  public final T transform(Response response) throws APIException {
     validate(response);
 
-    if (clazz == void.class) {
-      return null;
-    }
-
     try {
-      return JsonMapper.getMapper().readValue(response.getResponseBody(), clazz);
+      return transform(response.getResponseBody());
     } catch (IOException e) {
       throw new ParsingException(e);
     }
