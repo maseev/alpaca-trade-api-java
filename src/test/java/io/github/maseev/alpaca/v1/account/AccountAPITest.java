@@ -1,4 +1,4 @@
-package io.github.maseev.alpaca;
+package io.github.maseev.alpaca.v1.account;
 
 import static io.github.maseev.alpaca.util.JsonUtil.toJson;
 import static java.math.BigDecimal.valueOf;
@@ -10,6 +10,7 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
+import io.github.maseev.alpaca.APITest;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.AuthenticationException;
