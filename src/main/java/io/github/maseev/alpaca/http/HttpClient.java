@@ -35,4 +35,8 @@ public final class HttpClient {
       .addHeader(APCA_API_KEY_ID, keyId)
       .addHeader(APCA_API_SECRET_KEY, secretKey);
   }
+
+  public BoundRequestBuilder prepare(HttpMethod method, String endpoint, String pathParameter) {
+    return prepare(method, endpoint + '/' + pathParameter);
+  }
 }
