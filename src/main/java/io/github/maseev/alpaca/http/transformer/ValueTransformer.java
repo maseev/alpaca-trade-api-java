@@ -14,7 +14,7 @@ public class ValueTransformer<T> extends Transformer<T> {
 
   @Override
   public T transform(String responseBody) throws APIException, IOException {
-    if (clazz == void.class) {
+    if (clazz == void.class || clazz == Void.class) {
       return null;
     }
 
