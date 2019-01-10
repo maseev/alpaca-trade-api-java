@@ -11,6 +11,7 @@ import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
+import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.AuthenticationException;
@@ -33,6 +34,7 @@ public class AccountAPITest extends APITest {
       .when(
         request()
           .withPath("/account")
+          .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, nonValidKeyId)
           .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey))
       .respond(
@@ -71,6 +73,7 @@ public class AccountAPITest extends APITest {
       .when(
         request()
           .withPath("/account")
+          .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, keyId)
           .withHeader(APCA_API_SECRET_KEY, secretKey))
       .respond(
