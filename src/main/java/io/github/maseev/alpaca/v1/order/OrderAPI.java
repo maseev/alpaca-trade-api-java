@@ -2,8 +2,9 @@ package io.github.maseev.alpaca.v1.order;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.transformer.ListTransformer;
 import io.github.maseev.alpaca.http.Listenable;
+import io.github.maseev.alpaca.http.transformer.ListTransformer;
+import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.order.entity.Order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,9 +26,8 @@ public class OrderAPI {
   }
 
   private static final String ORDERS_ENDPOINT = "/orders";
-  private static final String GET_ORDERS_ENDPOINT = "/orders/{order_id}";
   private static final String GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT =
-    "/orders:by_client_order_id";
+    ORDERS_ENDPOINT + ":by_client_order_id";
 
   private final HttpClient httpClient;
 
@@ -64,7 +64,9 @@ public class OrderAPI {
     throw new UnsupportedOperationException();
   }
 
-  public void cancel(String orderId) {
-    throw new UnsupportedOperationException();
+  public Listenable<Void> cancel(String orderId) {
+    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.DELETE, ORDERS_ENDPOINT, orderId).execute();
+
+    return new Listenable<>(new ValueTransformer<>(Void.class), future);
   }
 }
