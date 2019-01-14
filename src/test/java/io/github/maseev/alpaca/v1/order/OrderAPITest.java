@@ -12,7 +12,11 @@ import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
+import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.exception.APIException;
+import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
 import io.github.maseev.alpaca.v1.order.entity.Order;
@@ -27,9 +31,9 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void gettingFilteredListOfOrdersMustReturnExpectedList() throws Exception {
-    String nonValidKeyId = "valid key";
-    String nonValidSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), nonValidKeyId, nonValidSecretKey);
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
 
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 10;
@@ -68,8 +72,9 @@ public class OrderAPITest extends APITest {
     mockServer()
       .when(
         request("/orders")
-          .withHeader(APCA_API_KEY_ID, nonValidKeyId)
-          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey)
+          .withMethod(HttpClient.HttpMethod.GET.toString())
+          .withHeader(APCA_API_KEY_ID, validKeyId)
+          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
           .withQueryStringParameter("status", status.toString())
           .withQueryStringParameter("limit", Integer.toString(limit))
           .withQueryStringParameter("after", after.toString())
@@ -86,5 +91,64 @@ public class OrderAPITest extends APITest {
         .await();
 
     assertThat(orders, is(equalTo(expectedOrders)));
+  }
+
+  @Test(expected = UnprocessableException.class)
+  public void cancellingNoLongerCancelableOrderMustThrowException() throws APIException {
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+
+    String orderId = UUID.randomUUID().toString();
+
+    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.UNPROCESSABLE,
+      "The order status is not cancelable");
+
+    api.orders().cancel(orderId).await();
+  }
+
+  @Test(expected = EntityNotFoundException.class)
+  public void cancellingNonexistentOrderMustThrowException() throws APIException {
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+
+    String orderId = UUID.randomUUID().toString();
+
+    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.NOT_FOUND,
+      "The order doesn't exist");
+
+    api.orders().cancel(orderId).await();
+  }
+
+  @Test
+  public void cancellingValidOrderMustCancelIt() throws APIException {
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+
+    String orderId = UUID.randomUUID().toString();
+
+    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.OK,
+      "The order has been cancelled");
+
+    api.orders().cancel(orderId).await();
+  }
+
+  private void setUpMockServer(String expectedOrderId,
+                               String expectedKey,
+                               String expectedSecretKey,
+                               HttpCode expectedStatusCode,
+                               String expectedMessage) {
+    mockServer().when(
+      request("/orders/" + expectedOrderId)
+        .withMethod(HttpClient.HttpMethod.DELETE.toString())
+        .withHeader(APCA_API_KEY_ID, expectedKey)
+        .withHeader(APCA_API_SECRET_KEY, expectedSecretKey)
+    ).respond(
+      response()
+        .withStatusCode(expectedStatusCode.getCode())
+        .withReasonPhrase(expectedMessage)
+    );
   }
 }
