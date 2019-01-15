@@ -56,8 +56,10 @@ public class OrderAPI {
     throw new UnsupportedOperationException();
   }
 
-  public Order get(String orderId) {
-    throw new UnsupportedOperationException();
+  public Listenable<Order> get(String orderId) {
+    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.GET, ORDERS_ENDPOINT, orderId).execute();
+
+    return new Listenable<>(new ValueTransformer<>(Order.class), future);
   }
 
   public Order getByClientOrderId(String clientOrderId) {
