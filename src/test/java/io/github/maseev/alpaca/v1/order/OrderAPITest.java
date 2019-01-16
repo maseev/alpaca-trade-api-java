@@ -135,6 +135,78 @@ public class OrderAPITest extends APITest {
     api.orders().cancel(orderId).await();
   }
 
+  @Test(expected = EntityNotFoundException.class)
+  public void gettingNonExistentOrderMustThrowException() throws APIException {
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+
+    String orderId = UUID.randomUUID().toString();
+
+    mockServer().when(
+      request("/orders/" + orderId)
+        .withMethod(HttpClient.HttpMethod.GET.toString())
+        .withHeader(APCA_API_KEY_ID, validKeyId)
+        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+    ).respond(
+      response()
+        .withStatusCode(HttpCode.NOT_FOUND.getCode())
+        .withReasonPhrase("Order not found")
+    );
+
+    api.orders().get(orderId).await();
+  }
+
+  @Test
+  public void gettingExistentOrderMustReturnExpectedOrder() throws Exception {
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+
+    String orderId = UUID.randomUUID().toString();
+
+    LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
+
+    ImmutableOrder expectedOrder = ImmutableOrder.builder()
+      .id(orderId)
+      .clientOrderId(UUID.randomUUID().toString())
+      .createdAt(orderDate)
+      .updatedAt(orderDate)
+      .submittedAt(orderDate)
+      .filledAt(orderDate)
+      .expiredAt(orderDate)
+      .canceledAt(orderDate)
+      .failedAt(orderDate)
+      .assetId(UUID.randomUUID().toString())
+      .symbol("AAPL")
+      .assetClass("asset")
+      .qty(valueOf(1))
+      .filledQty(valueOf(2))
+      .type(Order.Type.MARKET)
+      .side(Order.Side.BUY)
+      .timeInForce(Order.TimeInForce.DAY)
+      .limitPrice(BigDecimal.valueOf(3))
+      .stopPrice(BigDecimal.valueOf(4))
+      .filledAvgPrice(BigDecimal.valueOf(5))
+      .status(Order.Status.FILLED)
+      .build();
+
+    mockServer().when(
+      request("/orders/" + orderId)
+        .withMethod(HttpClient.HttpMethod.GET.toString())
+        .withHeader(APCA_API_KEY_ID, validKeyId)
+        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+    ).respond(
+      response()
+        .withStatusCode(HttpCode.OK.getCode())
+        .withBody(toJson(expectedOrder), MediaType.JSON_UTF_8)
+    );
+
+    Order order = api.orders().get(orderId).await();
+
+    assertThat(order, is(equalTo(expectedOrder)));
+  }
+
   private void setUpMockServer(String expectedOrderId,
                                String expectedKey,
                                String expectedSecretKey,
