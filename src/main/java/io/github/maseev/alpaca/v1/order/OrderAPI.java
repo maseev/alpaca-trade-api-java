@@ -62,8 +62,13 @@ public class OrderAPI {
     return new Listenable<>(new ValueTransformer<>(Order.class), future);
   }
 
-  public Order getByClientOrderId(String clientOrderId) {
-    throw new UnsupportedOperationException();
+  public Listenable<Order> getByClientOrderId(String clientOrderId) {
+    ListenableFuture<Response> future =
+      httpClient.prepare(HttpClient.HttpMethod.GET, GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT)
+        .addQueryParam("client_order_id", clientOrderId)
+        .execute();
+
+    return new Listenable<>(new ValueTransformer<>(Order.class), future);
   }
 
   public Listenable<Void> cancel(String orderId) {
