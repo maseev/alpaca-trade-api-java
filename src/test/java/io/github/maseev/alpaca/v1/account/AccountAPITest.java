@@ -1,6 +1,6 @@
 package io.github.maseev.alpaca.v1.account;
 
-import static io.github.maseev.alpaca.util.JsonUtil.toJson;
+import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.math.BigDecimal.valueOf;
 import static java.time.LocalDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;

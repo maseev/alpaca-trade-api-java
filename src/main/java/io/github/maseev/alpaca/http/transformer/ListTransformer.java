@@ -1,7 +1,7 @@
 package io.github.maseev.alpaca.http.transformer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.github.maseev.alpaca.http.JsonMapper;
+import io.github.maseev.alpaca.http.json.JsonMapper;
 import io.github.maseev.alpaca.http.exception.APIException;
 import java.io.IOException;
 

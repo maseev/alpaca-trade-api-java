@@ -1,4 +1,4 @@
-package io.github.maseev.alpaca.http;
+package io.github.maseev.alpaca.http.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;

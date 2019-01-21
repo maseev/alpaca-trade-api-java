@@ -1,6 +1,6 @@
 package io.github.maseev.alpaca.http.transformer;
 
-import io.github.maseev.alpaca.http.JsonMapper;
+import io.github.maseev.alpaca.http.json.JsonMapper;
 import io.github.maseev.alpaca.http.exception.APIException;
 import java.io.IOException;
 
