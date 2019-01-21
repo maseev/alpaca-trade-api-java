@@ -1,12 +1,15 @@
 package io.github.maseev.alpaca.v1.order;
 
+import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
 import io.github.maseev.alpaca.http.transformer.ListTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.order.entity.Order;
-import java.math.BigDecimal;
+import io.github.maseev.alpaca.v1.order.entity.OrderRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.asynchttpclient.ListenableFuture;
@@ -50,10 +53,13 @@ public class OrderAPI {
     return new Listenable<>(new ListTransformer<>(new TypeReference<List<Order>>() {}), future);
   }
 
-  public Order place(String symbol, long qty, Order.Side side, Order.Type type,
-                     Order.TimeInForce timeInForce, BigDecimal limitPrice, BigDecimal stopPrice,
-                     String clientOrderId) {
-    throw new UnsupportedOperationException();
+  public Listenable<Order> place(OrderRequest request) throws JsonProcessingException {
+    ListenableFuture<Response> future =
+      httpClient.prepare(HttpClient.HttpMethod.POST, ORDERS_ENDPOINT)
+        .setBody(toJson(request))
+        .execute();
+
+    return new Listenable<>(new ValueTransformer<>(Order.class), future);
   }
 
   public Listenable<Order> get(String orderId) {
