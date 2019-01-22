@@ -1,6 +1,6 @@
 package io.github.maseev.alpaca.v1.order;
 
-import static io.github.maseev.alpaca.util.JsonUtil.toJson;
+import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.math.BigInteger.valueOf;
 import static java.time.LocalDateTime.of;
 import static java.util.Collections.singletonList;
@@ -19,6 +19,7 @@ import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
+import io.github.maseev.alpaca.v1.order.entity.ImmutableOrderRequest;
 import io.github.maseev.alpaca.v1.order.entity.Order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -277,6 +278,66 @@ public class OrderAPITest extends APITest {
     );
 
     Order order = api.orders().getByClientOrderId(clientOrderId).await();
+
+    assertThat(order, is(equalTo(expectedOrder)));
+  }
+
+  @Test
+  public void placingNewOrderRequestMustReturnOrderWithExpectedParameters() throws Exception {
+    String validKeyId = "valid key";
+    String validSecretKey = "valid secret";
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+
+    ImmutableOrderRequest orderRequest = ImmutableOrderRequest.builder()
+      .symbol("AAPL")
+      .qty(1)
+      .side(Order.Side.BUY)
+      .type(Order.Type.STOP_LIMIT)
+      .timeInForce(Order.TimeInForce.DAY)
+      .limitPrice(BigDecimal.valueOf(10))
+      .stopPrice(BigDecimal.valueOf(5))
+      .clientOrderId(UUID.randomUUID().toString())
+      .build();
+
+    LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
+
+    ImmutableOrder expectedOrder = ImmutableOrder.builder()
+      .id(UUID.randomUUID().toString())
+      .clientOrderId(orderRequest.clientOrderId())
+      .createdAt(orderDate)
+      .updatedAt(orderDate)
+      .submittedAt(orderDate)
+      .filledAt(orderDate)
+      .expiredAt(orderDate)
+      .canceledAt(orderDate)
+      .failedAt(orderDate)
+      .assetId(UUID.randomUUID().toString())
+      .symbol(orderRequest.symbol())
+      .assetClass("asset")
+      .qty(valueOf(orderRequest.qty()))
+      .filledQty(valueOf(orderRequest.qty()))
+      .type(orderRequest.type())
+      .side(orderRequest.side())
+      .timeInForce(orderRequest.timeInForce())
+      .limitPrice(orderRequest.limitPrice())
+      .stopPrice(orderRequest.stopPrice())
+      .filledAvgPrice(BigDecimal.valueOf(5))
+      .status(Order.Status.FILLED)
+      .build();
+
+    mockServer().when(
+      request("/orders")
+        .withMethod(HttpClient.HttpMethod.POST.toString())
+        .withHeader(APCA_API_KEY_ID, validKeyId)
+        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withBody(toJson(orderRequest))
+    ).respond(
+      response()
+        .withStatusCode(HttpCode.OK.getCode())
+        .withBody(toJson(expectedOrder), MediaType.JSON_UTF_8)
+    );
+
+    Order order = api.orders().place(orderRequest).await();
 
     assertThat(order, is(equalTo(expectedOrder)));
   }
