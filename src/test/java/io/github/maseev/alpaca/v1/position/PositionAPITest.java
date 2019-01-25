@@ -16,6 +16,8 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
+import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
+import io.github.maseev.alpaca.v1.entity.Exchange;
 import io.github.maseev.alpaca.v1.position.entity.ImmutablePosition;
 import io.github.maseev.alpaca.v1.position.entity.Position;
 import java.util.List;
@@ -34,8 +36,8 @@ public class PositionAPITest extends APITest {
       ImmutablePosition.builder()
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
-        .exchange(Position.Exchange.NYSE)
-        .assetClass(Position.AssetClass.US_EQUITY)
+        .exchange(Exchange.NYSE)
+        .assetClass(AssetClass.US_EQUITY)
         .avgEntryPrice(valueOf(1.11))
         .qty(1)
         .side(Position.Side.LONG)
@@ -102,8 +104,8 @@ public class PositionAPITest extends APITest {
       ImmutablePosition.builder()
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
-        .exchange(Position.Exchange.NYSE)
-        .assetClass(Position.AssetClass.US_EQUITY)
+        .exchange(Exchange.NYSE)
+        .assetClass(AssetClass.US_EQUITY)
         .avgEntryPrice(valueOf(1.11))
         .qty(1)
         .side(Position.Side.LONG)

@@ -3,6 +3,8 @@ package io.github.maseev.alpaca.v1.position.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
+import io.github.maseev.alpaca.v1.entity.Exchange;
 import java.math.BigDecimal;
 import org.immutables.value.Value;
 
@@ -10,20 +12,6 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ImmutablePosition.class)
 @JsonDeserialize(as = ImmutablePosition.class)
 public interface Position {
-
-  enum Exchange {
-    NYSEMKT,
-    NYSEARCA,
-    NYSE,
-    NASDAQ,
-    BATS,
-    AMEX,
-    ARCA
-  }
-
-  enum AssetClass {
-    US_EQUITY
-  }
 
   enum Side {
     SHORT,

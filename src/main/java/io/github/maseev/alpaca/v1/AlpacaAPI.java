@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.v1;
 
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.v1.account.AccountAPI;
+import io.github.maseev.alpaca.v1.asset.AssetAPI;
 import io.github.maseev.alpaca.v1.order.OrderAPI;
 import io.github.maseev.alpaca.v1.position.PositionAPI;
 import org.asynchttpclient.AsyncHttpClientConfig;
@@ -19,6 +20,7 @@ public class AlpacaAPI {
   private final AccountAPI accountAPI;
   private final OrderAPI orderAPI;
   private final PositionAPI positionAPI;
+  private final AssetAPI assetAPI;
 
   public AlpacaAPI(String baseUrl, String keyId, String secretKey, AsyncHttpClientConfig config) {
     HttpClient httpClient = new HttpClient(baseUrl, keyId, secretKey, config);
@@ -26,6 +28,7 @@ public class AlpacaAPI {
     accountAPI = new AccountAPI(httpClient);
     orderAPI = new OrderAPI(httpClient);
     positionAPI = new PositionAPI(httpClient);
+    assetAPI = new AssetAPI(httpClient);
   }
 
   public AlpacaAPI(String baseUrl, String keyId, String secretKey) {
@@ -46,6 +49,10 @@ public class AlpacaAPI {
 
   public PositionAPI positions() {
     return positionAPI;
+  }
+
+  public AssetAPI assets() {
+    return assetAPI;
   }
 
   private static String getBaseUrl(Type type) {
