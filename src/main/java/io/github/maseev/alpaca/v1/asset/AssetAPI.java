@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
 import io.github.maseev.alpaca.http.transformer.ListTransformer;
+import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.asset.entity.Asset;
 import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
 import java.util.List;
@@ -28,5 +29,12 @@ public class AssetAPI {
         .execute();
 
     return new Listenable<>(new ListTransformer<>(new TypeReference<List<Asset>>() {}), future);
+  }
+
+  public Listenable<Asset> get(String symbol) {
+    ListenableFuture<Response> future =
+      httpClient.prepare(HttpClient.HttpMethod.GET, ASSETS_ENDPOINT, symbol).execute();
+
+    return new Listenable<>(new ValueTransformer<>(Asset.class), future);
   }
 }
