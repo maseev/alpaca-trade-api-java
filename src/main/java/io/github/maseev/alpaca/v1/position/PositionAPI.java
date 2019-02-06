@@ -3,7 +3,7 @@ package io.github.maseev.alpaca.v1.position;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.ListTransformer;
+import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.position.entity.Position;
 import java.util.List;
@@ -24,7 +24,7 @@ public class PositionAPI {
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, POSITIONS_ENDPOINT).execute();
 
-    return new Listenable<>(new ListTransformer<>(new TypeReference<List<Position>>() {}), future);
+    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Position>>() {}), future);
   }
 
   public Listenable<Position> get(String symbol) {

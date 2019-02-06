@@ -5,7 +5,7 @@ import static java.lang.String.format;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.ListTransformer;
+import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.v1.calendar.entity.Calendar;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,6 +34,6 @@ public class CalendarAPI {
         .addQueryParam("end", end.toString())
         .execute();
 
-    return new Listenable<>(new ListTransformer<>(new TypeReference<List<Calendar>>() {}), future);
+    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Calendar>>() {}), future);
   }
 }

@@ -1,9 +1,6 @@
 package io.github.maseev.alpaca.http;
 
-import static org.asynchttpclient.Dsl.asyncHttpClient;
-
 import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.AsyncHttpClientConfig;
 import org.asynchttpclient.BoundRequestBuilder;
 
 public final class HttpClient {
@@ -22,12 +19,11 @@ public final class HttpClient {
   private final String secretKey;
   private final AsyncHttpClient client;
 
-  public HttpClient(String baseUrl, String keyId, String secretKey, AsyncHttpClientConfig config) {
+  public HttpClient(String baseUrl, String keyId, String secretKey, AsyncHttpClient client) {
     this.baseUrl = baseUrl;
     this.keyId = keyId;
     this.secretKey = secretKey;
-
-    client = config == null ? asyncHttpClient() : asyncHttpClient(config);
+    this.client = client;
   }
 
   public BoundRequestBuilder prepare(HttpMethod method, String endpoint) {

@@ -5,11 +5,11 @@ import io.github.maseev.alpaca.http.json.JsonMapper;
 import io.github.maseev.alpaca.http.exception.APIException;
 import java.io.IOException;
 
-public class ListTransformer<T> extends Transformer<T> {
+public class GenericTransformer<T> extends Transformer<T> {
 
   private final TypeReference<T> typeReference;
 
-  public ListTransformer(TypeReference<T> typeReference) {
+  public GenericTransformer(TypeReference<T> typeReference) {
     this.typeReference = typeReference;
   }
 

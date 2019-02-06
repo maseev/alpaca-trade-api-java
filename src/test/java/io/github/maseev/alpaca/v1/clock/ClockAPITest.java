@@ -24,7 +24,7 @@ public class ClockAPITest extends APITest {
   public void gettingClockMustReturnTheExpectedClock() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     LocalDateTime timestamp =
       of(2019, 01, 02, 12, 30, 45);

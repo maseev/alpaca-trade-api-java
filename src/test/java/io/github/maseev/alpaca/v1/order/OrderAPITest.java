@@ -34,7 +34,7 @@ public class OrderAPITest extends APITest {
   public void gettingFilteredListOfOrdersMustReturnExpectedList() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 10;
@@ -98,7 +98,7 @@ public class OrderAPITest extends APITest {
   public void cancellingNoLongerCancelableOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -112,7 +112,7 @@ public class OrderAPITest extends APITest {
   public void cancellingNonexistentOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -126,7 +126,7 @@ public class OrderAPITest extends APITest {
   public void cancellingValidOrderMustCancelIt() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -140,7 +140,7 @@ public class OrderAPITest extends APITest {
   public void gettingNonExistentOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -162,7 +162,7 @@ public class OrderAPITest extends APITest {
   public void gettingExistentOrderMustReturnExpectedOrder() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -212,7 +212,7 @@ public class OrderAPITest extends APITest {
   public void gettingNonExistentOrderByClientIdMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String clientOrderId = UUID.randomUUID().toString();
 
@@ -235,7 +235,7 @@ public class OrderAPITest extends APITest {
   public void gettingExistentOrderByClientIdMustReturnExpectedOrder() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String clientOrderId = UUID.randomUUID().toString();
 
@@ -286,7 +286,7 @@ public class OrderAPITest extends APITest {
   public void placingNewOrderRequestMustReturnOrderWithExpectedParameters() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     ImmutableOrderRequest orderRequest = ImmutableOrderRequest.builder()
       .symbol("AAPL")

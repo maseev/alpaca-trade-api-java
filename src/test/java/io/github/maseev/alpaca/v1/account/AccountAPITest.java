@@ -28,7 +28,7 @@ public class AccountAPITest extends APITest {
   public void accessingEndpointWithIncorrectCredentialsMustThrowException() throws APIException {
     String nonValidKeyId = "non-valid";
     String nonValidSecretKey = "non-valid";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), nonValidKeyId, nonValidSecretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
 
     mockServer()
       .when(
@@ -50,7 +50,7 @@ public class AccountAPITest extends APITest {
   public void gettingAccountDetailsMustReturnCorrectAccountObject() throws Exception {
     String keyId = "valid key";
     String secretKey = "valid key";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), keyId, secretKey);
+    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), keyId, secretKey);
 
     ImmutableAccount expectedAccount =
       ImmutableAccount.builder()

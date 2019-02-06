@@ -3,7 +3,7 @@ package io.github.maseev.alpaca.v1.asset;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.ListTransformer;
+import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.asset.entity.Asset;
 import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
@@ -28,7 +28,7 @@ public class AssetAPI {
         .addQueryParam("asset_class", assetClass.toString())
         .execute();
 
-    return new Listenable<>(new ListTransformer<>(new TypeReference<List<Asset>>() {}), future);
+    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Asset>>() {}), future);
   }
 
   public Listenable<Asset> get(String symbol) {

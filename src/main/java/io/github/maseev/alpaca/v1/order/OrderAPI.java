@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.ListTransformer;
+import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.order.entity.Order;
 import io.github.maseev.alpaca.v1.order.entity.OrderRequest;
@@ -50,7 +50,7 @@ public class OrderAPI {
         .addQueryParam("direction", direction.toString())
         .execute();
 
-    return new Listenable<>(new ListTransformer<>(new TypeReference<List<Order>>() {}), future);
+    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Order>>() {}), future);
   }
 
   public Listenable<Order> place(OrderRequest request) throws JsonProcessingException {
