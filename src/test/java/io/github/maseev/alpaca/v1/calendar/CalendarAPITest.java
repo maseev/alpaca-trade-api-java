@@ -44,14 +44,14 @@ public class CalendarAPITest extends APITest {
     LocalDate start = LocalDate.now();
     LocalDate end = start.plusDays(10);
 
-    ImmutableCalendar expectedCalendar =
+    Calendar expectedCalendar =
       ImmutableCalendar.builder()
         .date(start.plusDays(5))
         .open(LocalTime.now())
         .close(LocalTime.now().plusHours(5))
         .build();
 
-    List<ImmutableCalendar> expectedCalendars = Collections.singletonList(expectedCalendar);
+    List<Calendar> expectedCalendars = Collections.singletonList(expectedCalendar);
 
     mockServer()
       .when(

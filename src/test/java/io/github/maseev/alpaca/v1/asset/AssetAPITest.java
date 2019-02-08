@@ -33,7 +33,7 @@ public class AssetAPITest extends APITest {
 
     AssetClass assetClass = AssetClass.US_EQUITY;
     Asset.Status status = Asset.Status.ACTIVE;
-    ImmutableAsset expectedAsset =
+    Asset expectedAsset =
       ImmutableAsset.builder()
         .id(UUID.randomUUID().toString())
         .assetClass(assetClass)
@@ -43,7 +43,7 @@ public class AssetAPITest extends APITest {
         .tradable(true)
         .build();
 
-    List<ImmutableAsset> expectedAssets = Collections.singletonList(expectedAsset);
+    List<Asset> expectedAssets = Collections.singletonList(expectedAsset);
 
     mockServer()
       .when(
@@ -95,7 +95,7 @@ public class AssetAPITest extends APITest {
     String validSecretKey = "valid secret";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    ImmutableAsset expectedAsset =
+    Asset expectedAsset =
       ImmutableAsset.builder()
         .id(UUID.randomUUID().toString())
         .assetClass(AssetClass.US_EQUITY)

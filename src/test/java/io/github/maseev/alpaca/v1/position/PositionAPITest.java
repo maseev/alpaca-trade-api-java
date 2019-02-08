@@ -32,7 +32,7 @@ public class PositionAPITest extends APITest {
     String validSecretKey = "valid secret";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    ImmutablePosition expectedPosition =
+    Position expectedPosition =
       ImmutablePosition.builder()
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
@@ -52,7 +52,7 @@ public class PositionAPITest extends APITest {
         .changeToday(valueOf(10.1010))
         .build();
 
-    List<ImmutablePosition> expectedPositions = singletonList(expectedPosition);
+    List<Position> expectedPositions = singletonList(expectedPosition);
 
     mockServer()
       .when(
@@ -100,7 +100,7 @@ public class PositionAPITest extends APITest {
     String validSecretKey = "valid secret";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    ImmutablePosition expectedPosition =
+    Position expectedPosition =
       ImmutablePosition.builder()
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")

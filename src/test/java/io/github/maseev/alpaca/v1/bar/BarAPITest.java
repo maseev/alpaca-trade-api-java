@@ -37,7 +37,7 @@ public class BarAPITest extends APITest {
     String validSecretKey = "valid secret";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    ImmutableBar expectedBar =
+    Bar expectedBar =
       ImmutableBar.builder()
         .time(Instant.ofEpochSecond(1544129220))
         .openPrice(valueOf(172.26))
@@ -55,7 +55,7 @@ public class BarAPITest extends APITest {
     boolean timeInclusive = true;
     int limit = 10;
 
-    Map<String, List<ImmutableBar>> expectedBars =
+    Map<String, List<Bar>> expectedBars =
       singletonMap(symbol, singletonList(expectedBar));
 
     mockServer()
@@ -90,7 +90,7 @@ public class BarAPITest extends APITest {
     String validSecretKey = "valid secret";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    ImmutableBar expectedBar =
+    Bar expectedBar =
       ImmutableBar.builder()
         .time(Instant.ofEpochSecond(1544129220))
         .openPrice(valueOf(172.26))
@@ -108,7 +108,7 @@ public class BarAPITest extends APITest {
     boolean timeInclusive = false;
     int limit = 10;
 
-    Map<String, List<ImmutableBar>> expectedBars =
+    Map<String, List<Bar>> expectedBars =
       singletonMap(symbol, singletonList(expectedBar));
 
     mockServer()

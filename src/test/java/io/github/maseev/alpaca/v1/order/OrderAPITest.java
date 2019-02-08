@@ -21,6 +21,7 @@ import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrderRequest;
 import io.github.maseev.alpaca.v1.order.entity.Order;
+import io.github.maseev.alpaca.v1.order.entity.OrderRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -44,31 +45,32 @@ public class OrderAPITest extends APITest {
 
     LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
 
-    ImmutableOrder expectedOrder = ImmutableOrder.builder()
-      .id(UUID.randomUUID().toString())
-      .clientOrderId(UUID.randomUUID().toString())
-      .createdAt(orderDate)
-      .updatedAt(orderDate)
-      .submittedAt(orderDate)
-      .filledAt(orderDate)
-      .expiredAt(orderDate)
-      .canceledAt(orderDate)
-      .failedAt(orderDate)
-      .assetId(UUID.randomUUID().toString())
-      .symbol("AAPL")
-      .assetClass("asset")
-      .qty(valueOf(1))
-      .filledQty(valueOf(2))
-      .type(Order.Type.MARKET)
-      .side(Order.Side.BUY)
-      .timeInForce(Order.TimeInForce.DAY)
-      .limitPrice(BigDecimal.valueOf(3))
-      .stopPrice(BigDecimal.valueOf(4))
-      .filledAvgPrice(BigDecimal.valueOf(5))
-      .status(Order.Status.FILLED)
-      .build();
+    Order expectedOrder =
+      ImmutableOrder.builder()
+        .id(UUID.randomUUID().toString())
+        .clientOrderId(UUID.randomUUID().toString())
+        .createdAt(orderDate)
+        .updatedAt(orderDate)
+        .submittedAt(orderDate)
+        .filledAt(orderDate)
+        .expiredAt(orderDate)
+        .canceledAt(orderDate)
+        .failedAt(orderDate)
+        .assetId(UUID.randomUUID().toString())
+        .symbol("AAPL")
+        .assetClass("asset")
+        .qty(valueOf(1))
+        .filledQty(valueOf(2))
+        .type(Order.Type.MARKET)
+        .side(Order.Side.BUY)
+        .timeInForce(Order.TimeInForce.DAY)
+        .limitPrice(BigDecimal.valueOf(3))
+        .stopPrice(BigDecimal.valueOf(4))
+        .filledAvgPrice(BigDecimal.valueOf(5))
+        .status(Order.Status.FILLED)
+        .build();
 
-    List<ImmutableOrder> expectedOrders = singletonList(expectedOrder);
+    List<Order> expectedOrders = singletonList(expectedOrder);
 
     mockServer()
       .when(
@@ -168,7 +170,7 @@ public class OrderAPITest extends APITest {
 
     LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
 
-    ImmutableOrder expectedOrder = ImmutableOrder.builder()
+    Order expectedOrder = ImmutableOrder.builder()
       .id(orderId)
       .clientOrderId(UUID.randomUUID().toString())
       .createdAt(orderDate)
@@ -241,29 +243,30 @@ public class OrderAPITest extends APITest {
 
     LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
 
-    ImmutableOrder expectedOrder = ImmutableOrder.builder()
-      .id(UUID.randomUUID().toString())
-      .clientOrderId(clientOrderId)
-      .createdAt(orderDate)
-      .updatedAt(orderDate)
-      .submittedAt(orderDate)
-      .filledAt(orderDate)
-      .expiredAt(orderDate)
-      .canceledAt(orderDate)
-      .failedAt(orderDate)
-      .assetId(UUID.randomUUID().toString())
-      .symbol("AAPL")
-      .assetClass("asset")
-      .qty(valueOf(1))
-      .filledQty(valueOf(2))
-      .type(Order.Type.MARKET)
-      .side(Order.Side.BUY)
-      .timeInForce(Order.TimeInForce.DAY)
-      .limitPrice(BigDecimal.valueOf(3))
-      .stopPrice(BigDecimal.valueOf(4))
-      .filledAvgPrice(BigDecimal.valueOf(5))
-      .status(Order.Status.FILLED)
-      .build();
+    Order expectedOrder =
+      ImmutableOrder.builder()
+        .id(UUID.randomUUID().toString())
+        .clientOrderId(clientOrderId)
+        .createdAt(orderDate)
+        .updatedAt(orderDate)
+        .submittedAt(orderDate)
+        .filledAt(orderDate)
+        .expiredAt(orderDate)
+        .canceledAt(orderDate)
+        .failedAt(orderDate)
+        .assetId(UUID.randomUUID().toString())
+        .symbol("AAPL")
+        .assetClass("asset")
+        .qty(valueOf(1))
+        .filledQty(valueOf(2))
+        .type(Order.Type.MARKET)
+        .side(Order.Side.BUY)
+        .timeInForce(Order.TimeInForce.DAY)
+        .limitPrice(BigDecimal.valueOf(3))
+        .stopPrice(BigDecimal.valueOf(4))
+        .filledAvgPrice(BigDecimal.valueOf(5))
+        .status(Order.Status.FILLED)
+        .build();
 
     mockServer().when(
       request("/orders:by_client_order_id")
@@ -288,42 +291,44 @@ public class OrderAPITest extends APITest {
     String validSecretKey = "valid secret";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    ImmutableOrderRequest orderRequest = ImmutableOrderRequest.builder()
-      .symbol("AAPL")
-      .qty(1)
-      .side(Order.Side.BUY)
-      .type(Order.Type.STOP_LIMIT)
-      .timeInForce(Order.TimeInForce.DAY)
-      .limitPrice(BigDecimal.valueOf(10))
-      .stopPrice(BigDecimal.valueOf(5))
-      .clientOrderId(UUID.randomUUID().toString())
-      .build();
+    OrderRequest orderRequest =
+      ImmutableOrderRequest.builder()
+        .symbol("AAPL")
+        .qty(1)
+        .side(Order.Side.BUY)
+        .type(Order.Type.STOP_LIMIT)
+        .timeInForce(Order.TimeInForce.DAY)
+        .limitPrice(BigDecimal.valueOf(10))
+        .stopPrice(BigDecimal.valueOf(5))
+        .clientOrderId(UUID.randomUUID().toString())
+        .build();
 
     LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
 
-    ImmutableOrder expectedOrder = ImmutableOrder.builder()
-      .id(UUID.randomUUID().toString())
-      .clientOrderId(orderRequest.clientOrderId())
-      .createdAt(orderDate)
-      .updatedAt(orderDate)
-      .submittedAt(orderDate)
-      .filledAt(orderDate)
-      .expiredAt(orderDate)
-      .canceledAt(orderDate)
-      .failedAt(orderDate)
-      .assetId(UUID.randomUUID().toString())
-      .symbol(orderRequest.symbol())
-      .assetClass("asset")
-      .qty(valueOf(orderRequest.qty()))
-      .filledQty(valueOf(orderRequest.qty()))
-      .type(orderRequest.type())
-      .side(orderRequest.side())
-      .timeInForce(orderRequest.timeInForce())
-      .limitPrice(orderRequest.limitPrice())
-      .stopPrice(orderRequest.stopPrice())
-      .filledAvgPrice(BigDecimal.valueOf(5))
-      .status(Order.Status.FILLED)
-      .build();
+    Order expectedOrder =
+      ImmutableOrder.builder()
+        .id(UUID.randomUUID().toString())
+        .clientOrderId(orderRequest.clientOrderId())
+        .createdAt(orderDate)
+        .updatedAt(orderDate)
+        .submittedAt(orderDate)
+        .filledAt(orderDate)
+        .expiredAt(orderDate)
+        .canceledAt(orderDate)
+        .failedAt(orderDate)
+        .assetId(UUID.randomUUID().toString())
+        .symbol(orderRequest.symbol())
+        .assetClass("asset")
+        .qty(valueOf(orderRequest.qty()))
+        .filledQty(valueOf(orderRequest.qty()))
+        .type(orderRequest.type())
+        .side(orderRequest.side())
+        .timeInForce(orderRequest.timeInForce())
+        .limitPrice(orderRequest.limitPrice())
+        .stopPrice(orderRequest.stopPrice())
+        .filledAvgPrice(BigDecimal.valueOf(5))
+        .status(Order.Status.FILLED)
+        .build();
 
     mockServer().when(
       request("/orders")

@@ -52,7 +52,7 @@ public class AccountAPITest extends APITest {
     String secretKey = "valid key";
     AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), keyId, secretKey);
 
-    ImmutableAccount expectedAccount =
+    Account expectedAccount =
       ImmutableAccount.builder()
         .id(UUID.randomUUID().toString())
         .status(Account.Status.ACTIVE)

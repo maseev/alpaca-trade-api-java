@@ -14,7 +14,7 @@ public class BarMimic implements Serializable {
   public BarMimic() {
   }
 
-  public BarMimic(ImmutableBar bar) {
+  public BarMimic(Bar bar) {
     t = bar.time().getEpochSecond();
     o = bar.openPrice().doubleValue();
     h = bar.highPrice().doubleValue();

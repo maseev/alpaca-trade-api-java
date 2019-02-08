@@ -28,7 +28,7 @@ public class ClockAPITest extends APITest {
 
     LocalDateTime timestamp =
       of(2019, 01, 02, 12, 30, 45);
-    ImmutableClock expectedClock =
+    Clock expectedClock =
       ImmutableClock.builder()
         .timestamp(timestamp)
         .isOpen(true)
