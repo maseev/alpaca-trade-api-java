@@ -10,6 +10,7 @@ import io.github.maseev.alpaca.v1.calendar.CalendarAPI;
 import io.github.maseev.alpaca.v1.clock.ClockAPI;
 import io.github.maseev.alpaca.v1.order.OrderAPI;
 import io.github.maseev.alpaca.v1.position.PositionAPI;
+import io.github.maseev.alpaca.v1.streaming.StreamingAPI;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.AsyncHttpClientConfig;
 
@@ -33,6 +34,7 @@ public class AlpacaAPI {
   private final CalendarAPI calendarAPI;
   private final ClockAPI clockAPI;
   private final BarAPI barAPI;
+  private final StreamingAPI streamingAPI;
 
   public AlpacaAPI(String baseTradingUrl, String baseDataUrl,
                    String keyId, String secretKey,
@@ -48,6 +50,9 @@ public class AlpacaAPI {
     calendarAPI = new CalendarAPI(httpClient);
     clockAPI = new ClockAPI(httpClient);
     barAPI = new BarAPI(new HttpClient(baseDataUrl, keyId, secretKey, client));
+
+    streamingAPI =
+      new StreamingAPI(new HttpClient(getStreamingUrl(baseTradingUrl), keyId, secretKey, client));
   }
 
   public AlpacaAPI(String baseTradingUrl, String baseDataUrl, String keyId, String secretKey) {
@@ -86,6 +91,10 @@ public class AlpacaAPI {
     return barAPI;
   }
 
+  public StreamingAPI streaming() {
+    return streamingAPI;
+  }
+
   private static String getBaseUrl(Type type) {
     switch (type) {
       case TEST:
@@ -94,6 +103,16 @@ public class AlpacaAPI {
         return APCA_API_BASE_URL_LIVE;
       default:
         throw new IllegalArgumentException(String.format("Unknown type; type: %s", type));
+    }
+  }
+
+  private static String getStreamingUrl(String baseTradingUrl) {
+    boolean isSecureConnection = baseTradingUrl.startsWith("https");
+
+    if (isSecureConnection) {
+      return baseTradingUrl.replace("https", "wss");
+    } else {
+      return baseTradingUrl.replace("http", "ws");
     }
   }
 }

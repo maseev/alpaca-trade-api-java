@@ -28,8 +28,8 @@ public class OrderAPI {
     DESC
   }
 
-  private static final String ORDERS_ENDPOINT = "/orders";
-  private static final String GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT =
+  static final String ORDERS_ENDPOINT = "/orders";
+  static final String GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT =
     ORDERS_ENDPOINT + ":by_client_order_id";
 
   private final HttpClient httpClient;
@@ -39,9 +39,9 @@ public class OrderAPI {
   }
 
   public Listenable<List<Order>> get(Status status, int limit, LocalDateTime after,
-                                    LocalDateTime until,
-                         Direction direction) {
-    final ListenableFuture<Response> future =
+                                     LocalDateTime until,
+                                     Direction direction) {
+    ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ORDERS_ENDPOINT)
         .addQueryParam("status", status.toString())
         .addQueryParam("limit", Integer.toString(limit))
@@ -50,7 +50,8 @@ public class OrderAPI {
         .addQueryParam("direction", direction.toString())
         .execute();
 
-    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Order>>() {}), future);
+    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Order>>() {
+    }), future);
   }
 
   public Listenable<Order> place(OrderRequest request) throws JsonProcessingException {

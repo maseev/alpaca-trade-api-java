@@ -56,7 +56,7 @@ public class PositionAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/positions")
+        request(PositionAPI.POSITIONS_ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -81,7 +81,7 @@ public class PositionAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/positions/" + symbol)
+        request(PositionAPI.POSITIONS_ENDPOINT + '/' + symbol)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -122,7 +122,7 @@ public class PositionAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/positions/" + expectedPosition.symbol())
+        request(PositionAPI.POSITIONS_ENDPOINT + '/' + expectedPosition.symbol())
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)

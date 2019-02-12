@@ -11,7 +11,7 @@ import org.asynchttpclient.Response;
 
 public class AccountAPI {
 
-  private static final String GET_ACCOUNT_ENDPOINT = "/account";
+  static final String GET_ACCOUNT_ENDPOINT = "/account";
 
   private final HttpClient httpClient;
 

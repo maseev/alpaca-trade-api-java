@@ -60,7 +60,7 @@ public class BarAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/bars/" + timeframe)
+        request(BarAPI.BARS_ENDPOINT + '/' + timeframe)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -113,7 +113,7 @@ public class BarAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/bars/" + timeframe)
+        request(BarAPI.BARS_ENDPOINT + '/' + timeframe)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -153,7 +153,7 @@ public class BarAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/bars/" + timeframe)
+        request(BarAPI.BARS_ENDPOINT + '/' + timeframe)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)

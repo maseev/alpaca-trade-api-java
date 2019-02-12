@@ -47,7 +47,7 @@ public class AssetAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/assets")
+        request(AssetAPI.ASSETS_ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -75,7 +75,7 @@ public class AssetAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/assets/" + symbol)
+        request(AssetAPI.ASSETS_ENDPOINT + '/' + symbol)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -107,7 +107,7 @@ public class AssetAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/assets/" + expectedAsset.symbol())
+        request(AssetAPI.ASSETS_ENDPOINT + '/' + expectedAsset.symbol())
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)

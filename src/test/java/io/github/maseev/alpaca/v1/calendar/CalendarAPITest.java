@@ -55,7 +55,7 @@ public class CalendarAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/calendar")
+        request(CalendarAPI.CALENDAR_ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)

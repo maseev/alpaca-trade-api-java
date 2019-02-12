@@ -14,7 +14,7 @@ import org.asynchttpclient.Response;
 
 public class CalendarAPI {
 
-  private static final String CALENDAR_ENDPOINT = "/calendar";
+  static final String CALENDAR_ENDPOINT = "/calendar";
 
   private final HttpClient httpClient;
 

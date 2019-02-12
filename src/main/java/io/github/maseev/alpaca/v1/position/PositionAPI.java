@@ -12,7 +12,7 @@ import org.asynchttpclient.Response;
 
 public class PositionAPI {
 
-  private static final String POSITIONS_ENDPOINT = "/positions";
+  static final String POSITIONS_ENDPOINT = "/positions";
 
   private final HttpClient httpClient;
 

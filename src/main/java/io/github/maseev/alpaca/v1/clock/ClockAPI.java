@@ -9,7 +9,7 @@ import org.asynchttpclient.Response;
 
 public class ClockAPI {
 
-  private static final String CLOCK_ENDPOINT = "/clock";
+  static final String CLOCK_ENDPOINT = "/clock";
 
   private final HttpClient httpClient;
 

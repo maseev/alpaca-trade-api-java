@@ -38,7 +38,7 @@ public class ClockAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/clock")
+        request(ClockAPI.CLOCK_ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)

@@ -34,7 +34,7 @@ public class BarAPI {
     }
   }
 
-  private static final String BARS_ENDPOINT = "/bars";
+  static final String BARS_ENDPOINT = "/bars";
 
   private final HttpClient httpClient;
 

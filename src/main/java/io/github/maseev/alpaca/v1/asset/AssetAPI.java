@@ -13,7 +13,7 @@ import org.asynchttpclient.Response;
 
 public class AssetAPI {
 
-  private static final String ASSETS_ENDPOINT = "/assets";
+  static final String ASSETS_ENDPOINT = "/assets";
 
   private final HttpClient httpClient;
 

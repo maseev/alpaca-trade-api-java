@@ -74,7 +74,7 @@ public class OrderAPITest extends APITest {
 
     mockServer()
       .when(
-        request("/orders")
+        request(OrderAPI.ORDERS_ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -147,7 +147,7 @@ public class OrderAPITest extends APITest {
     String orderId = UUID.randomUUID().toString();
 
     mockServer().when(
-      request("/orders/" + orderId)
+      request(OrderAPI.ORDERS_ENDPOINT + '/' + orderId)
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -195,7 +195,7 @@ public class OrderAPITest extends APITest {
       .build();
 
     mockServer().when(
-      request("/orders/" + orderId)
+      request(OrderAPI.ORDERS_ENDPOINT + '/' + orderId)
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -219,7 +219,7 @@ public class OrderAPITest extends APITest {
     String clientOrderId = UUID.randomUUID().toString();
 
     mockServer().when(
-      request("/orders:by_client_order_id")
+      request(OrderAPI.GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT)
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -269,7 +269,7 @@ public class OrderAPITest extends APITest {
         .build();
 
     mockServer().when(
-      request("/orders:by_client_order_id")
+      request(OrderAPI.GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT)
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -331,7 +331,7 @@ public class OrderAPITest extends APITest {
         .build();
 
     mockServer().when(
-      request("/orders")
+      request(OrderAPI.ORDERS_ENDPOINT)
         .withMethod(HttpClient.HttpMethod.POST.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
@@ -353,7 +353,7 @@ public class OrderAPITest extends APITest {
                                HttpCode expectedStatusCode,
                                String expectedMessage) {
     mockServer().when(
-      request("/orders/" + expectedOrderId)
+      request(OrderAPI.ORDERS_ENDPOINT + '/' + expectedOrderId)
         .withMethod(HttpClient.HttpMethod.DELETE.toString())
         .withHeader(APCA_API_KEY_ID, expectedKey)
         .withHeader(APCA_API_SECRET_KEY, expectedSecretKey)
