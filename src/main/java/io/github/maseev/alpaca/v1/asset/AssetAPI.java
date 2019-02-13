@@ -13,7 +13,7 @@ import org.asynchttpclient.Response;
 
 public class AssetAPI {
 
-  static final String ASSETS_ENDPOINT = "/assets";
+  static final String ENDPOINT = "/assets";
 
   private final HttpClient httpClient;
 
@@ -23,7 +23,7 @@ public class AssetAPI {
 
   public Listenable<List<Asset>> get(Asset.Status status, AssetClass assetClass) {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, ASSETS_ENDPOINT)
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT)
         .addQueryParam("status", status.toString())
         .addQueryParam("asset_class", assetClass.toString())
         .execute();
@@ -33,7 +33,7 @@ public class AssetAPI {
 
   public Listenable<Asset> get(String symbol) {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, ASSETS_ENDPOINT, symbol).execute();
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, symbol).execute();
 
     return new Listenable<>(new ValueTransformer<>(Asset.class), future);
   }

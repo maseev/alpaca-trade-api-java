@@ -28,9 +28,9 @@ public class OrderAPI {
     DESC
   }
 
-  static final String ORDERS_ENDPOINT = "/orders";
-  static final String GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT =
-    ORDERS_ENDPOINT + ":by_client_order_id";
+  static final String ENDPOINT = "/orders";
+  static final String GET_BY_CLIENT_ORDER_ID_ENDPOINT =
+    ENDPOINT + ":by_client_order_id";
 
   private final HttpClient httpClient;
 
@@ -42,7 +42,7 @@ public class OrderAPI {
                                      LocalDateTime until,
                                      Direction direction) {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, ORDERS_ENDPOINT)
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT)
         .addQueryParam("status", status.toString())
         .addQueryParam("limit", Integer.toString(limit))
         .addQueryParam("after", after.toString())
@@ -56,7 +56,7 @@ public class OrderAPI {
 
   public Listenable<Order> place(OrderRequest request) throws JsonProcessingException {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.POST, ORDERS_ENDPOINT)
+      httpClient.prepare(HttpClient.HttpMethod.POST, ENDPOINT)
         .setBody(toJson(request))
         .execute();
 
@@ -64,14 +64,14 @@ public class OrderAPI {
   }
 
   public Listenable<Order> get(String orderId) {
-    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.GET, ORDERS_ENDPOINT, orderId).execute();
+    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, orderId).execute();
 
     return new Listenable<>(new ValueTransformer<>(Order.class), future);
   }
 
   public Listenable<Order> getByClientOrderId(String clientOrderId) {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, GET_ORDERS_BY_CLIENT_ORDER_ID_ENDPOINT)
+      httpClient.prepare(HttpClient.HttpMethod.GET, GET_BY_CLIENT_ORDER_ID_ENDPOINT)
         .addQueryParam("client_order_id", clientOrderId)
         .execute();
 
@@ -79,7 +79,7 @@ public class OrderAPI {
   }
 
   public Listenable<Void> cancel(String orderId) {
-    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.DELETE, ORDERS_ENDPOINT, orderId).execute();
+    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.DELETE, ENDPOINT, orderId).execute();
 
     return new Listenable<>(new ValueTransformer<>(Void.class), future);
   }

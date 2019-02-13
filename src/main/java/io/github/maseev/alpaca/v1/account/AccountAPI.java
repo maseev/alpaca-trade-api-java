@@ -11,7 +11,7 @@ import org.asynchttpclient.Response;
 
 public class AccountAPI {
 
-  static final String GET_ACCOUNT_ENDPOINT = "/account";
+  static final String ENDPOINT = "/account";
 
   private final HttpClient httpClient;
 
@@ -20,7 +20,7 @@ public class AccountAPI {
   }
 
   public Listenable<Account> get() {
-    ListenableFuture<Response> future = httpClient.prepare(GET, GET_ACCOUNT_ENDPOINT).execute();
+    ListenableFuture<Response> future = httpClient.prepare(GET, ENDPOINT).execute();
 
     return new Listenable<>(new ValueTransformer<>(Account.class), future);
   }

@@ -12,7 +12,7 @@ import org.asynchttpclient.Response;
 
 public class PositionAPI {
 
-  static final String POSITIONS_ENDPOINT = "/positions";
+  static final String ENDPOINT = "/positions";
 
   private final HttpClient httpClient;
 
@@ -22,14 +22,14 @@ public class PositionAPI {
 
   public Listenable<List<Position>> get() {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, POSITIONS_ENDPOINT).execute();
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT).execute();
 
     return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Position>>() {}), future);
   }
 
   public Listenable<Position> get(String symbol) {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, POSITIONS_ENDPOINT, symbol).execute();
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, symbol).execute();
 
     return new Listenable<>(new ValueTransformer<>(Position.class), future);
   }

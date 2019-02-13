@@ -34,7 +34,7 @@ public class BarAPI {
     }
   }
 
-  static final String BARS_ENDPOINT = "/bars";
+  static final String ENDPOINT = "/bars";
 
   private final HttpClient httpClient;
 
@@ -54,7 +54,7 @@ public class BarAPI {
     validate(symbols, start, end, limit);
 
     BoundRequestBuilder requestBuilder =
-      httpClient.prepare(HttpClient.HttpMethod.GET, BARS_ENDPOINT, timeframe.toString())
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, timeframe.toString())
       .addQueryParam("symbols", String.join(",", symbols))
       .addQueryParam("limit", Integer.toString(limit));
 

@@ -9,7 +9,7 @@ import org.asynchttpclient.Response;
 
 public class ClockAPI {
 
-  static final String CLOCK_ENDPOINT = "/clock";
+  static final String ENDPOINT = "/clock";
 
   private final HttpClient httpClient;
 
@@ -19,7 +19,7 @@ public class ClockAPI {
 
   public Listenable<Clock> get() {
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, CLOCK_ENDPOINT).execute();
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT).execute();
 
     return new Listenable<>(new ValueTransformer<>(Clock.class), future);
   }

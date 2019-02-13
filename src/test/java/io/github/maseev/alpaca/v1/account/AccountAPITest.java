@@ -1,7 +1,7 @@
 package io.github.maseev.alpaca.v1.account;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
-import static io.github.maseev.alpaca.v1.account.AccountAPI.GET_ACCOUNT_ENDPOINT;
+import static io.github.maseev.alpaca.v1.account.AccountAPI.ENDPOINT;
 import static java.math.BigDecimal.valueOf;
 import static java.time.LocalDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -38,7 +38,7 @@ public class AccountAPITest extends APITest {
     mockServer()
       .when(
         request()
-          .withPath(GET_ACCOUNT_ENDPOINT)
+          .withPath(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, nonValidKeyId)
           .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey))
@@ -60,7 +60,7 @@ public class AccountAPITest extends APITest {
     mockServer()
       .when(
         request()
-          .withPath(GET_ACCOUNT_ENDPOINT)
+          .withPath(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, nonValidKeyId)
           .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey))
@@ -117,7 +117,7 @@ public class AccountAPITest extends APITest {
     mockServer()
       .when(
         request()
-          .withPath(GET_ACCOUNT_ENDPOINT)
+          .withPath(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, keyId)
           .withHeader(APCA_API_SECRET_KEY, secretKey))
@@ -158,7 +158,7 @@ public class AccountAPITest extends APITest {
     mockServer()
       .when(
         request()
-          .withPath(GET_ACCOUNT_ENDPOINT)
+          .withPath(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, keyId)
           .withHeader(APCA_API_SECRET_KEY, secretKey))

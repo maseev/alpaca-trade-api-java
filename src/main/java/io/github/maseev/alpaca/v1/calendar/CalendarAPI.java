@@ -14,7 +14,7 @@ import org.asynchttpclient.Response;
 
 public class CalendarAPI {
 
-  static final String CALENDAR_ENDPOINT = "/calendar";
+  static final String ENDPOINT = "/calendar";
 
   private final HttpClient httpClient;
 
@@ -29,7 +29,7 @@ public class CalendarAPI {
     }
 
     ListenableFuture<Response> future =
-      httpClient.prepare(HttpClient.HttpMethod.GET, CALENDAR_ENDPOINT)
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT)
         .addQueryParam("start", start.toString())
         .addQueryParam("end", end.toString())
         .execute();
