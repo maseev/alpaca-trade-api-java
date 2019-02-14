@@ -1,6 +1,7 @@
 package io.github.maseev.alpaca.v1.position.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
@@ -15,7 +16,13 @@ public interface Position {
 
   enum Side {
     SHORT,
-    LONG
+    LONG;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   @JsonProperty("asset_id")

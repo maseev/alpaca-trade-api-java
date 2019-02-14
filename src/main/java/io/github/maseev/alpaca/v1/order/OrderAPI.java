@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.v1.order;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
@@ -20,12 +21,24 @@ public class OrderAPI {
   public enum Status {
     OPEN,
     CLOSED,
-    ALL
+    ALL;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   public enum Direction {
     ASC,
-    DESC
+    DESC;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   static final String ENDPOINT = "/orders";

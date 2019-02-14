@@ -1,6 +1,7 @@
 package io.github.maseev.alpaca.v1.asset.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.maseev.alpaca.v1.entity.Exchange;
@@ -13,7 +14,13 @@ public interface Asset {
 
   enum Status {
     ACTIVE,
-    INACTIVE
+    INACTIVE;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   String id();

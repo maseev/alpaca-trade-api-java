@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.v1.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.math.BigDecimal;
@@ -15,15 +16,33 @@ import org.immutables.value.Value;
 public interface Order {
 
   enum Type {
-    MARKET, LIMIT, STOP, STOP_LIMIT
+    MARKET, LIMIT, STOP, STOP_LIMIT;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   enum Side {
-    BUY, SELL
+    BUY, SELL;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   enum TimeInForce {
-    DAY, GTC, OPG, IOC, FOK
+    DAY, GTC, OPG, IOC, FOK;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   enum Status {
@@ -40,7 +59,13 @@ public interface Order {
     STOPPED,
     REJECTED,
     SUSPENDED,
-    CALCULATED,
+    CALCULATED;
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   String id();
