@@ -102,7 +102,7 @@ public class AlpacaAPI {
       case LIVE:
         return APCA_API_BASE_URL_LIVE;
       default:
-        throw new IllegalArgumentException(String.format("Unknown type; type: %s", type));
+        throw new IllegalArgumentException(String.format("unknown type; type: %s", type));
     }
   }
 

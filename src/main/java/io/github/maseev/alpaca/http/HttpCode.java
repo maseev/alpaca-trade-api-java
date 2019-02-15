@@ -14,7 +14,7 @@ public enum HttpCode {
   UNAUTHENTICATED(401, AuthenticationException::new),
   TOO_MANY_REQUESTS(429, RateLimitException::new),
   UNPROCESSABLE(422, UnprocessableException::new),
-  NOT_FOUND(404,EntityNotFoundException::new);
+  NOT_FOUND(404, EntityNotFoundException::new);
 
   private final int code;
   private final Function<Response, APIException> exceptionSupplier;
@@ -47,6 +47,6 @@ public enum HttpCode {
     }
 
     throw new IllegalArgumentException(
-      String.format("Unrecognizable status code; code: %s", statusCode));
+      String.format("unrecognized status code; code: %s", statusCode));
   }
 }

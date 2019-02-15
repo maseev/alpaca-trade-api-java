@@ -1,5 +1,7 @@
 package io.github.maseev.alpaca.v1.position;
 
+import static io.github.maseev.alpaca.http.util.StringUtil.requireNonEmpty;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
@@ -28,6 +30,8 @@ public class PositionAPI {
   }
 
   public Listenable<Position> get(String symbol) {
+    requireNonEmpty(symbol, "symbol");
+
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, symbol).execute();
 

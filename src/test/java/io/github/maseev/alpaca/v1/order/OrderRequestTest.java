@@ -8,6 +8,17 @@ import org.junit.Test;
 public class OrderRequestTest {
 
   @Test(expected = IllegalStateException.class)
+  public void usingNegativeQtyParameterMustThrowException() {
+    ImmutableOrderRequest.builder()
+      .symbol("AAPL")
+      .qty(-1)
+      .side(Order.Side.BUY)
+      .type(Order.Type.MARKET)
+      .timeInForce(Order.TimeInForce.IOC)
+      .build();
+  }
+
+  @Test(expected = IllegalStateException.class)
   public void usingIncorrectTimeInForceParameterMustThrowException() {
     ImmutableOrderRequest.builder()
       .symbol("AAPL")

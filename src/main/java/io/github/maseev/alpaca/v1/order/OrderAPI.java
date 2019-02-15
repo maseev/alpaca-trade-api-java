@@ -1,6 +1,8 @@
 package io.github.maseev.alpaca.v1.order;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
+import static io.github.maseev.alpaca.http.util.StringUtil.requireNonEmpty;
+import static java.lang.String.format;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -54,6 +56,8 @@ public class OrderAPI {
   public Listenable<List<Order>> get(Status status, int limit, LocalDateTime after,
                                      LocalDateTime until,
                                      Direction direction) {
+    validate(limit, after, until);
+
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT)
         .addQueryParam("status", status.toString())
@@ -63,8 +67,7 @@ public class OrderAPI {
         .addQueryParam("direction", direction.toString())
         .execute();
 
-    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Order>>() {
-    }), future);
+    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Order>>() {}), future);
   }
 
   public Listenable<Order> place(OrderRequest request) throws JsonProcessingException {
@@ -77,12 +80,17 @@ public class OrderAPI {
   }
 
   public Listenable<Order> get(String orderId) {
-    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, orderId).execute();
+    requireNonEmpty(orderId, "orderId");
+
+    ListenableFuture<Response> future =
+      httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, orderId).execute();
 
     return new Listenable<>(new ValueTransformer<>(Order.class), future);
   }
 
   public Listenable<Order> getByClientOrderId(String clientOrderId) {
+    requireNonEmpty(clientOrderId, "clientOrderId");
+
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, GET_BY_CLIENT_ORDER_ID_ENDPOINT)
         .addQueryParam("client_order_id", clientOrderId)
@@ -92,8 +100,26 @@ public class OrderAPI {
   }
 
   public Listenable<Void> cancel(String orderId) {
-    ListenableFuture<Response> future = httpClient.prepare(HttpClient.HttpMethod.DELETE, ENDPOINT, orderId).execute();
+    requireNonEmpty(orderId,"orderId");
+
+    ListenableFuture<Response> future =
+      httpClient.prepare(HttpClient.HttpMethod.DELETE, ENDPOINT, orderId).execute();
 
     return new Listenable<>(new ValueTransformer<>(Void.class), future);
+  }
+
+  private static void validate(int limit, LocalDateTime after, LocalDateTime until) {
+    final int MAX_NUMBER_OF_ORDERS = 500;
+
+    if (limit <= 0 || limit > MAX_NUMBER_OF_ORDERS) {
+      throw new IllegalArgumentException(
+        format("'limit' parameter must be greater than 0 and less than %s; limit: %s",
+          MAX_NUMBER_OF_ORDERS, limit));
+    }
+
+    if (after.isAfter(until)) {
+      throw new IllegalArgumentException(
+        format("'after' parameter must be before 'until'; after: %s, until: %s", after, until));
+    }
   }
 }

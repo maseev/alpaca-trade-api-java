@@ -23,9 +23,9 @@ public class CalendarAPI {
   }
 
   public Listenable<List<Calendar>> get(LocalDate start, LocalDate end) {
-    if (end.isBefore(start)) {
+    if (start.isAfter(end)) {
       throw new IllegalArgumentException(
-        format("end date can't be before start date; start date: %s, end date: %s", start, end));
+        format("'start' can't be after 'end'; start: %s, end: %s", start, end));
     }
 
     ListenableFuture<Response> future =

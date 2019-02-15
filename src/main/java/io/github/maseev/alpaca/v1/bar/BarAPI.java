@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.v1.bar;
 
 import static java.util.Arrays.asList;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
@@ -29,6 +30,7 @@ public class BarAPI {
     }
 
     @Override
+    @JsonValue
     public String toString() {
       return alias;
     }
@@ -75,8 +77,7 @@ public class BarAPI {
   private static void validate(String[] symbols, OffsetDateTime start, OffsetDateTime end,
                                int limit) {
     if (symbols == null) {
-      throw new IllegalArgumentException(
-        String.format("'symbols' parameter can't be null; symbols: %s", symbols));
+      throw new IllegalArgumentException("'symbols' parameter can't be null; symbols: null");
     }
 
     if (symbols.length == 0) {
@@ -105,6 +106,10 @@ public class BarAPI {
   }
 
   private static OffsetDateTime format(OffsetDateTime time) {
+    if (time.getNano() == 0) {
+      return time;
+    }
+
     return OffsetDateTime.of(
       time.getYear(),
       time.getMonthValue(),

@@ -42,31 +42,46 @@ public interface OrderRequest {
 
   @Value.Check
   default void check() {
+    if (qty() <= 0) {
+      throw new IllegalStateException(format("'qty' must be positive; qty: %s", qty()));
+    }
+
     if (timeInForce() == TimeInForce.IOC || timeInForce() == TimeInForce.FOK) {
       throw new IllegalStateException(
-        format("'timeInForce' can only be %s",
-          asList(TimeInForce.DAY, TimeInForce.GTC, TimeInForce.OPG)));
+        format("'timeInForce' can only be %s; timeInForce: %s",
+          asList(TimeInForce.DAY, TimeInForce.GTC, TimeInForce.OPG), timeInForce()));
     }
 
     if ((type() == Type.LIMIT || type() == Type.STOP_LIMIT)
       && limitPrice() == null) {
       throw new IllegalStateException(
-        format("'limitPrice' can't be null when 'type' is %s or %s", Type.LIMIT, Type.STOP));
+        format("'limitPrice' can't be null when 'type' is %s or %s; limitPrice: %s",
+          Type.LIMIT, Type.STOP, limitPrice()));
     }
 
     if ((type() == Type.STOP || type() == Type.STOP_LIMIT)
       && stopPrice() == null) {
       throw new IllegalStateException(
-        format("'stopPrice' can't be null when 'type' is %s or %s",
-          Type.STOP, Type.STOP_LIMIT));
+        format("'stopPrice' can't be null when 'type' is %s or %s; stopPrice: %s",
+          Type.STOP, Type.STOP_LIMIT, stopPrice()));
     }
 
     if (limitPrice() != null && limitPrice().compareTo(BigDecimal.ZERO) < 0) {
-      throw new IllegalStateException("'limitPrice' can't be negative");
+      throw new IllegalStateException(
+        format("'limitPrice' can't be negative; limitPrice: %s", limitPrice()));
     }
 
     if (stopPrice() != null && stopPrice().compareTo(BigDecimal.ZERO) < 0) {
-      throw new IllegalStateException("'stopPrice' can't be negative");
+      throw new IllegalStateException(
+        format("'stopPrice' can't be negative; stopPrice: %s", stopPrice()));
+    }
+
+    final int MAX_CLIENT_ORDER_ID_LENGTH = 48;
+
+    if (clientOrderId().length() > MAX_CLIENT_ORDER_ID_LENGTH) {
+      throw new IllegalStateException(
+        format("'clientOrderId' must be less than or equal to %s; clientOrderId: %s",
+          MAX_CLIENT_ORDER_ID_LENGTH, clientOrderId()));
     }
   }
 }

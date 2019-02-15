@@ -1,7 +1,6 @@
 package io.github.maseev.alpaca.v1.order;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
-import static java.math.BigInteger.valueOf;
 import static java.time.LocalDateTime.of;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -59,8 +58,8 @@ public class OrderAPITest extends APITest {
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
         .assetClass("asset")
-        .qty(valueOf(1))
-        .filledQty(valueOf(2))
+        .qty(1)
+        .filledQty(2)
         .type(Order.Type.MARKET)
         .side(Order.Side.BUY)
         .timeInForce(Order.TimeInForce.DAY)
@@ -183,8 +182,8 @@ public class OrderAPITest extends APITest {
       .assetId(UUID.randomUUID().toString())
       .symbol("AAPL")
       .assetClass("asset")
-      .qty(valueOf(1))
-      .filledQty(valueOf(2))
+      .qty(1)
+      .filledQty(2)
       .type(Order.Type.MARKET)
       .side(Order.Side.BUY)
       .timeInForce(Order.TimeInForce.DAY)
@@ -257,8 +256,8 @@ public class OrderAPITest extends APITest {
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
         .assetClass("asset")
-        .qty(valueOf(1))
-        .filledQty(valueOf(2))
+        .qty(1)
+        .filledQty(2)
         .type(Order.Type.MARKET)
         .side(Order.Side.BUY)
         .timeInForce(Order.TimeInForce.DAY)
@@ -319,8 +318,8 @@ public class OrderAPITest extends APITest {
         .assetId(UUID.randomUUID().toString())
         .symbol(orderRequest.symbol())
         .assetClass("asset")
-        .qty(valueOf(orderRequest.qty()))
-        .filledQty(valueOf(orderRequest.qty()))
+        .qty(orderRequest.qty())
+        .filledQty(orderRequest.qty())
         .type(orderRequest.type())
         .side(orderRequest.side())
         .timeInForce(orderRequest.timeInForce())

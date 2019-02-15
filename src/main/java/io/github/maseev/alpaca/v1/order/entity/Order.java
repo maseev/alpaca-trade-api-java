@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import org.immutables.value.Value;
+import org.jetbrains.annotations.Nullable;
 
 @Value.Immutable
 @JsonSerialize(as = ImmutableOrder.class)
@@ -77,22 +77,27 @@ public interface Order {
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime createdAt();
 
+  @Nullable
   @JsonProperty("updated_at")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime updatedAt();
 
+  @Nullable
   @JsonProperty("submitted_at")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime submittedAt();
 
+  @Nullable
   @JsonProperty("filled_at")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime filledAt();
 
+  @Nullable
   @JsonProperty("expired_at")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime expiredAt();
 
+  @Nullable
   @JsonProperty("canceled_at")
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   LocalDateTime canceledAt();
@@ -109,10 +114,10 @@ public interface Order {
   @JsonProperty("asset_class")
   String assetClass();
 
-  BigInteger qty();
+  long qty();
 
   @JsonProperty("filled_qty")
-  BigInteger filledQty();
+  long filledQty();
 
   Type type();
 
@@ -121,9 +126,11 @@ public interface Order {
   @JsonProperty("time_in_force")
   TimeInForce timeInForce();
 
+  @Nullable
   @JsonProperty("limit_price")
   BigDecimal limitPrice();
 
+  @Nullable
   @JsonProperty("stop_price")
   BigDecimal stopPrice();
 
