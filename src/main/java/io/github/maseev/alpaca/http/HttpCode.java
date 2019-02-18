@@ -3,6 +3,7 @@ package io.github.maseev.alpaca.http;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.AuthenticationException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.exception.UnrecognizedServerErrorException;
 import io.github.maseev.alpaca.http.exception.RateLimitException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import java.util.function.Function;
@@ -14,7 +15,8 @@ public enum HttpCode {
   UNAUTHENTICATED(401, AuthenticationException::new),
   TOO_MANY_REQUESTS(429, RateLimitException::new),
   UNPROCESSABLE(422, UnprocessableException::new),
-  NOT_FOUND(404, EntityNotFoundException::new);
+  NOT_FOUND(404, EntityNotFoundException::new),
+  INTERNAL_SERVER_ERROR(999, UnrecognizedServerErrorException::new);
 
   private final int code;
   private final Function<Response, APIException> exceptionSupplier;
@@ -46,7 +48,6 @@ public enum HttpCode {
       }
     }
 
-    throw new IllegalArgumentException(
-      String.format("unrecognized status code; code: %s", statusCode));
+    return INTERNAL_SERVER_ERROR;
   }
 }
