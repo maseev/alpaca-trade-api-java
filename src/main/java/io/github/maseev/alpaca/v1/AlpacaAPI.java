@@ -11,10 +11,12 @@ import io.github.maseev.alpaca.v1.clock.ClockAPI;
 import io.github.maseev.alpaca.v1.order.OrderAPI;
 import io.github.maseev.alpaca.v1.position.PositionAPI;
 import io.github.maseev.alpaca.v1.streaming.StreamingAPI;
+import java.io.Closeable;
+import java.io.IOException;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.AsyncHttpClientConfig;
 
-public class AlpacaAPI {
+public class AlpacaAPI implements Closeable {
 
   public enum Type {
     TEST,
@@ -61,6 +63,11 @@ public class AlpacaAPI {
 
   public AlpacaAPI(Type type, String keyId, String secretKey) {
     this(getBaseUrl(type), APCA_API_DATA_URL, keyId, secretKey);
+  }
+
+  @Override
+  public void close() throws IOException {
+    client.close();
   }
 
   public AccountAPI account() {
