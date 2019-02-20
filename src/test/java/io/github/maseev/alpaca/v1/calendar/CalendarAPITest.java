@@ -12,6 +12,7 @@ import io.github.maseev.alpaca.APITest;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.calendar.entity.Calendar;
 import io.github.maseev.alpaca.v1.calendar.entity.ImmutableCalendar;
@@ -59,6 +60,7 @@ public class CalendarAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("start", start.toString())
           .withQueryStringParameter("end", end.toString())
       )

@@ -17,6 +17,7 @@ import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.bar.entity.Bar;
 import io.github.maseev.alpaca.v1.bar.entity.BarMimic;
@@ -64,6 +65,7 @@ public class BarAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
           .withQueryStringParameter("start", start.toString())
@@ -117,6 +119,7 @@ public class BarAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
           .withQueryStringParameter("after", start.toString())
@@ -157,6 +160,7 @@ public class BarAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
           .withQueryStringParameter("after", start.toString())

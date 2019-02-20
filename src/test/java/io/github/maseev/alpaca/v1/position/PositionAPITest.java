@@ -15,6 +15,7 @@ import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
 import io.github.maseev.alpaca.v1.entity.Exchange;
@@ -60,6 +61,7 @@ public class PositionAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
         response()
@@ -85,6 +87,7 @@ public class PositionAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
         response()
@@ -126,6 +129,7 @@ public class PositionAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
         response()

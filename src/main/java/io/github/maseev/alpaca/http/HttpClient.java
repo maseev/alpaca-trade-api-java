@@ -1,5 +1,6 @@
 package io.github.maseev.alpaca.http;
 
+import io.github.maseev.alpaca.http.util.ContentType;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.BoundRequestBuilder;
 
@@ -27,9 +28,16 @@ public final class HttpClient {
   }
 
   public BoundRequestBuilder prepare(HttpMethod method, String endpoint) {
-    return client.prepare(method.toString(), baseUrl + endpoint)
-      .addHeader(APCA_API_KEY_ID, keyId)
-      .addHeader(APCA_API_SECRET_KEY, secretKey);
+    BoundRequestBuilder requestBuilder =
+      client.prepare(method.toString(), baseUrl + endpoint)
+        .addHeader(APCA_API_KEY_ID, keyId)
+        .addHeader(APCA_API_SECRET_KEY, secretKey);
+
+    if (method == HttpMethod.DELETE) {
+      return requestBuilder;
+    }
+
+    return requestBuilder.addHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON);
   }
 
   public BoundRequestBuilder prepare(HttpMethod method, String endpoint, String pathParameter) {

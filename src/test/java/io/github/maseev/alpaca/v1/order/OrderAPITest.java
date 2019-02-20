@@ -16,6 +16,7 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrderRequest;
@@ -77,6 +78,7 @@ public class OrderAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("status", status.toString())
           .withQueryStringParameter("limit", Integer.toString(limit))
           .withQueryStringParameter("after", after.toString())
@@ -150,6 +152,7 @@ public class OrderAPITest extends APITest {
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
     ).respond(
       response()
         .withStatusCode(HttpCode.NOT_FOUND.getCode())
@@ -198,6 +201,7 @@ public class OrderAPITest extends APITest {
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
     ).respond(
       response()
         .withStatusCode(HttpCode.OK.getCode())
@@ -222,6 +226,7 @@ public class OrderAPITest extends APITest {
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
         .withQueryStringParameter("client_order_id", clientOrderId)
     ).respond(
       response()
@@ -272,6 +277,7 @@ public class OrderAPITest extends APITest {
         .withMethod(HttpClient.HttpMethod.GET.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
         .withQueryStringParameter("client_order_id", clientOrderId)
     ).respond(
       response()
@@ -334,6 +340,7 @@ public class OrderAPITest extends APITest {
         .withMethod(HttpClient.HttpMethod.POST.toString())
         .withHeader(APCA_API_KEY_ID, validKeyId)
         .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
         .withBody(toJson(orderRequest))
     ).respond(
       response()

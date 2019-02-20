@@ -17,6 +17,7 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.ResponseHandler;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.AuthenticationException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.account.entity.Account;
 import io.github.maseev.alpaca.v1.account.entity.ImmutableAccount;
@@ -37,11 +38,11 @@ public class AccountAPITest extends APITest {
 
     mockServer()
       .when(
-        request()
-          .withPath(ENDPOINT)
+        request(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, nonValidKeyId)
-          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey))
+          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
       .respond(
         response()
           .withStatusCode(HttpCode.UNAUTHENTICATED.getCode())
@@ -59,11 +60,11 @@ public class AccountAPITest extends APITest {
 
     mockServer()
       .when(
-        request()
-          .withPath(ENDPOINT)
+        request(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, nonValidKeyId)
-          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey))
+          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
       .respond(
         response()
           .withStatusCode(HttpCode.UNAUTHENTICATED.getCode())
@@ -116,11 +117,11 @@ public class AccountAPITest extends APITest {
 
     mockServer()
       .when(
-        request()
-          .withPath(ENDPOINT)
+        request(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, keyId)
-          .withHeader(APCA_API_SECRET_KEY, secretKey))
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
       .respond(
         response()
           .withStatusCode(HttpCode.OK.getCode())
@@ -157,11 +158,11 @@ public class AccountAPITest extends APITest {
 
     mockServer()
       .when(
-        request()
-          .withPath(ENDPOINT)
+        request(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, keyId)
-          .withHeader(APCA_API_SECRET_KEY, secretKey))
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
       .respond(
         response()
           .withStatusCode(HttpCode.OK.getCode())

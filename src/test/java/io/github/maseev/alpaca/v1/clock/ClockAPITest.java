@@ -12,6 +12,7 @@ import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.clock.entity.Clock;
 import io.github.maseev.alpaca.v1.clock.entity.ImmutableClock;
@@ -42,6 +43,7 @@ public class ClockAPITest extends APITest {
           .withMethod(HttpClient.HttpMethod.GET.toString())
           .withHeader(APCA_API_KEY_ID, validKeyId)
           .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
         response()
