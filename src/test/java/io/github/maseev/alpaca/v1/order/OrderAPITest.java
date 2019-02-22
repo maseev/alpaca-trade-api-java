@@ -5,7 +5,8 @@ import static java.time.LocalDateTime.of;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OrderAPITest extends APITest {
 
@@ -97,7 +98,7 @@ public class OrderAPITest extends APITest {
     assertThat(orders, is(equalTo(expectedOrders)));
   }
 
-  @Test(expected = UnprocessableException.class)
+  @Test
   public void cancellingNoLongerCancelableOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -108,10 +109,10 @@ public class OrderAPITest extends APITest {
     setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.UNPROCESSABLE,
       "The order status is not cancelable");
 
-    api.orders().cancel(orderId).await();
+    assertThrows(UnprocessableException.class, () -> api.orders().cancel(orderId).await());
   }
 
-  @Test(expected = EntityNotFoundException.class)
+  @Test
   public void cancellingNonexistentOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -122,7 +123,7 @@ public class OrderAPITest extends APITest {
     setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.NOT_FOUND,
       "The order doesn't exist");
 
-    api.orders().cancel(orderId).await();
+    assertThrows(EntityNotFoundException.class, () -> api.orders().cancel(orderId).await());
   }
 
   @Test
@@ -139,7 +140,7 @@ public class OrderAPITest extends APITest {
     api.orders().cancel(orderId).await();
   }
 
-  @Test(expected = EntityNotFoundException.class)
+  @Test
   public void gettingNonExistentOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -159,7 +160,7 @@ public class OrderAPITest extends APITest {
         .withReasonPhrase("Order not found")
     );
 
-    api.orders().get(orderId).await();
+    assertThrows(EntityNotFoundException.class, () -> api.orders().get(orderId).await());
   }
 
   @Test
@@ -213,7 +214,7 @@ public class OrderAPITest extends APITest {
     assertThat(order, is(equalTo(expectedOrder)));
   }
 
-  @Test(expected = EntityNotFoundException.class)
+  @Test
   public void gettingNonExistentOrderByClientIdMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -234,7 +235,8 @@ public class OrderAPITest extends APITest {
         .withReasonPhrase("Order not found")
     );
 
-    api.orders().getByClientOrderId(clientOrderId).await();
+    assertThrows(EntityNotFoundException.class,
+      () -> api.orders().getByClientOrderId(clientOrderId).await());
   }
 
   @Test

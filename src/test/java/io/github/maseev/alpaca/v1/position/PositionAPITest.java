@@ -5,7 +5,8 @@ import static java.math.BigDecimal.valueOf;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -23,7 +24,7 @@ import io.github.maseev.alpaca.v1.position.entity.ImmutablePosition;
 import io.github.maseev.alpaca.v1.position.entity.Position;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PositionAPITest extends APITest {
 
@@ -73,7 +74,7 @@ public class PositionAPITest extends APITest {
     assertThat(positions, is(equalTo(expectedPositions)));
   }
 
-  @Test(expected = EntityNotFoundException.class)
+  @Test
   public void gettingNonExistentPositionMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -94,7 +95,7 @@ public class PositionAPITest extends APITest {
           .withStatusCode(HttpCode.NOT_FOUND.getCode())
           .withReasonPhrase("Position not found"));
 
-    api.positions().get(symbol).await();
+    assertThrows(EntityNotFoundException.class, () ->api.positions().get(symbol).await());
   }
 
   @Test

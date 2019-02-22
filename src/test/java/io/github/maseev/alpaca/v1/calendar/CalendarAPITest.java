@@ -3,7 +3,8 @@ package io.github.maseev.alpaca.v1.calendar;
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -20,11 +21,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CalendarAPITest extends APITest {
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void specifyingEndDateBeforeStartDateMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -33,7 +34,7 @@ public class CalendarAPITest extends APITest {
     LocalDate start = LocalDate.now();
     LocalDate end = start.minusDays(1);
 
-    api.calendar().get(start, end).await();
+    assertThrows(IllegalArgumentException.class, () -> api.calendar().get(start, end).await());
   }
 
   @Test

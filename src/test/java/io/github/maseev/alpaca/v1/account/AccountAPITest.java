@@ -6,7 +6,8 @@ import static java.math.BigDecimal.valueOf;
 import static java.time.LocalDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -26,11 +27,11 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AccountAPITest extends APITest {
 
-  @Test(expected = AuthenticationException.class)
+  @Test
   public void gettingAccountWithIncorrectCredentialsMustThrowException() throws APIException {
     String nonValidKeyId = "non-valid";
     String nonValidSecretKey = "non-valid";
@@ -49,7 +50,7 @@ public class AccountAPITest extends APITest {
           .withReasonPhrase("Authentication has failed")
       );
 
-    api.account().get().await();
+    assertThrows(AuthenticationException.class, () -> api.account().get().await());
   }
 
   @Test

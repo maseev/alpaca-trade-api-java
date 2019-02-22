@@ -7,7 +7,8 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -28,7 +29,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BarAPITest extends APITest {
 
@@ -140,7 +141,7 @@ public class BarAPITest extends APITest {
     assertThat(bars, is(equalTo(expectedBars)));
   }
 
-  @Test(expected = UnprocessableException.class)
+  @Test
   public void gettingNonExistentSymbolBarsMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -172,8 +173,9 @@ public class BarAPITest extends APITest {
           .withReasonPhrase("The parameters are not well formed")
       );
 
-    api.bars()
-      .get(symbol, timeframe, start, end, timeInclusive, 10)
-      .await();
+    assertThrows(UnprocessableException.class,
+      () -> api.bars()
+        .get(symbol, timeframe, start, end, timeInclusive, 10)
+        .await());
   }
 }

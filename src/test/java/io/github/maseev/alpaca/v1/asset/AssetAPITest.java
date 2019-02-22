@@ -3,7 +3,8 @@ package io.github.maseev.alpaca.v1.asset;
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -22,7 +23,7 @@ import io.github.maseev.alpaca.v1.entity.Exchange;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AssetAPITest extends APITest {
 
@@ -67,7 +68,7 @@ public class AssetAPITest extends APITest {
     assertThat(assets, is(equalTo(expectedAssets)));
   }
 
-  @Test(expected = EntityNotFoundException.class)
+  @Test
   public void gettingNonExistentAssetMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -89,7 +90,7 @@ public class AssetAPITest extends APITest {
           .withReasonPhrase("Asset not found")
       );
 
-    api.assets().get(symbol).await();
+    assertThrows(EntityNotFoundException.class, () -> api.assets().get(symbol).await());
   }
 
   @Test

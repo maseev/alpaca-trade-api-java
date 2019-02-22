@@ -2,9 +2,9 @@ package io.github.maseev.alpaca;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.mockserver.integration.ClientAndServer;
 
 public abstract class APITest {
@@ -17,17 +17,17 @@ public abstract class APITest {
 
   private static ClientAndServer mockServer;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() throws Exception {
     mockServer = startClientAndServer(port);
   }
 
-  @AfterClass
+  @AfterAll
   public static void tearDown() {
     mockServer.stop();
   }
 
-  @After
+  @AfterEach
   public void after() {
     mockServer.reset();
   }

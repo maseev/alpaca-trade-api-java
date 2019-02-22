@@ -4,7 +4,7 @@ import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.time.LocalDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -17,7 +17,7 @@ import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.clock.entity.Clock;
 import io.github.maseev.alpaca.v1.clock.entity.ImmutableClock;
 import java.time.LocalDateTime;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ClockAPITest extends APITest {
 

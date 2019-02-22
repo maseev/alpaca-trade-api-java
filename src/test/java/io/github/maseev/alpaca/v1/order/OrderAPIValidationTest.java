@@ -1,25 +1,26 @@
 package io.github.maseev.alpaca.v1.order;
 
 import static java.time.LocalDateTime.of;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import java.time.LocalDateTime;
 import java.time.Month;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OrderAPIValidationTest {
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void passingEmptyOrderIdMustThrowException() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "localhost";
     AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
 
-    api.orders().get("").await();
+    assertThrows(IllegalArgumentException.class, () -> api.orders().get("").await());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void gettingListOfOrdersWithIncorrectDatesMustThrowException() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -32,12 +33,11 @@ public class OrderAPIValidationTest {
     LocalDateTime until = after.minusDays(1);
     OrderAPI.Direction direction = OrderAPI.Direction.ASC;
 
-    api.orders()
-      .get(status, limit, after, until, direction)
-      .await();
+    assertThrows(IllegalArgumentException.class,
+      () -> api.orders().get(status, limit, after, until, direction).await());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void gettingListOfOrdersWithNegativeLimitMustThrowException() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -50,12 +50,11 @@ public class OrderAPIValidationTest {
     LocalDateTime until = after.plusDays(1);
     OrderAPI.Direction direction = OrderAPI.Direction.ASC;
 
-    api.orders()
-      .get(status, limit, after, until, direction)
-      .await();
+    assertThrows(IllegalArgumentException.class,
+      () -> api.orders().get(status, limit, after, until, direction).await());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void gettingListOfOrdersWithTooBigLimitMustThrowException() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
@@ -68,8 +67,7 @@ public class OrderAPIValidationTest {
     LocalDateTime until = after.minusDays(1);
     OrderAPI.Direction direction = OrderAPI.Direction.ASC;
 
-    api.orders()
-      .get(status, limit, after, until, direction)
-      .await();
+    assertThrows(IllegalArgumentException.class,
+      () -> api.orders().get(status, limit, after, until, direction).await());
   }
 }
