@@ -2,11 +2,11 @@ package io.github.maseev.alpaca;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockserver.integration.ClientAndServer;
 
+@ExtendWith(MockServerInitializer.class)
 public abstract class APITest {
 
   protected static final String APCA_API_KEY_ID = "APCA-API-KEY-ID";
@@ -17,12 +17,10 @@ public abstract class APITest {
 
   private static ClientAndServer mockServer;
 
-  @BeforeAll
   public static void setUp() throws Exception {
     mockServer = startClientAndServer(port);
   }
 
-  @AfterAll
   public static void tearDown() {
     mockServer.stop();
   }
