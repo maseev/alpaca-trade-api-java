@@ -54,7 +54,8 @@ public class AlpacaAPI implements Closeable {
     barAPI = new BarAPI(new HttpClient(baseDataUrl, keyId, secretKey, client));
 
     streamingAPI =
-      new StreamingAPI(new HttpClient(getStreamingUrl(baseTradingUrl), keyId, secretKey, client));
+      new StreamingAPI(
+        new HttpClient(getStreamingUrl(baseTradingUrl), keyId, secretKey, client), keyId, secretKey);
   }
 
   public AlpacaAPI(String baseTradingUrl, String baseDataUrl, String keyId, String secretKey) {

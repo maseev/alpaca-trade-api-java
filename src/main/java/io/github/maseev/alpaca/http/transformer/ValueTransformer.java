@@ -1,6 +1,7 @@
 package io.github.maseev.alpaca.http.transformer;
 
-import io.github.maseev.alpaca.http.json.JsonMapper;
+import static io.github.maseev.alpaca.http.json.util.JsonUtil.fromJson;
+
 import io.github.maseev.alpaca.http.exception.APIException;
 import java.io.IOException;
 
@@ -18,6 +19,6 @@ public class ValueTransformer<T> extends Transformer<T> {
       return null;
     }
 
-    return JsonMapper.getMapper().readValue(responseBody, clazz);
+    return fromJson(responseBody, clazz);
   }
 }

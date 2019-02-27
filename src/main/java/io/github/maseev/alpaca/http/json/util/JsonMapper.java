@@ -1,11 +1,11 @@
-package io.github.maseev.alpaca.http.json;
+package io.github.maseev.alpaca.http.json.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-public final class JsonMapper {
+final class JsonMapper {
 
   private static final ObjectMapper MAPPER;
 
@@ -23,7 +23,7 @@ public final class JsonMapper {
   private JsonMapper() {
   }
 
-  public static ObjectMapper getMapper() {
+  static ObjectMapper getMapper() {
     return MAPPER;
   }
 }
