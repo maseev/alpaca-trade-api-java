@@ -19,11 +19,11 @@ import io.github.maseev.alpaca.v1.streaming.message.AuthenticationMessage;
 import io.github.maseev.alpaca.v1.streaming.message.AuthorizationResponse;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableAuthenticationMessage;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableCredentials;
-import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscribtionMessage;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscription;
+import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscriptionMessage;
 import io.github.maseev.alpaca.v1.streaming.message.StreamUpdate;
-import io.github.maseev.alpaca.v1.streaming.message.SubscribtionMessage;
-import io.github.maseev.alpaca.v1.streaming.message.SubscribtionResponse;
+import io.github.maseev.alpaca.v1.streaming.message.SubscriptionMessage;
+import io.github.maseev.alpaca.v1.streaming.message.SubscriptionResponse;
 import java.io.IOException;
 import java.util.Set;
 import org.asynchttpclient.ws.WebSocket;
@@ -98,8 +98,8 @@ class StreamUpdateListener implements WebSocketListener {
             throw new AuthorizationException();
           }
 
-          SubscribtionMessage subscribtionMessage =
-            ImmutableSubscribtionMessage.builder()
+          SubscriptionMessage subscribtionMessage =
+            ImmutableSubscriptionMessage.builder()
               .subscription(ImmutableSubscription.builder()
                 .addStreams(ACCOUNT_UPDATES, TRADE_UPDATES)
                 .build())
@@ -108,12 +108,12 @@ class StreamUpdateListener implements WebSocketListener {
           sendMessage(subscribtionMessage);
           break;
         case SUBSCRIBTION_SENT:
-          SubscribtionResponse subscribtionResponse =
-            fromJson(payload, SubscribtionResponse.class);
+          SubscriptionResponse subscribtionResponse =
+            fromJson(payload, SubscriptionResponse.class);
           Set<Stream> streams = subscribtionResponse.subscription().streams();
 
           if (!streams.containsAll(asList(TRADE_UPDATES, ACCOUNT_UPDATES))) {
-            throw new SubscriptionException();
+            throw new SubscriptionException(streams);
           }
           break;
         case SUBSCRIBED:

@@ -6,13 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableSubscribtionResponse.class)
-@JsonDeserialize(as = ImmutableSubscribtionResponse.class)
-public interface SubscribtionResponse {
+@JsonSerialize(as = ImmutableSubscriptionMessage.class)
+@JsonDeserialize(as = ImmutableSubscriptionMessage.class)
+public interface SubscriptionMessage {
 
   @Value.Default
-  default String stream() {
-    return "listening";
+  default String action() {
+    return "listen";
   }
 
   @JsonProperty("data")

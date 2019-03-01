@@ -38,12 +38,12 @@ import io.github.maseev.alpaca.v1.streaming.message.ImmutableAuthorizationDetail
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableAuthorizationResponse;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableCredentials;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableStreamUpdate;
-import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscribtionMessage;
-import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscribtionResponse;
+import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscriptionMessage;
+import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscriptionResponse;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscription;
 import io.github.maseev.alpaca.v1.streaming.message.StreamUpdate;
-import io.github.maseev.alpaca.v1.streaming.message.SubscribtionMessage;
-import io.github.maseev.alpaca.v1.streaming.message.SubscribtionResponse;
+import io.github.maseev.alpaca.v1.streaming.message.SubscriptionMessage;
+import io.github.maseev.alpaca.v1.streaming.message.SubscriptionResponse;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.UUID;
@@ -125,8 +125,8 @@ public class StreamUpdateListenerTest {
 
     streamUpdateListener.onTextFrame(toJson(authorizationResponse), false, 0);
 
-    SubscribtionMessage subscribtionMessage =
-      ImmutableSubscribtionMessage.builder()
+    SubscriptionMessage subscribtionMessage =
+      ImmutableSubscriptionMessage.builder()
         .subscription(ImmutableSubscription.builder()
           .addStreams(ACCOUNT_UPDATES, TRADE_UPDATES)
           .build())
@@ -144,8 +144,8 @@ public class StreamUpdateListenerTest {
       }
     }, ImmutableConnectionCrash.class);
 
-    SubscribtionResponse subscribtionResponse =
-      ImmutableSubscribtionResponse.builder()
+    SubscriptionResponse subscribtionResponse =
+      ImmutableSubscriptionResponse.builder()
         .subscription(ImmutableSubscription.builder()
           .addStreams(ACCOUNT_UPDATES)
           .build())
@@ -186,8 +186,8 @@ public class StreamUpdateListenerTest {
 
     streamUpdateListener.onTextFrame(toJson(authorizationResponse), false, 0);
 
-    SubscribtionMessage subscribtionMessage =
-      ImmutableSubscribtionMessage.builder()
+    SubscriptionMessage subscribtionMessage =
+      ImmutableSubscriptionMessage.builder()
         .subscription(ImmutableSubscription.builder()
           .addStreams(ACCOUNT_UPDATES, TRADE_UPDATES)
           .build())
@@ -195,8 +195,8 @@ public class StreamUpdateListenerTest {
 
     verify(websocket).sendTextFrame(toJson(subscribtionMessage));
 
-    SubscribtionResponse subscribtionResponse =
-      ImmutableSubscribtionResponse.builder()
+    SubscriptionResponse subscribtionResponse =
+      ImmutableSubscriptionResponse.builder()
         .subscription(ImmutableSubscription.builder()
           .addStreams(ACCOUNT_UPDATES, TRADE_UPDATES)
           .build())
