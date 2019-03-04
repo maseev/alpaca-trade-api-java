@@ -16,7 +16,7 @@ public class BarAPIValidatationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "http://localhost:8080";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OffsetDateTime start =
       of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
@@ -32,7 +32,7 @@ public class BarAPIValidatationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "http://localhost:8080";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OffsetDateTime start =
       of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
@@ -48,7 +48,7 @@ public class BarAPIValidatationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "http://localhost:8080";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OffsetDateTime start =
       of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
@@ -64,7 +64,7 @@ public class BarAPIValidatationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "http://localhost:8080";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OffsetDateTime start =
       of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
@@ -79,7 +79,7 @@ public class BarAPIValidatationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "http://localhost:8080";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OffsetDateTime start =
       of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
@@ -94,7 +94,7 @@ public class BarAPIValidatationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "http://localhost:8080";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OffsetDateTime start =
       of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);

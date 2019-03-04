@@ -23,9 +23,10 @@ public class AlpacaAPI implements Closeable {
     LIVE
   }
 
-  private static final String APCA_API_BASE_URL_PAPER_TRADING="https://paper-api.alpaca.markets/v1";
-  private static final String APCA_API_BASE_URL_LIVE="https://api.alpaca.markets/v1";
-  private static final String APCA_API_DATA_URL = "https://data.alpaca.markets/v1";
+  private static final String APCA_API_VERSION = "/v1";
+  private static final String APCA_API_BASE_URL_PAPER_TRADING="https://paper-api.alpaca.markets";
+  private static final String APCA_API_BASE_URL_LIVE="https://api.alpaca.markets";
+  private static final String APCA_API_DATA_URL = "https://data.alpaca.markets" + APCA_API_VERSION;
 
   private final AsyncHttpClient client;
 
@@ -38,9 +39,8 @@ public class AlpacaAPI implements Closeable {
   private final BarAPI barAPI;
   private final StreamingAPI streamingAPI;
 
-  public AlpacaAPI(String baseTradingUrl, String baseDataUrl,
-                   String keyId, String secretKey,
-                   AsyncHttpClientConfig config) {
+  public AlpacaAPI(String baseTradingUrl, String baseDataUrl, String baseStreamingUrl,
+                   String keyId, String secretKey, AsyncHttpClientConfig config) {
     client = config == null ? asyncHttpClient() : asyncHttpClient(config);
 
     HttpClient httpClient = new HttpClient(baseTradingUrl, keyId, secretKey, client);
@@ -55,15 +55,20 @@ public class AlpacaAPI implements Closeable {
 
     streamingAPI =
       new StreamingAPI(
-        new HttpClient(getStreamingUrl(baseTradingUrl), keyId, secretKey, client), keyId, secretKey);
+        new HttpClient(getStreamingUrl(baseStreamingUrl), keyId, secretKey, client),
+        keyId, secretKey);
   }
 
-  public AlpacaAPI(String baseTradingUrl, String baseDataUrl, String keyId, String secretKey) {
-    this(baseTradingUrl, baseDataUrl, keyId, secretKey, null);
+  public AlpacaAPI(String baseTradingUrl, String baseDataUrl, String baseStreamingUrl,
+                   String keyId, String secretKey) {
+    this(baseTradingUrl, baseDataUrl, baseStreamingUrl, keyId, secretKey, null);
   }
 
   public AlpacaAPI(Type type, String keyId, String secretKey) {
-    this(getBaseUrl(type), APCA_API_DATA_URL, keyId, secretKey);
+    this(getBaseUrl(type) + APCA_API_VERSION,
+      APCA_API_DATA_URL,
+      getBaseUrl(type),
+      keyId, secretKey);
   }
 
   @Override

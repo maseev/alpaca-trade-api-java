@@ -1,7 +1,7 @@
 package io.github.maseev.alpaca.v1.clock;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
-import static java.time.LocalDateTime.of;
+import static java.time.OffsetDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,6 +17,8 @@ import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.clock.entity.Clock;
 import io.github.maseev.alpaca.v1.clock.entity.ImmutableClock;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
 
 public class ClockAPITest extends APITest {
@@ -25,10 +27,10 @@ public class ClockAPITest extends APITest {
   public void gettingClockMustReturnTheExpectedClock() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
-    LocalDateTime timestamp =
-      of(2019, 01, 02, 12, 30, 45);
+    OffsetDateTime timestamp = of(LocalDateTime.now(), ZoneOffset.UTC);
     Clock expectedClock =
       ImmutableClock.builder()
         .timestamp(timestamp)

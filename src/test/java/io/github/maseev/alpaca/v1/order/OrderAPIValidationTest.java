@@ -15,7 +15,7 @@ public class OrderAPIValidationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     assertThrows(IllegalArgumentException.class, () -> api.orders().get("").await());
   }
@@ -25,7 +25,7 @@ public class OrderAPIValidationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 10;
@@ -42,7 +42,7 @@ public class OrderAPIValidationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = -1;
@@ -59,7 +59,7 @@ public class OrderAPIValidationTest {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, validKeyId, validSecretKey);
+    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 501;

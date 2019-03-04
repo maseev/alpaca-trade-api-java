@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.v1.order.entity;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Objects.nonNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -50,6 +51,12 @@ public interface OrderRequest {
       throw new IllegalStateException(
         format("'timeInForce' can only be %s; timeInForce: %s",
           asList(TimeInForce.DAY, TimeInForce.GTC, TimeInForce.OPG), timeInForce()));
+    }
+
+    if (type() == Type.MARKET && (nonNull(limitPrice()) || nonNull(stopPrice()))) {
+      throw new IllegalStateException(
+        format("market orders require no stop or limit price; limitPrice: %s, stopPrice: %s",
+          limitPrice(), stopPrice()));
     }
 
     if ((type() == Type.LIMIT || type() == Type.STOP_LIMIT)

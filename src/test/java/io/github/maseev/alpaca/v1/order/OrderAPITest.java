@@ -36,7 +36,8 @@ public class OrderAPITest extends APITest {
   public void gettingFilteredListOfOrdersMustReturnExpectedList() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 10;
@@ -63,6 +64,7 @@ public class OrderAPITest extends APITest {
         .qty(1)
         .filledQty(2)
         .type(Order.Type.MARKET)
+        .orderType(Order.Type.MARKET)
         .side(Order.Side.BUY)
         .timeInForce(Order.TimeInForce.DAY)
         .limitPrice(BigDecimal.valueOf(3))
@@ -82,8 +84,8 @@ public class OrderAPITest extends APITest {
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("status", status.toString())
           .withQueryStringParameter("limit", Integer.toString(limit))
-          .withQueryStringParameter("after", after.toString())
-          .withQueryStringParameter("until", until.toString())
+          .withQueryStringParameter("after", OrderAPI.PATTERN.format(after))
+          .withQueryStringParameter("until", OrderAPI.PATTERN.format(until))
           .withQueryStringParameter("direction", direction.toString()))
       .respond(
         response()
@@ -102,7 +104,8 @@ public class OrderAPITest extends APITest {
   public void cancellingNoLongerCancelableOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -116,7 +119,8 @@ public class OrderAPITest extends APITest {
   public void cancellingNonexistentOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -130,11 +134,12 @@ public class OrderAPITest extends APITest {
   public void cancellingValidOrderMustCancelIt() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
-    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.OK,
+    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.NO_CONTENT,
       "The order has been cancelled");
 
     api.orders().cancel(orderId).await();
@@ -144,7 +149,8 @@ public class OrderAPITest extends APITest {
   public void gettingNonExistentOrderMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -167,7 +173,8 @@ public class OrderAPITest extends APITest {
   public void gettingExistentOrderMustReturnExpectedOrder() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String orderId = UUID.randomUUID().toString();
 
@@ -189,6 +196,7 @@ public class OrderAPITest extends APITest {
       .qty(1)
       .filledQty(2)
       .type(Order.Type.MARKET)
+      .orderType(Order.Type.MARKET)
       .side(Order.Side.BUY)
       .timeInForce(Order.TimeInForce.DAY)
       .limitPrice(BigDecimal.valueOf(3))
@@ -218,7 +226,8 @@ public class OrderAPITest extends APITest {
   public void gettingNonExistentOrderByClientIdMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String clientOrderId = UUID.randomUUID().toString();
 
@@ -243,7 +252,8 @@ public class OrderAPITest extends APITest {
   public void gettingExistentOrderByClientIdMustReturnExpectedOrder() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String clientOrderId = UUID.randomUUID().toString();
 
@@ -266,6 +276,7 @@ public class OrderAPITest extends APITest {
         .qty(1)
         .filledQty(2)
         .type(Order.Type.MARKET)
+        .orderType(Order.Type.MARKET)
         .side(Order.Side.BUY)
         .timeInForce(Order.TimeInForce.DAY)
         .limitPrice(BigDecimal.valueOf(3))
@@ -296,7 +307,8 @@ public class OrderAPITest extends APITest {
   public void placingNewOrderRequestMustReturnOrderWithExpectedParameters() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     OrderRequest orderRequest =
       ImmutableOrderRequest.builder()
@@ -329,6 +341,7 @@ public class OrderAPITest extends APITest {
         .qty(orderRequest.qty())
         .filledQty(orderRequest.qty())
         .type(orderRequest.type())
+        .orderType(orderRequest.type())
         .side(orderRequest.side())
         .timeInForce(orderRequest.timeInForce())
         .limitPrice(orderRequest.limitPrice())

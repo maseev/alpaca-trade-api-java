@@ -46,6 +46,7 @@ public class StreamUpdateTest {
       .qty(1)
       .filledQty(2)
       .type(Order.Type.MARKET)
+      .orderType(Order.Type.MARKET)
       .side(Order.Side.BUY)
       .timeInForce(Order.TimeInForce.DAY)
       .limitPrice(valueOf(3))
@@ -91,6 +92,7 @@ public class StreamUpdateTest {
         .tradingBlocked(false)
         .transfersBlocked(false)
         .accountBlocked(false)
+        .tradeSuspendedByUser(false)
         .createdAt(of(2008, Month.JULY, 9, 12, 30, 00))
         .build();
 

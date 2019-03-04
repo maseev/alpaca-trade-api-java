@@ -85,7 +85,7 @@ class StreamUpdateListener implements WebSocketListener {
   }
 
   @Override
-  public void onTextFrame(String payload, boolean finalFragment, int rsv) {
+  public void onBinaryFrame(byte[] payload, boolean finalFragment, int rsv) {
     updatePipeline();
 
     try {

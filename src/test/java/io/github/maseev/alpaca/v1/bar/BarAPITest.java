@@ -37,7 +37,8 @@ public class BarAPITest extends APITest {
   public void gettingBarsWithinTimeInclusiveTimeframeMustReturnExpectedBars() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     Bar expectedBar =
       ImmutableBar.builder()
@@ -91,7 +92,8 @@ public class BarAPITest extends APITest {
   public void gettingBarsWithinTimeExclusiveTimeframeMustReturnExpectedBars() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     Bar expectedBar =
       ImmutableBar.builder()
@@ -145,7 +147,8 @@ public class BarAPITest extends APITest {
   public void gettingNonExistentSymbolBarsMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String symbol = "ZZZZ";
     BarAPI.Timeframe timeframe = BarAPI.Timeframe.DAY;

@@ -20,7 +20,6 @@ public class MockServerInitializer implements BeforeAllCallback, ExtensionContex
 
   @Override
   public void close() throws Throwable {
-    System.out.println("BeforeCallback::afterAll");
     APITest.tearDown();
   }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.maseev.alpaca.http.json.util.DateFormat;
 import io.github.maseev.alpaca.v1.account.entity.Account;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,16 +19,16 @@ public interface AccountUpdate extends Event {
   String id();
 
   @JsonProperty("created_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
   LocalDateTime createdAt();
 
   @JsonProperty("updated_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
   LocalDateTime updatedAt();
 
   @Nullable
   @JsonProperty("deleted_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
   LocalDateTime deletedAt();
 
   Account.Status status();

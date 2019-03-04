@@ -17,6 +17,10 @@ public final class JsonUtil {
     return JsonMapper.getMapper().readValue(json, clazz);
   }
 
+  public static <T> T fromJson(byte[] json, Class<T> clazz) throws IOException {
+    return JsonMapper.getMapper().readValue(json, clazz);
+  }
+
   public static <T> T fromJson(String json, TypeReference<T> typeReference) throws IOException {
     return JsonMapper.getMapper().readValue(json, typeReference);
   }

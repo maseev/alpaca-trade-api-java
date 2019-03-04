@@ -29,7 +29,8 @@ public class CalendarAPITest extends APITest {
   public void specifyingEndDateBeforeStartDateMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     LocalDate start = LocalDate.now();
     LocalDate end = start.minusDays(1);
@@ -41,7 +42,8 @@ public class CalendarAPITest extends APITest {
   public void gettingListOfCalendarsWithinCorrectTimelineMustReturnExpectedCalendars() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     LocalDate start = LocalDate.now();
     LocalDate end = start.plusDays(10);

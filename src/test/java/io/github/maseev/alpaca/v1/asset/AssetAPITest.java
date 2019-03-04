@@ -31,7 +31,8 @@ public class AssetAPITest extends APITest {
   public void gettingListOfAssetsMustReturnExpectedAssets() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     AssetClass assetClass = AssetClass.US_EQUITY;
     Asset.Status status = Asset.Status.ACTIVE;
@@ -72,7 +73,8 @@ public class AssetAPITest extends APITest {
   public void gettingNonExistentAssetMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String symbol = "AAPL";
 
@@ -97,7 +99,8 @@ public class AssetAPITest extends APITest {
   public void gettingExistentAssetMustReturnExpectedAsset() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     Asset expectedAsset =
       ImmutableAsset.builder()

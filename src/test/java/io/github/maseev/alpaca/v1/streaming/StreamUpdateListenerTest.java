@@ -90,7 +90,7 @@ public class StreamUpdateListenerTest {
           .build())
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(authorizationResponse), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(authorizationResponse).getBytes(), false, 0);
 
     assertThat(exception.get().getClass(), is(equalTo(AuthorizationException.class)));
   }
@@ -123,7 +123,7 @@ public class StreamUpdateListenerTest {
           .build())
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(authorizationResponse), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(authorizationResponse).getBytes(), false, 0);
 
     SubscriptionMessage subscribtionMessage =
       ImmutableSubscriptionMessage.builder()
@@ -151,7 +151,7 @@ public class StreamUpdateListenerTest {
           .build())
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(subscribtionResponse), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(subscribtionResponse).getBytes(), false, 0);
 
     assertThat(exception.get().getClass(), is(equalTo(SubscriptionException.class)));
   }
@@ -184,7 +184,7 @@ public class StreamUpdateListenerTest {
           .build())
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(authorizationResponse), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(authorizationResponse).getBytes(), false, 0);
 
     SubscriptionMessage subscribtionMessage =
       ImmutableSubscriptionMessage.builder()
@@ -202,7 +202,7 @@ public class StreamUpdateListenerTest {
           .build())
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(subscribtionResponse), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(subscribtionResponse).getBytes(), false, 0);
 
     AtomicReference<AccountUpdate> accountUpdateEvent = new AtomicReference<>();
 
@@ -232,7 +232,7 @@ public class StreamUpdateListenerTest {
         .data(accountUpdate)
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(streamUpdate), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(streamUpdate).getBytes(), false, 0);
 
     AtomicReference<TradeUpdate> tradeUpdateEvent = new AtomicReference<>();
 
@@ -259,6 +259,7 @@ public class StreamUpdateListenerTest {
       .qty(1)
       .filledQty(2)
       .type(Order.Type.MARKET)
+      .orderType(Order.Type.MARKET)
       .side(Order.Side.BUY)
       .timeInForce(Order.TimeInForce.DAY)
       .limitPrice(valueOf(3))
@@ -282,7 +283,7 @@ public class StreamUpdateListenerTest {
         .data(tradeUpdate)
         .build();
 
-    streamUpdateListener.onTextFrame(toJson(tradeStreamUpdate), false, 0);
+    streamUpdateListener.onBinaryFrame(toJson(tradeStreamUpdate).getBytes(), false, 0);
 
     assertThat(accountUpdateEvent.get(), is(equalTo(accountUpdate)));
     assertThat(tradeUpdateEvent.get(), is(equalTo(tradeUpdate)));

@@ -32,7 +32,8 @@ public class PositionAPITest extends APITest {
   public void gettingOpenPositionsMustReturnExpectedListOfPositions() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     Position expectedPosition =
       ImmutablePosition.builder()
@@ -78,7 +79,8 @@ public class PositionAPITest extends APITest {
   public void gettingNonExistentPositionMustThrowException() throws APIException {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     String symbol = UUID.randomUUID().toString();
 
@@ -102,7 +104,8 @@ public class PositionAPITest extends APITest {
   public void gettingExistentPositionMustReturnExpectedPosition() throws Exception {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
 
     Position expectedPosition =
       ImmutablePosition.builder()

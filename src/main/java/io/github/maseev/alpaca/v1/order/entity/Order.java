@@ -1,5 +1,7 @@
 package io.github.maseev.alpaca.v1.order.entity;
 
+import static io.github.maseev.alpaca.http.json.util.DateFormat.DATE_TIME_FORMAT;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -74,36 +76,37 @@ public interface Order {
   String clientOrderId();
 
   @JsonProperty("created_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime createdAt();
 
   @Nullable
   @JsonProperty("updated_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime updatedAt();
 
   @Nullable
   @JsonProperty("submitted_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime submittedAt();
 
   @Nullable
   @JsonProperty("filled_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime filledAt();
 
   @Nullable
   @JsonProperty("expired_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime expiredAt();
 
   @Nullable
   @JsonProperty("canceled_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime canceledAt();
 
+  @Nullable
   @JsonProperty("failed_at")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonFormat(pattern = DATE_TIME_FORMAT)
   LocalDateTime failedAt();
 
   @JsonProperty("asset_id")
@@ -121,6 +124,9 @@ public interface Order {
 
   Type type();
 
+  @JsonProperty("order_type")
+  Type orderType();
+
   Side side();
 
   @JsonProperty("time_in_force")
@@ -134,6 +140,7 @@ public interface Order {
   @JsonProperty("stop_price")
   BigDecimal stopPrice();
 
+  @Nullable
   @JsonProperty("filled_avg_price")
   BigDecimal filledAvgPrice();
 

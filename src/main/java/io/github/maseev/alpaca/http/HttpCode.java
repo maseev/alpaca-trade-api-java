@@ -12,6 +12,7 @@ import org.asynchttpclient.Response;
 public enum HttpCode {
 
   OK(200),
+  NO_CONTENT(204),
   UNAUTHENTICATED(401, AuthenticationException::new),
   TOO_MANY_REQUESTS(429, RateLimitException::new),
   UNPROCESSABLE(422, UnprocessableException::new),

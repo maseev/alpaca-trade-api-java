@@ -35,7 +35,8 @@ public class AccountAPITest extends APITest {
   public void gettingAccountWithIncorrectCredentialsMustThrowException() throws APIException {
     String nonValidKeyId = "non-valid";
     String nonValidSecretKey = "non-valid";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
 
     mockServer()
       .when(
@@ -57,7 +58,8 @@ public class AccountAPITest extends APITest {
   public void gettingAccountAsyncWithIncorrectCredentialsMustThrowException() throws Exception {
     String nonValidKeyId = "non-valid";
     String nonValidSecretKey = "non-valid";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
 
     mockServer()
       .when(
@@ -97,7 +99,8 @@ public class AccountAPITest extends APITest {
   public void gettingAccountDetailsMustReturnCorrectAccountObject() throws Exception {
     String keyId = "valid key";
     String secretKey = "valid key";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), keyId, secretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), keyId, secretKey);
 
     Account expectedAccount =
       ImmutableAccount.builder()
@@ -113,6 +116,7 @@ public class AccountAPITest extends APITest {
         .tradingBlocked(false)
         .transfersBlocked(false)
         .accountBlocked(false)
+        .tradeSuspendedByUser(false)
         .createdAt(of(2007, Month.DECEMBER, 1, 10, 00, 10))
         .build();
 
@@ -138,7 +142,8 @@ public class AccountAPITest extends APITest {
   public void gettingAccountDetailsAsyncMustReturnCorrectAccountObject() throws Exception {
     String keyId = "valid key";
     String secretKey = "valid key";
-    AlpacaAPI api = new AlpacaAPI(getBaseURL(), getBaseURL(), keyId, secretKey);
+    AlpacaAPI api =
+      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), keyId, secretKey);
 
     Account expectedAccount =
       ImmutableAccount.builder()
@@ -154,6 +159,7 @@ public class AccountAPITest extends APITest {
         .tradingBlocked(false)
         .transfersBlocked(false)
         .accountBlocked(false)
+        .tradeSuspendedByUser(false)
         .createdAt(of(2007, Month.DECEMBER, 1, 10, 00, 10))
         .build();
 
