@@ -49,19 +49,27 @@ import java.time.Month;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import org.asynchttpclient.ws.WebSocket;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class StreamUpdateListenerTest {
 
+  private static final String keyId = "keyId";
+  private static final String secretKey = "secretKey";
+
+  private SubscriptionManager subscriptionManager;
+  private StreamUpdateListener streamUpdateListener;
+  private WebSocket websocket;
+
+  @BeforeEach
+  public void before() {
+    subscriptionManager = new SubscriptionManager();
+    streamUpdateListener = new StreamUpdateListener(keyId, secretKey, subscriptionManager);
+    websocket = mock(WebSocket.class);
+  }
+
   @Test
   public void failedAuthorizationMustThrowException() throws JsonProcessingException {
-    String keyId = "keyId";
-    String secretKey = "secretKey";
-    SubscriptionManager subscriptionManager = new SubscriptionManager();
-    StreamUpdateListener streamUpdateListener =
-      new StreamUpdateListener(keyId, secretKey, subscriptionManager);
-    WebSocket websocket = mock(WebSocket.class);
-
     streamUpdateListener.onOpen(websocket);
 
     AuthenticationMessage authenticationMessage =
@@ -97,13 +105,6 @@ public class StreamUpdateListenerTest {
 
   @Test
   public void unableToSubscribeToAllStreamsMustThrowException() throws JsonProcessingException {
-    String keyId = "keyId";
-    String secretKey = "secretKey";
-    SubscriptionManager subscriptionManager = new SubscriptionManager();
-    StreamUpdateListener streamUpdateListener =
-      new StreamUpdateListener(keyId, secretKey, subscriptionManager);
-    WebSocket websocket = mock(WebSocket.class);
-
     streamUpdateListener.onOpen(websocket);
 
     AuthenticationMessage authenticationMessage =
@@ -158,13 +159,6 @@ public class StreamUpdateListenerTest {
 
   @Test
   public void passingMessagePipelineMustSuccessfullyProcessStreamUpdates() throws JsonProcessingException {
-    String keyId = "keyId";
-    String secretKey = "secretKey";
-    SubscriptionManager subscriptionManager = new SubscriptionManager();
-    StreamUpdateListener streamUpdateListener =
-      new StreamUpdateListener(keyId, secretKey, subscriptionManager);
-    WebSocket websocket = mock(WebSocket.class);
-
     streamUpdateListener.onOpen(websocket);
 
     AuthenticationMessage authenticationMessage =
@@ -291,13 +285,6 @@ public class StreamUpdateListenerTest {
 
   @Test
   public void receivingPingPongFramesMustRespondRespectively() throws JsonProcessingException {
-    String keyId = "keyId";
-    String secretKey = "secretKey";
-    SubscriptionManager subscriptionManager = new SubscriptionManager();
-    StreamUpdateListener streamUpdateListener =
-      new StreamUpdateListener(keyId, secretKey, subscriptionManager);
-    WebSocket websocket = mock(WebSocket.class);
-
     streamUpdateListener.onOpen(websocket);
 
     AuthenticationMessage authenticationMessage =
@@ -323,13 +310,6 @@ public class StreamUpdateListenerTest {
 
   @Test
   public void closingWebSocketConnectionMustEmitConnectionCloseEvent() throws JsonProcessingException {
-    String keyId = "keyId";
-    String secretKey = "secretKey";
-    SubscriptionManager subscriptionManager = new SubscriptionManager();
-    StreamUpdateListener streamUpdateListener =
-      new StreamUpdateListener(keyId, secretKey, subscriptionManager);
-    WebSocket websocket = mock(WebSocket.class);
-
     streamUpdateListener.onOpen(websocket);
 
     AuthenticationMessage authenticationMessage =

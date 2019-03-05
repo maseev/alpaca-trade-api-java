@@ -14,7 +14,6 @@ import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.calendar.entity.Calendar;
 import io.github.maseev.alpaca.v1.calendar.entity.ImmutableCalendar;
 import java.time.LocalDate;
@@ -27,11 +26,6 @@ public class CalendarAPITest extends APITest {
 
   @Test
   public void specifyingEndDateBeforeStartDateMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     LocalDate start = LocalDate.now();
     LocalDate end = start.minusDays(1);
 
@@ -40,11 +34,6 @@ public class CalendarAPITest extends APITest {
 
   @Test
   public void gettingListOfCalendarsWithinCorrectTimelineMustReturnExpectedCalendars() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     LocalDate start = LocalDate.now();
     LocalDate end = start.plusDays(10);
 
@@ -61,8 +50,8 @@ public class CalendarAPITest extends APITest {
       .when(
         request(CalendarAPI.ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("start", start.toString())
           .withQueryStringParameter("end", end.toString())

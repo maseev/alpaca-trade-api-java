@@ -13,7 +13,6 @@ import io.github.maseev.alpaca.APITest;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.clock.entity.Clock;
 import io.github.maseev.alpaca.v1.clock.entity.ImmutableClock;
 import java.time.LocalDateTime;
@@ -25,11 +24,6 @@ public class ClockAPITest extends APITest {
 
   @Test
   public void gettingClockMustReturnTheExpectedClock() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     OffsetDateTime timestamp = of(LocalDateTime.now(), ZoneOffset.UTC);
     Clock expectedClock =
       ImmutableClock.builder()
@@ -43,8 +37,8 @@ public class ClockAPITest extends APITest {
       .when(
         request(ClockAPI.ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(

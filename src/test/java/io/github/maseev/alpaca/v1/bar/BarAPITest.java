@@ -19,7 +19,6 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.bar.entity.Bar;
 import io.github.maseev.alpaca.v1.bar.entity.BarMimic;
 import io.github.maseev.alpaca.v1.bar.entity.ImmutableBar;
@@ -35,11 +34,6 @@ public class BarAPITest extends APITest {
 
   @Test
   public void gettingBarsWithinTimeInclusiveTimeframeMustReturnExpectedBars() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     Bar expectedBar =
       ImmutableBar.builder()
         .time(Instant.ofEpochSecond(1544129220))
@@ -65,8 +59,8 @@ public class BarAPITest extends APITest {
       .when(
         request(BarAPI.ENDPOINT + '/' + timeframe)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
@@ -90,11 +84,6 @@ public class BarAPITest extends APITest {
 
   @Test
   public void gettingBarsWithinTimeExclusiveTimeframeMustReturnExpectedBars() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     Bar expectedBar =
       ImmutableBar.builder()
         .time(Instant.ofEpochSecond(1544129220))
@@ -120,8 +109,8 @@ public class BarAPITest extends APITest {
       .when(
         request(BarAPI.ENDPOINT + '/' + timeframe)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
@@ -145,11 +134,6 @@ public class BarAPITest extends APITest {
 
   @Test
   public void gettingNonExistentSymbolBarsMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String symbol = "ZZZZ";
     BarAPI.Timeframe timeframe = BarAPI.Timeframe.DAY;
     OffsetDateTime start =
@@ -162,8 +146,8 @@ public class BarAPITest extends APITest {
       .when(
         request(BarAPI.ENDPOINT + '/' + timeframe)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))

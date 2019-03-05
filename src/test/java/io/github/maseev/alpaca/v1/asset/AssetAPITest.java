@@ -15,7 +15,6 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.asset.entity.Asset;
 import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
 import io.github.maseev.alpaca.v1.asset.entity.ImmutableAsset;
@@ -29,11 +28,6 @@ public class AssetAPITest extends APITest {
 
   @Test
   public void gettingListOfAssetsMustReturnExpectedAssets() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     AssetClass assetClass = AssetClass.US_EQUITY;
     Asset.Status status = Asset.Status.ACTIVE;
     Asset expectedAsset =
@@ -52,8 +46,8 @@ public class AssetAPITest extends APITest {
       .when(
         request(AssetAPI.ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("status", status.toString())
           .withQueryStringParameter("asset_class", assetClass.toString())
@@ -71,19 +65,14 @@ public class AssetAPITest extends APITest {
 
   @Test
   public void gettingNonExistentAssetMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String symbol = "AAPL";
 
     mockServer()
       .when(
         request(AssetAPI.ENDPOINT + '/' + symbol)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
@@ -97,11 +86,6 @@ public class AssetAPITest extends APITest {
 
   @Test
   public void gettingExistentAssetMustReturnExpectedAsset() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     Asset expectedAsset =
       ImmutableAsset.builder()
         .id(UUID.randomUUID().toString())
@@ -116,8 +100,8 @@ public class AssetAPITest extends APITest {
       .when(
         request(AssetAPI.ENDPOINT + '/' + expectedAsset.symbol())
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(

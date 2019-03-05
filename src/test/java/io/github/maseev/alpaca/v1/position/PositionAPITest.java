@@ -17,7 +17,6 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
 import io.github.maseev.alpaca.v1.entity.Exchange;
 import io.github.maseev.alpaca.v1.position.entity.ImmutablePosition;
@@ -30,11 +29,6 @@ public class PositionAPITest extends APITest {
 
   @Test
   public void gettingOpenPositionsMustReturnExpectedListOfPositions() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     Position expectedPosition =
       ImmutablePosition.builder()
         .assetId(UUID.randomUUID().toString())
@@ -61,8 +55,8 @@ public class PositionAPITest extends APITest {
       .when(
         request(PositionAPI.ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
@@ -77,19 +71,14 @@ public class PositionAPITest extends APITest {
 
   @Test
   public void gettingNonExistentPositionMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String symbol = UUID.randomUUID().toString();
 
     mockServer()
       .when(
         request(PositionAPI.ENDPOINT + '/' + symbol)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(
@@ -102,11 +91,6 @@ public class PositionAPITest extends APITest {
 
   @Test
   public void gettingExistentPositionMustReturnExpectedPosition() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     Position expectedPosition =
       ImmutablePosition.builder()
         .assetId(UUID.randomUUID().toString())
@@ -131,8 +115,8 @@ public class PositionAPITest extends APITest {
       .when(
         request(PositionAPI.ENDPOINT + '/' + expectedPosition.symbol())
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
       )
       .respond(

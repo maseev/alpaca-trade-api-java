@@ -6,27 +6,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import io.github.maseev.alpaca.v1.AlpacaAPI;
 import java.time.LocalDateTime;
 import java.time.Month;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class OrderAPIValidationTest {
 
-  @Test
-  public void passingEmptyOrderIdMustThrowException() throws Exception {
+  private AlpacaAPI api;
+
+  @BeforeEach
+  public void before() {
     String validKeyId = "valid key";
     String validSecretKey = "valid secret";
     String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
 
+    api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
+  }
+
+  @Test
+  public void passingEmptyOrderIdMustThrowException() throws Exception {
     assertThrows(IllegalArgumentException.class, () -> api.orders().get("").await());
   }
 
   @Test
   public void gettingListOfOrdersWithIncorrectDatesMustThrowException() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
-
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 10;
     LocalDateTime after = of(2007, Month.DECEMBER, 1, 10, 00, 10);
@@ -39,11 +41,6 @@ public class OrderAPIValidationTest {
 
   @Test
   public void gettingListOfOrdersWithNegativeLimitMustThrowException() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
-
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = -1;
     LocalDateTime after = of(2007, Month.DECEMBER, 1, 10, 00, 10);
@@ -56,11 +53,6 @@ public class OrderAPIValidationTest {
 
   @Test
   public void gettingListOfOrdersWithTooBigLimitMustThrowException() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    String baseUrl = "localhost";
-    AlpacaAPI api = new AlpacaAPI(baseUrl, baseUrl, baseUrl, validKeyId, validSecretKey);
-
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 501;
     LocalDateTime after = of(2007, Month.DECEMBER, 1, 10, 00, 10);

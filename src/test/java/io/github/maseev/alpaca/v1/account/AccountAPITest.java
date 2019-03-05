@@ -19,7 +19,6 @@ import io.github.maseev.alpaca.http.ResponseHandler;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.AuthenticationException;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.account.entity.Account;
 import io.github.maseev.alpaca.v1.account.entity.ImmutableAccount;
 import java.time.Month;
@@ -33,17 +32,12 @@ public class AccountAPITest extends APITest {
 
   @Test
   public void gettingAccountWithIncorrectCredentialsMustThrowException() throws APIException {
-    String nonValidKeyId = "non-valid";
-    String nonValidSecretKey = "non-valid";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
-
     mockServer()
       .when(
         request(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, nonValidKeyId)
-          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
       .respond(
         response()
@@ -56,17 +50,12 @@ public class AccountAPITest extends APITest {
 
   @Test
   public void gettingAccountAsyncWithIncorrectCredentialsMustThrowException() throws Exception {
-    String nonValidKeyId = "non-valid";
-    String nonValidSecretKey = "non-valid";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), nonValidKeyId, nonValidSecretKey);
-
     mockServer()
       .when(
         request(ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, nonValidKeyId)
-          .withHeader(APCA_API_SECRET_KEY, nonValidSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
       .respond(
         response()
@@ -97,11 +86,6 @@ public class AccountAPITest extends APITest {
 
   @Test
   public void gettingAccountDetailsMustReturnCorrectAccountObject() throws Exception {
-    String keyId = "valid key";
-    String secretKey = "valid key";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), keyId, secretKey);
-
     Account expectedAccount =
       ImmutableAccount.builder()
         .id(UUID.randomUUID().toString())
@@ -140,11 +124,6 @@ public class AccountAPITest extends APITest {
 
   @Test
   public void gettingAccountDetailsAsyncMustReturnCorrectAccountObject() throws Exception {
-    String keyId = "valid key";
-    String secretKey = "valid key";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), keyId, secretKey);
-
     Account expectedAccount =
       ImmutableAccount.builder()
         .id(UUID.randomUUID().toString())

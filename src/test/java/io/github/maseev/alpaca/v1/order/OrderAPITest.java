@@ -18,7 +18,6 @@ import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.v1.AlpacaAPI;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrderRequest;
 import io.github.maseev.alpaca.v1.order.entity.Order;
@@ -34,11 +33,6 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void gettingFilteredListOfOrdersMustReturnExpectedList() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     OrderAPI.Status status = OrderAPI.Status.OPEN;
     int limit = 10;
     LocalDateTime after = of(2007, Month.DECEMBER, 1, 10, 00, 10);
@@ -79,8 +73,8 @@ public class OrderAPITest extends APITest {
       .when(
         request(OrderAPI.ENDPOINT)
           .withMethod(HttpClient.HttpMethod.GET.toString())
-          .withHeader(APCA_API_KEY_ID, validKeyId)
-          .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("status", status.toString())
           .withQueryStringParameter("limit", Integer.toString(limit))
@@ -102,14 +96,9 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void cancellingNoLongerCancelableOrderMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String orderId = UUID.randomUUID().toString();
 
-    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.UNPROCESSABLE,
+    setUpMockServer(orderId, HttpCode.UNPROCESSABLE,
       "The order status is not cancelable");
 
     assertThrows(UnprocessableException.class, () -> api.orders().cancel(orderId).await());
@@ -117,14 +106,9 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void cancellingNonexistentOrderMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String orderId = UUID.randomUUID().toString();
 
-    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.NOT_FOUND,
+    setUpMockServer(orderId, HttpCode.NOT_FOUND,
       "The order doesn't exist");
 
     assertThrows(EntityNotFoundException.class, () -> api.orders().cancel(orderId).await());
@@ -132,14 +116,9 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void cancellingValidOrderMustCancelIt() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String orderId = UUID.randomUUID().toString();
 
-    setUpMockServer(orderId, validKeyId, validSecretKey, HttpCode.NO_CONTENT,
+    setUpMockServer(orderId, HttpCode.NO_CONTENT,
       "The order has been cancelled");
 
     api.orders().cancel(orderId).await();
@@ -147,18 +126,13 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void gettingNonExistentOrderMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String orderId = UUID.randomUUID().toString();
 
     mockServer().when(
       request(OrderAPI.ENDPOINT + '/' + orderId)
         .withMethod(HttpClient.HttpMethod.GET.toString())
-        .withHeader(APCA_API_KEY_ID, validKeyId)
-        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
         .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
     ).respond(
       response()
@@ -171,11 +145,6 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void gettingExistentOrderMustReturnExpectedOrder() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String orderId = UUID.randomUUID().toString();
 
     LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
@@ -208,8 +177,8 @@ public class OrderAPITest extends APITest {
     mockServer().when(
       request(OrderAPI.ENDPOINT + '/' + orderId)
         .withMethod(HttpClient.HttpMethod.GET.toString())
-        .withHeader(APCA_API_KEY_ID, validKeyId)
-        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
         .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
     ).respond(
       response()
@@ -224,18 +193,13 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void gettingNonExistentOrderByClientIdMustThrowException() throws APIException {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String clientOrderId = UUID.randomUUID().toString();
 
     mockServer().when(
       request(OrderAPI.GET_BY_CLIENT_ORDER_ID_ENDPOINT)
         .withMethod(HttpClient.HttpMethod.GET.toString())
-        .withHeader(APCA_API_KEY_ID, validKeyId)
-        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
         .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
         .withQueryStringParameter("client_order_id", clientOrderId)
     ).respond(
@@ -250,11 +214,6 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void gettingExistentOrderByClientIdMustReturnExpectedOrder() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     String clientOrderId = UUID.randomUUID().toString();
 
     LocalDateTime orderDate = of(2008, Month.JULY, 9, 12, 30, 00);
@@ -288,8 +247,8 @@ public class OrderAPITest extends APITest {
     mockServer().when(
       request(OrderAPI.GET_BY_CLIENT_ORDER_ID_ENDPOINT)
         .withMethod(HttpClient.HttpMethod.GET.toString())
-        .withHeader(APCA_API_KEY_ID, validKeyId)
-        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
         .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
         .withQueryStringParameter("client_order_id", clientOrderId)
     ).respond(
@@ -305,11 +264,6 @@ public class OrderAPITest extends APITest {
 
   @Test
   public void placingNewOrderRequestMustReturnOrderWithExpectedParameters() throws Exception {
-    String validKeyId = "valid key";
-    String validSecretKey = "valid secret";
-    AlpacaAPI api =
-      new AlpacaAPI(getBaseURL(), getBaseURL(), getBaseURL(), validKeyId, validSecretKey);
-
     OrderRequest orderRequest =
       ImmutableOrderRequest.builder()
         .symbol("AAPL")
@@ -353,8 +307,8 @@ public class OrderAPITest extends APITest {
     mockServer().when(
       request(OrderAPI.ENDPOINT)
         .withMethod(HttpClient.HttpMethod.POST.toString())
-        .withHeader(APCA_API_KEY_ID, validKeyId)
-        .withHeader(APCA_API_SECRET_KEY, validSecretKey)
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
         .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
         .withBody(toJson(orderRequest))
     ).respond(
@@ -369,15 +323,13 @@ public class OrderAPITest extends APITest {
   }
 
   private void setUpMockServer(String expectedOrderId,
-                               String expectedKey,
-                               String expectedSecretKey,
                                HttpCode expectedStatusCode,
                                String expectedMessage) {
     mockServer().when(
       request(OrderAPI.ENDPOINT + '/' + expectedOrderId)
         .withMethod(HttpClient.HttpMethod.DELETE.toString())
-        .withHeader(APCA_API_KEY_ID, expectedKey)
-        .withHeader(APCA_API_SECRET_KEY, expectedSecretKey)
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
     ).respond(
       response()
         .withStatusCode(expectedStatusCode.getCode())
