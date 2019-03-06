@@ -19,16 +19,16 @@ public interface AccountUpdate extends Event {
   String id();
 
   @JsonProperty("created_at")
-  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
+  @JsonFormat(pattern = DateFormat.DATE_TIME_FORMAT)
   LocalDateTime createdAt();
 
   @JsonProperty("updated_at")
-  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
+  @JsonFormat(pattern = DateFormat.DATE_TIME_FORMAT)
   LocalDateTime updatedAt();
 
   @Nullable
   @JsonProperty("deleted_at")
-  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
+  @JsonFormat(pattern = DateFormat.DATE_TIME_FORMAT)
   LocalDateTime deletedAt();
 
   Account.Status status();

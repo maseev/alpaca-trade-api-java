@@ -265,7 +265,7 @@ public class StreamUpdateListenerTest {
     TradeUpdate tradeUpdate =
       ImmutableTradeUpdate.builder()
         .event(TradeUpdate.EventType.NEW)
-        .qty(100)
+        .qty(100L)
         .price(valueOf(11.23))
         .timestamp(date)
         .order(order)

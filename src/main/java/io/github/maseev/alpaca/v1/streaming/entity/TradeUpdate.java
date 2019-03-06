@@ -9,6 +9,7 @@ import io.github.maseev.alpaca.v1.order.entity.Order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import org.immutables.value.Value;
+import org.jetbrains.annotations.Nullable;
 
 @Value.Immutable
 @JsonSerialize(as = ImmutableTradeUpdate.class)
@@ -38,11 +39,14 @@ public interface TradeUpdate extends Event {
 
   EventType event();
 
-  long qty();
+  @Nullable
+  Long qty();
 
+  @Nullable
   BigDecimal price();
 
-  @JsonFormat(pattern = DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT)
+  @Nullable
+  @JsonFormat(pattern = DateFormat.DATE_TIME_FORMAT)
   LocalDateTime timestamp();
 
   Order order();
