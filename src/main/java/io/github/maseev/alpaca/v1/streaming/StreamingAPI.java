@@ -1,10 +1,14 @@
 package io.github.maseev.alpaca.v1.streaming;
 
 import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.v1.streaming.entity.AccountUpdate;
+import io.github.maseev.alpaca.v1.streaming.entity.ConnectionClose;
+import io.github.maseev.alpaca.v1.streaming.entity.ConnectionCrash;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableAccountUpdate;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableConnectionClose;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableConnectionCrash;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableTradeUpdate;
+import io.github.maseev.alpaca.v1.streaming.entity.TradeUpdate;
 import io.github.maseev.alpaca.v1.streaming.listener.AccountUpdateListener;
 import io.github.maseev.alpaca.v1.streaming.listener.ConnectionCloseListener;
 import io.github.maseev.alpaca.v1.streaming.listener.ConnectionCrashListener;
@@ -33,6 +37,10 @@ public class StreamingAPI implements Closeable {
     subscriptionManager = new SubscriptionManager();
   }
 
+  /**
+   * Establishes a connection to the Alpaca's streaming API and subscribes to the {@link
+   * Stream#TRADE_UPDATES} and {@link Stream#ACCOUNT_UPDATES} streams
+   */
   public synchronized void connect() throws ExecutionException, InterruptedException, IOException {
     close();
 
@@ -51,18 +59,42 @@ public class StreamingAPI implements Closeable {
     }
   }
 
+  /**
+   * Subscribes to {@link AccountUpdate} events
+   *
+   * @param listener an instance of {@link AccountUpdateListener} which listens to
+   *                 {@link AccountUpdate} events
+   */
   public void subscribe(AccountUpdateListener listener) {
     subscriptionManager.subscribe(listener, ImmutableAccountUpdate.class);
   }
 
+  /**
+   * Subscribes to {@link TradeUpdate} events
+   *
+   * @param listener an instance of {@link TradeUpdateListener} which listens to
+   *                 {@link TradeUpdate} events
+   */
   public void subscribe(TradeUpdateListener listener) {
     subscriptionManager.subscribe(listener, ImmutableTradeUpdate.class);
   }
 
+  /**
+   * Subscribes to {@link ConnectionClose} events
+   *
+   * @param listener an instance of {@link ConnectionCloseListener} which listens to
+   *                 {@link ConnectionClose} events
+   */
   public void subscribe(ConnectionCloseListener listener) {
     subscriptionManager.subscribe(listener, ImmutableConnectionClose.class);
   }
 
+  /**
+   * Subscribes to {@link ConnectionCrash} events
+   *
+   * @param listener an instance of {@link ConnectionCrashListener} which listens to
+   *                 {@link ConnectionCrash} events
+   */
   public void subscribe(ConnectionCrashListener listener) {
     subscriptionManager.subscribe(listener, ImmutableConnectionCrash.class);
   }

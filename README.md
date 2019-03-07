@@ -85,19 +85,16 @@ List<Order> orders =
 ####[Request a new order](https://docs.alpaca.markets/api-documentation/web-api/orders/#request-a-new-order)
 
 ```java
-OrderRequest orderRequest =
+OrderRequest request =
   ImmutableOrderRequest.builder()
     .symbol("AAPL")
     .qty(1)
-    .side(Side.BUY)
-    .type(Type.STOP_LIMIT)
-    .timeInForce(TimeInForce.DAY)
-    .limitPrice(valueOf(10))
-    .stopPrice(valueOf(5))
-    .clientOrderId(UUID.randomUUID().toString())
+    .side(BUY)
+    .type(MARKET)
+    .timeInForce(DAY)
     .build();
 
-Order order = api.orders().place(orderRequest).await();
+Order order = api.orders().place(request).await();
 ```
 
 ####[Get an order](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-an-order)
@@ -165,7 +162,7 @@ Clock clock = api.clock().get().await();
 
 ```java
 String symbol = "AAPL";
-BarAPI.Timeframe timeframe = BarAPI.Timeframe.DAY;
+Timeframe timeframe = Timeframe.DAY;
 OffsetDateTime start = of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
 OffsetDateTime end = start.plusWeeks(3);
 boolean timeInclusive = false;

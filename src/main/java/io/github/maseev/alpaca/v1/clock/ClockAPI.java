@@ -7,6 +7,10 @@ import io.github.maseev.alpaca.v1.clock.entity.Clock;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
+/**
+ * The clock API serves the current market timestamp, whether or not the market is currently open,
+ * as well as the times of the next market open and close.
+ */
 public class ClockAPI {
 
   static final String ENDPOINT = "/clock";
@@ -17,6 +21,11 @@ public class ClockAPI {
     this.httpClient = httpClient;
   }
 
+  /**
+   * Returns the market clock.
+   *
+   * @return the market {@link Clock}
+   */
   public Listenable<Clock> get() {
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT).execute();

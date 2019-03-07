@@ -18,25 +18,45 @@ import org.jetbrains.annotations.Nullable;
 @JsonDeserialize(as = ImmutableOrderRequest.class)
 public interface OrderRequest {
 
+  /**
+   * @return Symbol or asset ID to identify the asset to trade
+   */
   String symbol();
 
+  /**
+   * @return Number of shares to trade
+   */
   long qty();
 
   Order.Side side();
 
   Type type();
 
+  /**
+   * @return Allowed values: {@link TimeInForce#DAY DAY}, {@link TimeInForce#GTC GTC}, {@link
+   * TimeInForce#OPG OPG}
+   */
   @JsonProperty("time_in_force")
   TimeInForce timeInForce();
 
+  /**
+   * @return Required if {@link OrderRequest#type() type} is {@link Type#LIMIT limit} or {@link
+   * Type#STOP_LIMIT stop-limit}
+   */
   @Nullable
   @JsonProperty("limit_price")
   BigDecimal limitPrice();
 
+  /**
+   * @return Required if type is {@link Type#STOP stop} or {@link Type#STOP_LIMIT stop-limit}
+   */
   @Nullable
   @JsonProperty("stop_price")
   BigDecimal stopPrice();
 
+  /**
+   * @return A unique identifier for the order. Automatically generated if not sent
+   */
   @Nullable
   @JsonProperty("client_order_id")
   String clientOrderId();

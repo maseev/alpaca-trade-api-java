@@ -11,14 +11,26 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableClock.class)
 public interface Clock {
 
+  /**
+   * @return Current timestamp
+   */
   OffsetDateTime timestamp();
 
+  /**
+   * @return Whether or not the market is open
+   */
   @JsonProperty("is_open")
   boolean isOpen();
 
+  /**
+   * @return Next market open timestamp
+   */
   @JsonProperty("next_open")
   OffsetDateTime nextOpen();
 
+  /**
+   * @return Next market close timestamp
+   */
   @JsonProperty("next_close")
   OffsetDateTime nextClose();
 }

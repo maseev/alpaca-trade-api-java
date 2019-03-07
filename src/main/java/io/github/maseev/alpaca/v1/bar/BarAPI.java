@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.Listenable;
+import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.v1.bar.entity.Bar;
 import java.time.OffsetDateTime;
@@ -15,6 +16,9 @@ import org.asynchttpclient.BoundRequestBuilder;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
+/**
+ * The bars API provides time-aggregated price and volume data.
+ */
 public class BarAPI {
 
   public enum Timeframe {
@@ -44,12 +48,30 @@ public class BarAPI {
     this.httpClient = httpClient;
   }
 
+  /**
+   * @see BarAPI#get(String[], Timeframe, OffsetDateTime, OffsetDateTime, boolean, int)
+   */
   public Listenable<Map<String, List<Bar>>> get(String symbol, Timeframe timeframe,
                                                 OffsetDateTime start, OffsetDateTime end,
                                                 boolean timeInclusive, int limit) {
     return get(new String[] {symbol}, timeframe, start, end, timeInclusive, limit);
   }
 
+  /**
+   * Retrieves a list of bars for each requested symbol. It is guaranteed all bars are in
+   * ascending order by time. Currently, no “incomplete” bars are returned. For example, a 1
+   * minute bar for 09:30 will not be returned until 09:31.
+
+   * @param symbols One or more (max 200) symbol names
+   * @param timeframe A specific timeframe for {@link Bar} instances for every symbol
+   * @param start Filter bars equal to or after this time (depending on the {@code timeInclusive})
+   * @param end Filter bars equal to or before this time (depending on the {@code timeInclusive})
+   * @param timeInclusive Whether or not to include the {@code start} and {@code end} parameters
+   *                      into a date range
+   * @param limit The maximum number of bars to be returned for each symbol. It can be between 1 and 1000
+   * @return A hash-map with a key for each symbol and the list of {@link Bar} as the values.
+   * @throws UnprocessableException in case the parameters are not well formed.
+   */
   public Listenable<Map<String, List<Bar>>> get(String[] symbols, Timeframe timeframe,
                                                 OffsetDateTime start, OffsetDateTime end,
                                                 boolean timeInclusive, int limit) {

@@ -13,7 +13,13 @@ public interface Calendar {
 
   LocalDate date();
 
+  /**
+   * @return The time the market opens at on this {@link Calendar#date() date}
+   */
   LocalTime open();
 
+  /**
+   * @return The time the market closes at on this {@link Calendar#date() date}
+   */
   LocalTime close();
 }

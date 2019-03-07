@@ -13,6 +13,9 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableBar.class)
 public interface Bar {
 
+  /**
+   * @return the beginning time of this bar as a Unix epoch in seconds
+   */
   @JsonProperty("t")
   @JsonDeserialize(using = UnixTimeDeserializer.class)
   Instant time();
