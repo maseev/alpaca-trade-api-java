@@ -28,7 +28,7 @@ Add `alpaca-trade-api-java` as a dependency:
 </dependency>
 ```
 
-###Initialization
+### Initialization
 
 ```java
 String keyId = "Your API key ID";
@@ -60,16 +60,16 @@ and synchronous:
 Account account = api.account().get().await();
 ```
 
-###Account
+### Account
 
-####[Get the account](https://docs.alpaca.markets/api-documentation/web-api/account/#get-the-account)
+#### [Get the account](https://docs.alpaca.markets/api-documentation/web-api/account/#get-the-account)
 
 ```java
 Account account = api.account().get().await();
 ```
 
-###Orders
-####[Get a list of orders](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-a-list-of-orders)
+### Orders
+#### [Get a list of orders](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-a-list-of-orders)
 
 ```java
 Status status = Status.OPEN;
@@ -84,7 +84,7 @@ List<Order> orders =
     .await();
 ```
 
-####[Request a new order](https://docs.alpaca.markets/api-documentation/web-api/orders/#request-a-new-order)
+#### [Request a new order](https://docs.alpaca.markets/api-documentation/web-api/orders/#request-a-new-order)
 
 ```java
 OrderRequest request =
@@ -99,37 +99,37 @@ OrderRequest request =
 Order order = api.orders().place(request).await();
 ```
 
-####[Get an order](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-an-order)
+#### [Get an order](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-an-order)
 
 ```java
 Order order = api.orders().get("id").await();
 ```
 
-####[Get an order by client order id](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-an-order-by-client-order-id)
+#### [Get an order by client order id](https://docs.alpaca.markets/api-documentation/web-api/orders/#get-an-order-by-client-order-id)
 
 ```java
 Order order = api.orders().getByClientOrderId("id").await();
 ```
-####[Cancel an order](https://docs.alpaca.markets/api-documentation/web-api/orders/#cancel-an-order)
+#### [Cancel an order](https://docs.alpaca.markets/api-documentation/web-api/orders/#cancel-an-order)
 
 ```java
 api.orders().cancel("id").await();
 ```
 
-###Positions
-####[Get open positions](https://docs.alpaca.markets/api-documentation/web-api/positions/#get-open-positions)
+### Positions
+#### [Get open positions](https://docs.alpaca.markets/api-documentation/web-api/positions/#get-open-positions)
 
 ```java
 List<Position> positions = api.positions().get().await();
 ```
-####[Get an open position](https://docs.alpaca.markets/api-documentation/web-api/positions/#get-an-open-position)
+#### [Get an open position](https://docs.alpaca.markets/api-documentation/web-api/positions/#get-an-open-position)
 
 ```java
 Position position = api.positions().get("AAPL").await();
 ```
 
-###Assets
-####[Get assets](https://docs.alpaca.markets/api-documentation/web-api/assets/#get-assets)
+### Assets
+#### [Get assets](https://docs.alpaca.markets/api-documentation/web-api/assets/#get-assets)
 
 ```java
 AssetClass assetClass = AssetClass.US_EQUITY;
@@ -137,14 +137,14 @@ Status status = Status.ACTIVE;
     
 List<Asset> assets = api.assets().get(status, assetClass).await();
 ```
-####[Get an asset](https://docs.alpaca.markets/api-documentation/web-api/assets/#get-an-asset)
+#### [Get an asset](https://docs.alpaca.markets/api-documentation/web-api/assets/#get-an-asset)
 
 ```java
 Asset asset = api.assets().get("AAPL").await();
 ```
 
-###Calendar
-####[Get the calendar](https://docs.alpaca.markets/api-documentation/web-api/calendar/#get-the-calendar)
+### Calendar
+#### [Get the calendar](https://docs.alpaca.markets/api-documentation/web-api/calendar/#get-the-calendar)
 
 ```java
 LocalDate start = LocalDate.now();
@@ -152,15 +152,15 @@ LocalDate end = start.plusDays(10);
 
 List<Calendar> calendars = api.calendar().get(start, end).await();
 ```
-###Clock
-####[Get the clock](https://docs.alpaca.markets/api-documentation/web-api/clock/#get-the-clock)
+### Clock
+#### [Get the clock](https://docs.alpaca.markets/api-documentation/web-api/clock/#get-the-clock)
 
 ```java
 Clock clock = api.clock().get().await();
 ```
 
-###Market Data
-####[Get a list of bars](https://docs.alpaca.markets/api-documentation/api-v2/market-data/bars/#get-a-list-of-bars)
+### Market Data
+#### [Get a list of bars](https://docs.alpaca.markets/api-documentation/api-v2/market-data/bars/#get-a-list-of-bars)
 
 ```java
 String symbol = "AAPL";
@@ -176,7 +176,7 @@ Map<String, List<Bar>> bars =
     .await();
 ```
 
-###Streaming
+### Streaming
 There are four types of events you can subscribe on `AccountUpdate`, `TradeUpdate`, 
 `ConnectionClose`, and `ConnectionCrash`.
 
