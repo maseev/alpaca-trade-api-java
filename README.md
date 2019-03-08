@@ -2,6 +2,8 @@ Alpaca Trade API Java
 =====================
 [![Build Status](https://travis-ci.org/maseev/alpaca-trade-api-java.svg?branch=master)](https://travis-ci.org/maseev/alpaca-trade-api-java)
 [![Coverage Status](https://coveralls.io/repos/github/maseev/alpaca-trade-api-java/badge.svg?branch=master)](https://coveralls.io/github/maseev/alpaca-trade-api-java?branch=master)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/maseev/alpaca-trade-api-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/maseev/alpaca-trade-api-java/alerts/)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/maseev/alpaca-trade-api-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/maseev/alpaca-trade-api-java/context:java)
 [![GitHub](https://img.shields.io/github/license/maseev/alpaca-trade-api-java.svg)](https://github.com/maseev/alpaca-trade-api-java/blob/master/LICENSE)
 
 Java API for [Alpaca](https://alpaca.markets) - a commission-free API-first stock brokerage
