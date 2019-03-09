@@ -27,6 +27,8 @@
     <surefire.plugin.version>2.22.2</surefire.plugin.version>
     <coveralls.version>4.3.0</coveralls.version>
     <jacoco.version>0.8.3</jacoco.version>
+    <build-helper-plugin.version>3.0.0</build-helper-plugin.version>
+    <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
   </properties>
 
   <dependencies>
@@ -107,6 +109,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper-plugin.version}</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -124,6 +127,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -157,6 +161,7 @@
         <configuration>
           <excludes>
             <exclude>**/Immutable*.*</exclude>
+            <exclude>**/exception/*.*</exclude>
           </excludes>
         </configuration>
         <executions>
