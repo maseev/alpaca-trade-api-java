@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("rawtypes, unchecked")
-class SubscriptionManager {
+public class SubscriptionManager {
 
   private final Map<Class<? extends Event>, List<EventListener>> subscribers;
 
-  SubscriptionManager() {
+  public SubscriptionManager() {
     subscribers = new ConcurrentHashMap<>();
   }
 

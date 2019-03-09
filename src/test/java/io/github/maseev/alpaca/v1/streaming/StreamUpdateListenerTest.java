@@ -10,27 +10,26 @@ import static java.time.LocalDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.v1.account.entity.Account;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
 import io.github.maseev.alpaca.v1.order.entity.Order;
 import io.github.maseev.alpaca.v1.streaming.entity.AccountUpdate;
 import io.github.maseev.alpaca.v1.streaming.entity.ConnectionClose;
 import io.github.maseev.alpaca.v1.streaming.entity.ConnectionCrash;
+import io.github.maseev.alpaca.v1.streaming.entity.Event;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableAccountUpdate;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableConnectionClose;
-import io.github.maseev.alpaca.v1.streaming.entity.ImmutableConnectionCrash;
 import io.github.maseev.alpaca.v1.streaming.entity.ImmutableTradeUpdate;
 import io.github.maseev.alpaca.v1.streaming.entity.TradeUpdate;
 import io.github.maseev.alpaca.v1.streaming.exception.AuthorizationException;
 import io.github.maseev.alpaca.v1.streaming.exception.SubscriptionException;
-import io.github.maseev.alpaca.v1.streaming.listener.AccountUpdateListener;
-import io.github.maseev.alpaca.v1.streaming.listener.ConnectionCloseListener;
-import io.github.maseev.alpaca.v1.streaming.listener.ConnectionCrashListener;
-import io.github.maseev.alpaca.v1.streaming.listener.TradeUpdateListener;
+import io.github.maseev.alpaca.v1.streaming.listener.EventListener;
 import io.github.maseev.alpaca.v1.streaming.message.AuthenticationMessage;
 import io.github.maseev.alpaca.v1.streaming.message.AuthorizationResponse;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableAuthenticationMessage;
@@ -38,15 +37,17 @@ import io.github.maseev.alpaca.v1.streaming.message.ImmutableAuthorizationDetail
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableAuthorizationResponse;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableCredentials;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableStreamUpdate;
+import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscription;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscriptionMessage;
 import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscriptionResponse;
-import io.github.maseev.alpaca.v1.streaming.message.ImmutableSubscription;
 import io.github.maseev.alpaca.v1.streaming.message.StreamUpdate;
 import io.github.maseev.alpaca.v1.streaming.message.SubscriptionMessage;
 import io.github.maseev.alpaca.v1.streaming.message.SubscriptionResponse;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import org.asynchttpclient.ws.WebSocket;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,6 +58,7 @@ public class StreamUpdateListenerTest {
   private static final String keyId = "keyId";
   private static final String secretKey = "secretKey";
 
+  private StreamingAPI streamingAPI;
   private SubscriptionManager subscriptionManager;
   private StreamUpdateListener streamUpdateListener;
   private WebSocket websocket;
@@ -66,6 +68,38 @@ public class StreamUpdateListenerTest {
     subscriptionManager = new SubscriptionManager();
     streamUpdateListener = new StreamUpdateListener(keyId, secretKey, subscriptionManager);
     websocket = mock(WebSocket.class);
+    HttpClient httpClient = mock(HttpClient.class);
+
+    streamingAPI = new StreamingAPI(httpClient, keyId, secretKey, subscriptionManager);
+  }
+
+  @Test
+  public void subscriptionManagerMustCallAllEventSubscribers() throws InterruptedException {
+    class MyEvent implements Event {
+    }
+
+    abstract class MyEventListener implements EventListener<MyEvent> {
+    }
+
+    CountDownLatch latch = new CountDownLatch(2);
+
+    subscriptionManager.subscribe(new MyEventListener() {
+      @Override
+      public void onEvent(MyEvent event) {
+        latch.countDown();
+      }
+    }, MyEvent.class);
+
+    subscriptionManager.subscribe(new MyEventListener() {
+      @Override
+      public void onEvent(MyEvent event) {
+        latch.countDown();
+      }
+    }, MyEvent.class);
+
+    subscriptionManager.invoke(new MyEvent());
+
+    assertTrue(latch.await(5, TimeUnit.SECONDS));
   }
 
   @Test
@@ -84,12 +118,9 @@ public class StreamUpdateListenerTest {
 
     AtomicReference<Throwable> exception = new AtomicReference<>();
 
-    subscriptionManager.subscribe(new ConnectionCrashListener() {
-      @Override
-      public void onEvent(ConnectionCrash event) {
-        exception.set(event.exception());
-      }
-    }, ImmutableConnectionCrash.class);
+    streamingAPI.subscribe((ConnectionCrash event) -> {
+      exception.set(event.exception());
+    });
 
     AuthorizationResponse authorizationResponse =
       ImmutableAuthorizationResponse.builder()
@@ -138,12 +169,9 @@ public class StreamUpdateListenerTest {
 
     AtomicReference<Throwable> exception = new AtomicReference<>();
 
-    subscriptionManager.subscribe(new ConnectionCrashListener() {
-      @Override
-      public void onEvent(ConnectionCrash event) {
-        exception.set(event.exception());
-      }
-    }, ImmutableConnectionCrash.class);
+    streamingAPI.subscribe((ConnectionCrash event) -> {
+      exception.set(event.exception());
+    });
 
     SubscriptionResponse subscribtionResponse =
       ImmutableSubscriptionResponse.builder()
@@ -200,12 +228,9 @@ public class StreamUpdateListenerTest {
 
     AtomicReference<AccountUpdate> accountUpdateEvent = new AtomicReference<>();
 
-    subscriptionManager.subscribe(new AccountUpdateListener() {
-      @Override
-      public void onEvent(AccountUpdate accountUpdate) {
-        accountUpdateEvent.set(accountUpdate);
-      }
-    }, ImmutableAccountUpdate.class);
+    streamingAPI.subscribe((AccountUpdate event) -> {
+      accountUpdateEvent.set(event);
+    });
 
     LocalDateTime date = of(2008, Month.JULY, 9, 12, 30, 00);
     AccountUpdate accountUpdate =
@@ -230,12 +255,9 @@ public class StreamUpdateListenerTest {
 
     AtomicReference<TradeUpdate> tradeUpdateEvent = new AtomicReference<>();
 
-    subscriptionManager.subscribe(new TradeUpdateListener() {
-      @Override
-      public void onEvent(TradeUpdate tradeUpdate) {
-        tradeUpdateEvent.set(tradeUpdate);
-      }
-    }, ImmutableTradeUpdate.class);
+    streamingAPI.subscribe((TradeUpdate event) -> {
+      tradeUpdateEvent.set(event);
+    });
 
     Order order = ImmutableOrder.builder()
       .id(UUID.randomUUID().toString())
@@ -322,15 +344,11 @@ public class StreamUpdateListenerTest {
 
     verify(websocket).sendTextFrame(toJson(authenticationMessage));
 
-
     AtomicReference<ConnectionClose> connectionClose = new AtomicReference<>();
 
-    subscriptionManager.subscribe(new ConnectionCloseListener() {
-      @Override
-      public void onEvent(ConnectionClose event) {
-        connectionClose.set(event);
-      }
-    }, ImmutableConnectionClose.class);
+    streamingAPI.subscribe((ConnectionClose event) -> {
+      connectionClose.set(event);
+    });
 
     int code = 999;
     String reason = "999";

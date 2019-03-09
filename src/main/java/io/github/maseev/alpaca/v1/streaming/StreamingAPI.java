@@ -29,12 +29,12 @@ public class StreamingAPI implements Closeable {
   private final SubscriptionManager subscriptionManager;
   private WebSocket connection;
 
-  public StreamingAPI(HttpClient httpClient, String keyId, String secretKey) {
+  public StreamingAPI(HttpClient httpClient, String keyId, String secretKey,
+                      SubscriptionManager subscriptionManager) {
     this.httpClient = httpClient;
     this.keyId = keyId;
     this.secretKey = secretKey;
-
-    subscriptionManager = new SubscriptionManager();
+    this.subscriptionManager = subscriptionManager;
   }
 
   /**

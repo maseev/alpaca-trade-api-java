@@ -11,6 +11,7 @@ import io.github.maseev.alpaca.v1.clock.ClockAPI;
 import io.github.maseev.alpaca.v1.order.OrderAPI;
 import io.github.maseev.alpaca.v1.position.PositionAPI;
 import io.github.maseev.alpaca.v1.streaming.StreamingAPI;
+import io.github.maseev.alpaca.v1.streaming.SubscriptionManager;
 import java.io.Closeable;
 import java.io.IOException;
 import org.asynchttpclient.AsyncHttpClient;
@@ -56,7 +57,7 @@ public class AlpacaAPI implements Closeable {
     streamingAPI =
       new StreamingAPI(
         new HttpClient(getStreamingUrl(baseStreamingUrl), keyId, secretKey, client),
-        keyId, secretKey);
+        keyId, secretKey, new SubscriptionManager());
   }
 
   public AlpacaAPI(String baseTradingUrl, String baseDataUrl, String baseStreamingUrl,

@@ -12,7 +12,7 @@ import io.github.maseev.alpaca.http.Listenable;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.exception.ForbiddenException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
-import io.github.maseev.alpaca.http.json.util.DateFormat;
+import io.github.maseev.alpaca.http.json.util.DateFormatUtil;
 import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.v1.order.entity.Order;
@@ -62,7 +62,7 @@ public class OrderAPI {
     ENDPOINT + ":by_client_order_id";
 
   static final DateTimeFormatter PATTERN =
-    DateTimeFormatter.ofPattern(DateFormat.DATE_TIME_NO_NANOSECONDS_FORMAT);
+    DateTimeFormatter.ofPattern(DateFormatUtil.DATE_TIME_NO_NANOSECONDS_FORMAT);
 
   private final HttpClient httpClient;
 

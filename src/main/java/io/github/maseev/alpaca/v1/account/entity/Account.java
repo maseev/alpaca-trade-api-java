@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.github.maseev.alpaca.http.json.util.DateFormat;
+import io.github.maseev.alpaca.http.json.util.DateFormatUtil;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import org.immutables.value.Value;
@@ -114,6 +114,6 @@ public interface Account {
    * @return Timestamap this account was created at
    */
   @JsonProperty("created_at")
-  @JsonFormat(pattern = DateFormat.DATE_TIME_FORMAT)
+  @JsonFormat(pattern = DateFormatUtil.DATE_TIME_FORMAT)
   LocalDateTime createdAt();
 }

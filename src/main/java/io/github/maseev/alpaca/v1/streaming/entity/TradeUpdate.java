@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.github.maseev.alpaca.http.json.util.DateFormat;
+import io.github.maseev.alpaca.http.json.util.DateFormatUtil;
 import io.github.maseev.alpaca.v1.order.entity.Order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -46,7 +46,7 @@ public interface TradeUpdate extends Event {
   BigDecimal price();
 
   @Nullable
-  @JsonFormat(pattern = DateFormat.DATE_TIME_FORMAT)
+  @JsonFormat(pattern = DateFormatUtil.DATE_TIME_FORMAT)
   LocalDateTime timestamp();
 
   Order order();

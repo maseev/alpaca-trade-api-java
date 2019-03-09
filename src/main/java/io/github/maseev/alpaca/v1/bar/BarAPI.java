@@ -1,5 +1,6 @@
 package io.github.maseev.alpaca.v1.bar;
 
+import static io.github.maseev.alpaca.http.json.util.DateFormatUtil.format;
 import static java.util.Arrays.asList;
 
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -125,21 +126,5 @@ public class BarAPI {
       throw new IllegalArgumentException(
         String.format("'limit' value must be between 1 and 1000; limit: %s", limit));
     }
-  }
-
-  private static OffsetDateTime format(OffsetDateTime time) {
-    if (time.getNano() == 0) {
-      return time;
-    }
-
-    return OffsetDateTime.of(
-      time.getYear(),
-      time.getMonthValue(),
-      time.getDayOfMonth(),
-      time.getHour(),
-      time.getMinute(),
-      time.getSecond(),
-      0,
-      time.getOffset());
   }
 }

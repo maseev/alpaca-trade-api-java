@@ -18,6 +18,9 @@ import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.ResponseHandler;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.AuthenticationException;
+import io.github.maseev.alpaca.http.exception.ParsingException;
+import io.github.maseev.alpaca.http.exception.RateLimitException;
+import io.github.maseev.alpaca.http.exception.UnrecognizedServerErrorException;
 import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.account.entity.Account;
 import io.github.maseev.alpaca.v1.account.entity.ImmutableAccount;
@@ -29,6 +32,60 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 
 public class AccountAPITest extends APITest {
+
+  @Test
+  public void recevingUNonJSONResponseMustThrowException() {
+    mockServer()
+      .when(
+        request(ENDPOINT)
+          .withMethod(HttpClient.HttpMethod.GET.toString())
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
+      .respond(
+        response()
+          .withStatusCode(HttpCode.OK.getCode())
+          .withBody("}{}{}{}", MediaType.JSON_UTF_8)
+      );
+
+    assertThrows(ParsingException.class, () -> api.account().get().await());
+  }
+
+  @Test
+  public void unknownHttpStatusCodeMustBeWrappedIntoKnownExceptionType() {
+    mockServer()
+      .when(
+        request(ENDPOINT)
+          .withMethod(HttpClient.HttpMethod.GET.toString())
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
+      .respond(
+        response()
+          .withStatusCode(418)
+          .withReasonPhrase("I'm a teapot!")
+      );
+
+    assertThrows(UnrecognizedServerErrorException.class, () -> api.account().get().await());
+  }
+
+  @Test
+  public void sendingToManyRequestsMustThrowException() {
+    mockServer()
+      .when(
+        request(ENDPOINT)
+          .withMethod(HttpClient.HttpMethod.GET.toString())
+          .withHeader(APCA_API_KEY_ID, keyId)
+          .withHeader(APCA_API_SECRET_KEY, secretKey)
+          .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON))
+      .respond(
+        response()
+          .withStatusCode(HttpCode.TOO_MANY_REQUESTS.getCode())
+          .withReasonPhrase("Rate limit exceeded")
+      );
+
+    assertThrows(RateLimitException.class, () -> api.account().get().await());
+  }
 
   @Test
   public void gettingAccountWithIncorrectCredentialsMustThrowException() throws APIException {

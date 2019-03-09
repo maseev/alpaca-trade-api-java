@@ -5,9 +5,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrderRequest;
 import io.github.maseev.alpaca.v1.order.entity.Order;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 public class OrderRequestTest {
+
+  @Test
+  public void specifyingTooLongClientOrderIdMustThrowException() {
+    String clientOrderId = UUID.randomUUID().toString();
+
+    assertThrows(IllegalStateException.class, () ->
+      ImmutableOrderRequest.builder()
+        .symbol("AAPL")
+        .qty(1)
+        .side(Order.Side.BUY)
+        .type(Order.Type.MARKET)
+        .timeInForce(Order.TimeInForce.DAY)
+        .clientOrderId(clientOrderId + clientOrderId)
+        .build());
+  }
 
   @Test
   public void usingMarketOrderAndSpecifyingLimitPriceMustThrowException() {

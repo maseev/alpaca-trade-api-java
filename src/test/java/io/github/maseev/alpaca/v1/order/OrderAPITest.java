@@ -16,6 +16,7 @@ import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.exception.APIException;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.exception.ForbiddenException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrder;
@@ -320,6 +321,36 @@ public class OrderAPITest extends APITest {
     Order order = api.orders().place(orderRequest).await();
 
     assertThat(order, is(equalTo(expectedOrder)));
+  }
+
+  @Test
+  public void placingNewOrderWithInsufficientByingPowerMustThrowException() throws Exception {
+    OrderRequest request =
+      ImmutableOrderRequest.builder()
+        .symbol("AAPL")
+        .qty(1)
+        .side(Order.Side.BUY)
+        .type(Order.Type.STOP_LIMIT)
+        .timeInForce(Order.TimeInForce.DAY)
+        .limitPrice(BigDecimal.valueOf(10))
+        .stopPrice(BigDecimal.valueOf(5))
+        .clientOrderId(UUID.randomUUID().toString())
+        .build();
+
+    mockServer().when(
+      request(OrderAPI.ENDPOINT)
+        .withMethod(HttpClient.HttpMethod.POST.toString())
+        .withHeader(APCA_API_KEY_ID, keyId)
+        .withHeader(APCA_API_SECRET_KEY, secretKey)
+        .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
+        .withBody(toJson(request))
+    ).respond(
+      response()
+        .withStatusCode(HttpCode.FORBIDDEN.getCode())
+        .withReasonPhrase("Buying power is not sufficient")
+    );
+
+    assertThrows(ForbiddenException.class, () -> api.orders().place(request).await());
   }
 
   private void setUpMockServer(String expectedOrderId,

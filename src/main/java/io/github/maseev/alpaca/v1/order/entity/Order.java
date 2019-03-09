@@ -1,6 +1,6 @@
 package io.github.maseev.alpaca.v1.order.entity;
 
-import static io.github.maseev.alpaca.http.json.util.DateFormat.DATE_TIME_FORMAT;
+import static io.github.maseev.alpaca.http.json.util.DateFormatUtil.DATE_TIME_FORMAT;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,5 +1,6 @@
 package io.github.maseev.alpaca.v1.bar;
 
+import static io.github.maseev.alpaca.http.json.util.DateFormatUtil.format;
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.math.BigDecimal.valueOf;
 import static java.time.OffsetDateTime.of;
@@ -64,8 +65,8 @@ public class BarAPITest extends APITest {
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
-          .withQueryStringParameter("start", start.toString())
-          .withQueryStringParameter("end", end.toString())
+          .withQueryStringParameter("start", format(start).toString())
+          .withQueryStringParameter("end", format(end).toString())
       )
       .respond(
         response()
@@ -97,7 +98,7 @@ public class BarAPITest extends APITest {
     String symbol = "AAPL";
     BarAPI.Timeframe timeframe = BarAPI.Timeframe.DAY;
     OffsetDateTime start =
-      of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 0, ZoneOffset.UTC);
+      of(2019, Month.FEBRUARY.getValue(), 10, 12, 30, 00, 10, ZoneOffset.UTC);
     OffsetDateTime end = start.plusWeeks(3);
     boolean timeInclusive = false;
     int limit = 10;
@@ -114,8 +115,8 @@ public class BarAPITest extends APITest {
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
-          .withQueryStringParameter("after", start.toString())
-          .withQueryStringParameter("until", end.toString())
+          .withQueryStringParameter("after", format(start).toString())
+          .withQueryStringParameter("until", format(end).toString())
       )
       .respond(
         response()
@@ -151,8 +152,8 @@ public class BarAPITest extends APITest {
           .withHeader(ContentType.CONTENT_TYPE_HEADER, ContentType.APPLICATION_JSON)
           .withQueryStringParameter("symbols", symbol)
           .withQueryStringParameter("limit", Integer.toString(limit))
-          .withQueryStringParameter("after", start.toString())
-          .withQueryStringParameter("until", end.toString())
+          .withQueryStringParameter("after", format(start).toString())
+          .withQueryStringParameter("until", format(end).toString())
       )
       .respond(
         response()

@@ -4,7 +4,7 @@ import io.github.maseev.alpaca.http.util.ContentType;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.BoundRequestBuilder;
 
-public final class HttpClient {
+public class HttpClient {
 
   public enum HttpMethod {
     GET,
