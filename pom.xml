@@ -161,7 +161,7 @@
         <configuration>
           <excludes>
             <exclude>**/Immutable*.*</exclude>
-            <exclude>**/*Exception.*</exclude>
+            <exclude>**/exception/**</exclude>
           </excludes>
         </configuration>
         <executions>
