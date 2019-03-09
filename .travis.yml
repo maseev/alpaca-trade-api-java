@@ -1,5 +1,5 @@
 language: java
 jdk:
-  - oraclejdk11
+  - openjdk11
 after_success:
   - mvn jacoco:report coveralls:report
