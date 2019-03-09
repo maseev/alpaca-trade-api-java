@@ -159,29 +159,17 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>**/Immutable*</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
-            <configuration>
-              <excludes>
-                <exclude>**/Immutable*.*</exclude>
-                <exclude>**/exception/**</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>report</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <exclude>**/exception/**</exclude>
-              </excludes>
-            </configuration>
           </execution>
         </executions>
       </plugin>
