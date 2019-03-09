@@ -25,8 +25,8 @@ public class AlpacaAPI implements Closeable {
   }
 
   private static final String APCA_API_VERSION = "/v1";
-  private static final String APCA_API_BASE_URL_PAPER_TRADING="https://paper-api.alpaca.markets";
-  private static final String APCA_API_BASE_URL_LIVE="https://api.alpaca.markets";
+  private static final String APCA_API_BASE_URL_PAPER_TRADING = "https://paper-api.alpaca.markets";
+  private static final String APCA_API_BASE_URL_LIVE = "https://api.alpaca.markets";
   private static final String APCA_API_DATA_URL = "https://data.alpaca.markets" + APCA_API_VERSION;
 
   private final AsyncHttpClient client;
@@ -65,6 +65,15 @@ public class AlpacaAPI implements Closeable {
     this(baseTradingUrl, baseDataUrl, baseStreamingUrl, keyId, secretKey, null);
   }
 
+  /**
+   * Constructs a main API class which provides access to Alpaca's services
+   *
+   * @param type      {@link Type#TEST TEST} is for paper trading (a real-time simulation
+   *                  environment), {@link Type#LIVE LIVE} is for trading with real money
+   * @param keyId     API key ID
+   * @param secretKey Secret key. Both {@code secretKey} and {@code keyId} can be obtained via
+   *                  Alpaca's website
+   */
   public AlpacaAPI(Type type, String keyId, String secretKey) {
     this(getBaseUrl(type) + APCA_API_VERSION,
       APCA_API_DATA_URL,
