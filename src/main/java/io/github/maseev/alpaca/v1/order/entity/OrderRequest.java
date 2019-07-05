@@ -1,5 +1,6 @@
 package io.github.maseev.alpaca.v1.order.entity;
 
+import static io.github.maseev.alpaca.v1.util.Available.Version.V2;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.maseev.alpaca.v1.order.entity.Order.TimeInForce;
 import io.github.maseev.alpaca.v1.order.entity.Order.Type;
+import io.github.maseev.alpaca.v1.util.Available;
 import java.math.BigDecimal;
 import org.immutables.value.Value;
 import org.jetbrains.annotations.Nullable;
@@ -61,6 +63,15 @@ public interface OrderRequest {
   @JsonProperty("client_order_id")
   String clientOrderId();
 
+  /**
+   * @return (default) false. If true, order will be eligible to execute in premarket/afterhours.
+   * Only works with type limit and time_in_force day.
+   */
+  @Nullable
+  @Available(in = V2)
+  @JsonProperty("extended_hours")
+  Boolean extendedHours();
+
   @Value.Check
   default void check() {
     if (qty() <= 0) {
@@ -109,6 +120,14 @@ public interface OrderRequest {
       throw new IllegalStateException(
         format("'clientOrderId' must be less than or equal to %s; clientOrderId: %s",
           MAX_CLIENT_ORDER_ID_LENGTH, clientOrderId()));
+    }
+
+    if (nonNull(extendedHours()) && extendedHours()
+      && (type() != Type.LIMIT || timeInForce() != TimeInForce.DAY)) {
+      throw new IllegalStateException(
+        format("true 'extendedHours' parameter is only available when type is '%s' and timeInForce " +
+            "is '%s'; type: %s, timeInForce: %s",
+          Type.LIMIT, TimeInForce.DAY, type(), timeInForce()));
     }
   }
 }

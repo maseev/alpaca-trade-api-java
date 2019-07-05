@@ -1,5 +1,6 @@
 package io.github.maseev.alpaca.v1;
 
+import static io.github.maseev.alpaca.v1.AlpacaAPI.Version.V1;
 import static org.asynchttpclient.Dsl.asyncHttpClient;
 
 import io.github.maseev.alpaca.http.HttpClient;
@@ -19,15 +20,30 @@ import org.asynchttpclient.AsyncHttpClientConfig;
 
 public class AlpacaAPI implements Closeable {
 
+  public enum Version {
+    V1("/v1"),
+    V2("/v2");
+
+    private final String alias;
+
+    Version(String alias) {
+      this.alias = alias;
+    }
+
+    @Override
+    public String toString() {
+      return alias;
+    }
+  }
+
   public enum Type {
     TEST,
     LIVE
   }
 
-  private static final String APCA_API_VERSION = "/v1";
   private static final String APCA_API_BASE_URL_PAPER_TRADING = "https://paper-api.alpaca.markets";
   private static final String APCA_API_BASE_URL_LIVE = "https://api.alpaca.markets";
-  private static final String APCA_API_DATA_URL = "https://data.alpaca.markets" + APCA_API_VERSION;
+  private static final String APCA_API_DATA_URL = "https://data.alpaca.markets";
 
   private final AsyncHttpClient client;
 
@@ -70,13 +86,14 @@ public class AlpacaAPI implements Closeable {
    *
    * @param type      {@link Type#TEST TEST} is for paper trading (a real-time simulation
    *                  environment), {@link Type#LIVE LIVE} is for trading with real money
+   * @param version   Alpaca API version.
    * @param keyId     API key ID
    * @param secretKey Secret key. Both {@code secretKey} and {@code keyId} can be obtained via
    *                  Alpaca's website
    */
-  public AlpacaAPI(Type type, String keyId, String secretKey) {
-    this(getBaseUrl(type) + APCA_API_VERSION,
-      APCA_API_DATA_URL,
+  public AlpacaAPI(Type type, Version version, String keyId, String secretKey) {
+    this(getBaseUrl(type) + version,
+      APCA_API_DATA_URL + V1,
       getBaseUrl(type),
       keyId, secretKey);
   }

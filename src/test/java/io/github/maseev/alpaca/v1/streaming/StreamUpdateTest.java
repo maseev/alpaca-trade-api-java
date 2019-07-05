@@ -2,6 +2,7 @@ package io.github.maseev.alpaca.v1.streaming;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.fromJson;
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
+import static io.github.maseev.alpaca.v1.asset.entity.AssetClass.US_EQUITY;
 import static java.math.BigDecimal.valueOf;
 import static java.time.LocalDateTime.of;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -42,7 +43,7 @@ public class StreamUpdateTest {
       .failedAt(orderDate)
       .assetId(UUID.randomUUID().toString())
       .symbol("AAPL")
-      .assetClass("asset")
+      .assetClass(US_EQUITY)
       .qty(1)
       .filledQty(2)
       .type(Order.Type.MARKET)

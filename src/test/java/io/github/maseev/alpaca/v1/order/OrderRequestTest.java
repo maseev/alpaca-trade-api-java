@@ -1,14 +1,37 @@
 package io.github.maseev.alpaca.v1.order;
 
+import static io.github.maseev.alpaca.v1.order.entity.Order.Side.BUY;
+import static io.github.maseev.alpaca.v1.order.entity.Order.TimeInForce.DAY;
+import static io.github.maseev.alpaca.v1.order.entity.Order.TimeInForce.FOK;
+import static io.github.maseev.alpaca.v1.order.entity.Order.TimeInForce.GTC;
+import static io.github.maseev.alpaca.v1.order.entity.Order.Type.LIMIT;
+import static io.github.maseev.alpaca.v1.order.entity.Order.Type.MARKET;
+import static io.github.maseev.alpaca.v1.order.entity.Order.Type.STOP;
 import static java.math.BigDecimal.valueOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import io.github.maseev.alpaca.v1.order.entity.ImmutableOrderRequest;
-import io.github.maseev.alpaca.v1.order.entity.Order;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 public class OrderRequestTest {
+
+  @Test
+  public void specifyingExtendedHoursWithoutCorrectTimeInForceMustThrowException() {
+    String clientOrderId = UUID.randomUUID().toString();
+
+    assertThrows(IllegalStateException.class, () ->
+      ImmutableOrderRequest.builder()
+        .symbol("AAPL")
+        .qty(1)
+        .side(BUY)
+        .type(LIMIT)
+        .limitPrice(valueOf(1.2))
+        .timeInForce(GTC)
+        .clientOrderId(clientOrderId)
+        .extendedHours(true)
+        .build());
+  }
 
   @Test
   public void specifyingTooLongClientOrderIdMustThrowException() {
@@ -18,9 +41,9 @@ public class OrderRequestTest {
       ImmutableOrderRequest.builder()
         .symbol("AAPL")
         .qty(1)
-        .side(Order.Side.BUY)
-        .type(Order.Type.MARKET)
-        .timeInForce(Order.TimeInForce.DAY)
+        .side(BUY)
+        .type(MARKET)
+        .timeInForce(DAY)
         .clientOrderId(clientOrderId + clientOrderId)
         .build());
   }
@@ -31,10 +54,10 @@ public class OrderRequestTest {
       ImmutableOrderRequest.builder()
         .symbol("AAPL")
         .qty(1)
-        .side(Order.Side.BUY)
-        .type(Order.Type.MARKET)
+        .side(BUY)
+        .type(MARKET)
         .limitPrice(valueOf(1))
-        .timeInForce(Order.TimeInForce.DAY)
+        .timeInForce(DAY)
         .build());
   }
 
@@ -44,10 +67,10 @@ public class OrderRequestTest {
       ImmutableOrderRequest.builder()
         .symbol("AAPL")
         .qty(-1)
-        .side(Order.Side.BUY)
-        .type(Order.Type.MARKET)
+        .side(BUY)
+        .type(MARKET)
         .stopPrice(valueOf(1))
-        .timeInForce(Order.TimeInForce.DAY)
+        .timeInForce(DAY)
         .build());
   }
 
@@ -57,9 +80,9 @@ public class OrderRequestTest {
       ImmutableOrderRequest.builder()
         .symbol("AAPL")
         .qty(-1)
-        .side(Order.Side.BUY)
-        .type(Order.Type.MARKET)
-        .timeInForce(Order.TimeInForce.DAY)
+        .side(BUY)
+        .type(MARKET)
+        .timeInForce(DAY)
         .build());
   }
 
@@ -69,9 +92,9 @@ public class OrderRequestTest {
     ImmutableOrderRequest.builder()
       .symbol("AAPL")
       .qty(1)
-      .side(Order.Side.BUY)
-      .type(Order.Type.MARKET)
-      .timeInForce(Order.TimeInForce.FOK)
+      .side(BUY)
+      .type(MARKET)
+      .timeInForce(FOK)
       .build());
   }
 
@@ -81,9 +104,9 @@ public class OrderRequestTest {
     ImmutableOrderRequest.builder()
       .symbol("AAPL")
       .qty(1)
-      .side(Order.Side.BUY)
-      .type(Order.Type.LIMIT)
-      .timeInForce(Order.TimeInForce.DAY)
+      .side(BUY)
+      .type(LIMIT)
+      .timeInForce(DAY)
       .build());
   }
 
@@ -93,9 +116,9 @@ public class OrderRequestTest {
     ImmutableOrderRequest.builder()
       .symbol("AAPL")
       .qty(1)
-      .side(Order.Side.BUY)
-      .type(Order.Type.STOP)
-      .timeInForce(Order.TimeInForce.DAY)
+      .side(BUY)
+      .type(STOP)
+      .timeInForce(DAY)
       .build());
   }
 
@@ -105,9 +128,9 @@ public class OrderRequestTest {
     ImmutableOrderRequest.builder()
       .symbol("AAPL")
       .qty(1)
-      .side(Order.Side.BUY)
-      .type(Order.Type.LIMIT)
-      .timeInForce(Order.TimeInForce.DAY)
+      .side(BUY)
+      .type(LIMIT)
+      .timeInForce(DAY)
       .limitPrice(valueOf(-1))
       .build());
   }
@@ -118,9 +141,9 @@ public class OrderRequestTest {
     ImmutableOrderRequest.builder()
       .symbol("AAPL")
       .qty(1)
-      .side(Order.Side.BUY)
-      .type(Order.Type.STOP)
-      .timeInForce(Order.TimeInForce.DAY)
+      .side(BUY)
+      .type(STOP)
+      .timeInForce(DAY)
       .stopPrice(valueOf(-1))
       .build());
   }

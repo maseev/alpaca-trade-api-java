@@ -1,6 +1,7 @@
 package io.github.maseev.alpaca.v1.streaming;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
+import static io.github.maseev.alpaca.v1.asset.entity.AssetClass.US_EQUITY;
 import static io.github.maseev.alpaca.v1.streaming.Stream.ACCOUNT_UPDATES;
 import static io.github.maseev.alpaca.v1.streaming.Stream.TRADE_UPDATES;
 import static io.github.maseev.alpaca.v1.streaming.message.AuthorizationDetails.Status.AUTHORIZED;
@@ -271,7 +272,7 @@ public class StreamUpdateListenerTest {
       .failedAt(date)
       .assetId(UUID.randomUUID().toString())
       .symbol("AAPL")
-      .assetClass("asset")
+      .assetClass(US_EQUITY)
       .qty(1)
       .filledQty(2)
       .type(Order.Type.MARKET)

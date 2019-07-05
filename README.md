@@ -34,7 +34,7 @@ Add `alpaca-trade-api-java` as a dependency:
 String keyId = "Your API key ID";
 String secretKey = "Your secret key";
 
-AlpacaAPI api = new AlpacaAPI(Type.TEST, keyId, secretKey);
+AlpacaAPI api = new AlpacaAPI(TEST, V1, keyId, secretKey);
 ```
 
 `alpaca-trade-api-java` provides two versions of API, asynchronous:
@@ -132,10 +132,7 @@ Position position = api.positions().get("AAPL").await();
 #### [Get assets](https://docs.alpaca.markets/api-documentation/web-api/assets/#get-assets)
 
 ```java
-AssetClass assetClass = AssetClass.US_EQUITY;
-Status status = Status.ACTIVE;
-    
-List<Asset> assets = api.assets().get(status, assetClass).await();
+List<Asset> assets = api.assets().get(ACTIVE, US_EQUITY).await();
 ```
 #### [Get an asset](https://docs.alpaca.markets/api-documentation/web-api/assets/#get-an-asset)
 

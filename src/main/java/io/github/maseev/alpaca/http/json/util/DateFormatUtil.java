@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 public final class DateFormatUtil {
 
   public static final String DATE_TIME_FORMAT =
-    "yyyy-MM-dd'T'HH:mm:ss.[SSSSSSSSS][SSSSSS][SSSS]'Z'";
+    "yyyy-MM-dd'T'HH:mm:ss.[SSSSSSSSS][SSSSSS][SSSSSS][SSSS]'Z'";
 
   public static final String DATE_TIME_NO_NANOSECONDS_FORMAT =
     "yyyy-MM-dd'T'HH:mm:ss'Z'";

@@ -1,6 +1,7 @@
 package io.github.maseev.alpaca.v1.order;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
+import static io.github.maseev.alpaca.v1.asset.entity.AssetClass.US_EQUITY;
 import static java.time.LocalDateTime.of;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -55,7 +56,7 @@ public class OrderAPITest extends APITest {
         .failedAt(orderDate)
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
-        .assetClass("asset")
+        .assetClass(US_EQUITY)
         .qty(1)
         .filledQty(2)
         .type(Order.Type.MARKET)
@@ -66,6 +67,7 @@ public class OrderAPITest extends APITest {
         .stopPrice(BigDecimal.valueOf(4))
         .filledAvgPrice(BigDecimal.valueOf(5))
         .status(Order.Status.FILLED)
+        .extendedHours(true)
         .build();
 
     List<Order> expectedOrders = singletonList(expectedOrder);
@@ -162,7 +164,7 @@ public class OrderAPITest extends APITest {
       .failedAt(orderDate)
       .assetId(UUID.randomUUID().toString())
       .symbol("AAPL")
-      .assetClass("asset")
+      .assetClass(US_EQUITY)
       .qty(1)
       .filledQty(2)
       .type(Order.Type.MARKET)
@@ -173,6 +175,7 @@ public class OrderAPITest extends APITest {
       .stopPrice(BigDecimal.valueOf(4))
       .filledAvgPrice(BigDecimal.valueOf(5))
       .status(Order.Status.FILLED)
+      .extendedHours(true)
       .build();
 
     mockServer().when(
@@ -232,7 +235,7 @@ public class OrderAPITest extends APITest {
         .failedAt(orderDate)
         .assetId(UUID.randomUUID().toString())
         .symbol("AAPL")
-        .assetClass("asset")
+        .assetClass(US_EQUITY)
         .qty(1)
         .filledQty(2)
         .type(Order.Type.MARKET)
@@ -243,6 +246,7 @@ public class OrderAPITest extends APITest {
         .stopPrice(BigDecimal.valueOf(4))
         .filledAvgPrice(BigDecimal.valueOf(5))
         .status(Order.Status.FILLED)
+        .extendedHours(true)
         .build();
 
     mockServer().when(
@@ -292,7 +296,7 @@ public class OrderAPITest extends APITest {
         .failedAt(orderDate)
         .assetId(UUID.randomUUID().toString())
         .symbol(orderRequest.symbol())
-        .assetClass("asset")
+        .assetClass(US_EQUITY)
         .qty(orderRequest.qty())
         .filledQty(orderRequest.qty())
         .type(orderRequest.type())
@@ -303,6 +307,7 @@ public class OrderAPITest extends APITest {
         .stopPrice(orderRequest.stopPrice())
         .filledAvgPrice(BigDecimal.valueOf(5))
         .status(Order.Status.FILLED)
+        .extendedHours(true)
         .build();
 
     mockServer().when(
@@ -335,6 +340,7 @@ public class OrderAPITest extends APITest {
         .limitPrice(BigDecimal.valueOf(10))
         .stopPrice(BigDecimal.valueOf(5))
         .clientOrderId(UUID.randomUUID().toString())
+        .extendedHours(false)
         .build();
 
     mockServer().when(

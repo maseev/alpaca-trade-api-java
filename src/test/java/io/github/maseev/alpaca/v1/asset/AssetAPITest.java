@@ -38,6 +38,9 @@ public class AssetAPITest extends APITest {
         .symbol("AAPL")
         .status(status)
         .tradable(true)
+        .marginable(true)
+        .shortable(true)
+        .easyToBorrow(true)
         .build();
 
     List<Asset> expectedAssets = Collections.singletonList(expectedAsset);

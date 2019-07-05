@@ -1,12 +1,15 @@
 package io.github.maseev.alpaca.v1.order.entity;
 
 import static io.github.maseev.alpaca.http.json.util.DateFormatUtil.DATE_TIME_FORMAT;
+import static io.github.maseev.alpaca.v1.util.Available.Version.V2;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.maseev.alpaca.v1.asset.entity.AssetClass;
+import io.github.maseev.alpaca.v1.util.Available;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import org.immutables.value.Value;
@@ -109,12 +112,14 @@ public interface Order {
      * An Immediate Or Cancel (IOC) order requires all or part of the order to be executed
      * immediately. Any unfilled portion of the order is canceled. Only available with API v2.
      */
+    @Available(in = V2)
     IOC,
 
     /**
      * A Fill or Kill (FOK) order is only executed if the entire order quantity can be filled,
      * otherwise the order is canceled. Only available with API v2.
      */
+    @Available(in = V2)
     FOK;
 
     @Override
@@ -258,7 +263,7 @@ public interface Order {
   String symbol();
 
   @JsonProperty("asset_class")
-  String assetClass();
+  AssetClass assetClass();
 
   long qty();
 
@@ -288,4 +293,12 @@ public interface Order {
   BigDecimal filledAvgPrice();
 
   Status status();
+
+  /**
+   * @return If true, eligible for execution outside regular trading hours.
+   */
+  @Nullable
+  @Available(in = V2)
+  @JsonProperty("extended_hours")
+  Boolean extendedHours();
 }

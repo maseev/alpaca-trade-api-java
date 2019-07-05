@@ -159,6 +159,16 @@ public class AccountAPITest extends APITest {
         .accountBlocked(false)
         .tradeSuspendedByUser(false)
         .createdAt(of(2007, Month.DECEMBER, 1, 10, 00, 10))
+        .shortingEnabled(true)
+        .multiplier(1)
+        .longMarketValue(valueOf(1.1))
+        .shortMarketValue(valueOf(2.2))
+        .equity(valueOf(3.3))
+        .lastEquity(valueOf(4.4))
+        .initialMargin(valueOf(5.5))
+        .maintenanceMargin(valueOf(6.6))
+        .daytradeCount(valueOf(7.7))
+        .sma(valueOf(8.8))
         .build();
 
     mockServer()
