@@ -2,7 +2,7 @@ package io.github.maseev.alpaca;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-import io.github.maseev.alpaca.v1.AlpacaAPI;
+import io.github.maseev.alpaca.api.AlpacaAPI;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
