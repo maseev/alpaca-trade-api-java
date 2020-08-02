@@ -24,7 +24,7 @@ public class OrderAPIValidationTest {
 
   @Test
   public void passingEmptyOrderIdMustThrowException() throws Exception {
-    assertThrows(IllegalArgumentException.class, () -> api.orders().get("").await());
+    assertThrows(IllegalArgumentException.class, () -> api.orders().get("").get());
   }
 
   @Test
@@ -36,7 +36,7 @@ public class OrderAPIValidationTest {
     OrderAPI.Direction direction = OrderAPI.Direction.ASC;
 
     assertThrows(IllegalArgumentException.class,
-      () -> api.orders().get(status, limit, after, until, direction).await());
+      () -> api.orders().get(status, limit, after, until, direction).get());
   }
 
   @Test
@@ -48,7 +48,7 @@ public class OrderAPIValidationTest {
     OrderAPI.Direction direction = OrderAPI.Direction.ASC;
 
     assertThrows(IllegalArgumentException.class,
-      () -> api.orders().get(status, limit, after, until, direction).await());
+      () -> api.orders().get(status, limit, after, until, direction).get());
   }
 
   @Test
@@ -60,6 +60,6 @@ public class OrderAPIValidationTest {
     OrderAPI.Direction direction = OrderAPI.Direction.ASC;
 
     assertThrows(IllegalArgumentException.class,
-      () -> api.orders().get(status, limit, after, until, direction).await());
+      () -> api.orders().get(status, limit, after, until, direction).get());
   }
 }

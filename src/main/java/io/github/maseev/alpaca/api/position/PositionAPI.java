@@ -1,15 +1,16 @@
 package io.github.maseev.alpaca.api.position;
 
 import static io.github.maseev.alpaca.http.util.StringUtil.requireNonEmpty;
+import static io.github.maseev.alpaca.util.FutureTransformerUtil.transform;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import io.github.maseev.alpaca.api.position.entity.Position;
 import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.Listenable;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
-import io.github.maseev.alpaca.api.position.entity.Position;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -34,11 +35,11 @@ public class PositionAPI {
    *
    * @return a list of {@link Position}
    */
-  public Listenable<List<Position>> get() {
+  public CompletableFuture<List<Position>> get() {
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT).execute();
 
-    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Position>>() {}), future);
+    return transform(future, new GenericTransformer<>(new TypeReference<List<Position>>() {}));
   }
 
   /**
@@ -48,12 +49,12 @@ public class PositionAPI {
    * @return a list of {@link Position} for the given symbol
    * @throws EntityNotFoundException if a {@link Position} is not found
    */
-  public Listenable<Position> get(String symbol) {
+  public CompletableFuture<Position> get(String symbol) {
     requireNonEmpty(symbol, "symbol");
 
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, symbol).execute();
 
-    return new Listenable<>(new ValueTransformer<>(Position.class), future);
+    return transform(future, new ValueTransformer<>(Position.class));
   }
 }

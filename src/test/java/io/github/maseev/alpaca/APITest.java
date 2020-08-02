@@ -1,8 +1,13 @@
 package io.github.maseev.alpaca;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 import io.github.maseev.alpaca.api.AlpacaAPI;
+import io.github.maseev.alpaca.util.Expecter;
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,5 +52,23 @@ public abstract class APITest {
 
   public String getBaseURL() {
     return host + ':' + port;
+  }
+
+  public <T> void expectException(CompletableFuture<T> completableFuture,
+                                  Class<? extends Throwable> ex) throws InterruptedException {
+    final Expecter<T> expecter = new Expecter<>(completableFuture);
+
+    expecter.await();
+
+    assertThat(expecter.getRootException().getClass(), is(equalTo(ex)));
+  }
+
+  public <T> void expectEntity(CompletableFuture<T> completableFuture,
+                               T entity) throws InterruptedException {
+    final Expecter<T> expecter = new Expecter<>(completableFuture);
+
+    expecter.await();
+
+    assertThat(expecter.getResult(), is(equalTo(entity)));
   }
 }

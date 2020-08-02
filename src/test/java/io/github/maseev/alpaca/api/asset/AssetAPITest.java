@@ -1,24 +1,19 @@
 package io.github.maseev.alpaca.api.asset;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.HttpCode;
-import io.github.maseev.alpaca.http.exception.APIException;
-import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
-import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.api.asset.entity.Asset;
 import io.github.maseev.alpaca.api.asset.entity.AssetClass;
 import io.github.maseev.alpaca.api.asset.entity.ImmutableAsset;
 import io.github.maseev.alpaca.api.entity.Exchange;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -61,13 +56,11 @@ public class AssetAPITest extends APITest {
           .withBody(toJson(expectedAssets), MediaType.JSON_UTF_8)
       );
 
-    List<Asset> assets = api.assets().get(status, assetClass).await();
-
-    assertThat(assets, is(equalTo(expectedAssets)));
+    expectEntity(api.assets().get(status, assetClass), expectedAssets);
   }
 
   @Test
-  public void gettingNonExistentAssetMustThrowException() throws APIException {
+  public void gettingNonExistentAssetMustThrowException() throws Exception {
     String symbol = "AAPL";
 
     mockServer()
@@ -84,7 +77,7 @@ public class AssetAPITest extends APITest {
           .withReasonPhrase("Asset not found")
       );
 
-    assertThrows(EntityNotFoundException.class, () -> api.assets().get(symbol).await());
+    expectException(api.assets().get(symbol), EntityNotFoundException.class);
   }
 
   @Test
@@ -113,8 +106,6 @@ public class AssetAPITest extends APITest {
           .withBody(toJson(expectedAsset), MediaType.JSON_UTF_8)
       );
 
-    Asset asset = api.assets().get(expectedAsset.symbol()).await();
-
-    assertThat(asset, is(equalTo(expectedAsset)));
+    expectEntity(api.assets().get(expectedAsset.symbol()), expectedAsset);
   }
 }

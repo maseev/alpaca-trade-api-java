@@ -1,21 +1,17 @@
 package io.github.maseev.alpaca.api.calendar;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.HttpCode;
-import io.github.maseev.alpaca.http.exception.APIException;
-import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.api.calendar.entity.Calendar;
 import io.github.maseev.alpaca.api.calendar.entity.ImmutableCalendar;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.util.ContentType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
@@ -25,11 +21,11 @@ import org.junit.jupiter.api.Test;
 public class CalendarAPITest extends APITest {
 
   @Test
-  public void specifyingEndDateBeforeStartDateMustThrowException() throws APIException {
+  public void specifyingEndDateBeforeStartDateMustThrowException() throws Exception {
     LocalDate start = LocalDate.now();
     LocalDate end = start.minusDays(1);
 
-    assertThrows(IllegalArgumentException.class, () -> api.calendar().get(start, end).await());
+    assertThrows(IllegalArgumentException.class, () -> api.calendar().get(start, end).get());
   }
 
   @Test
@@ -62,8 +58,6 @@ public class CalendarAPITest extends APITest {
           .withBody(toJson(expectedCalendars), MediaType.JSON_UTF_8)
       );
 
-    List<Calendar> calendars = api.calendar().get(start, end).await();
-
-    assertThat(calendars, is(equalTo(expectedCalendars)));
+    expectEntity(api.calendar().get(start, end), expectedCalendars);
   }
 }

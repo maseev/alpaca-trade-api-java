@@ -2,19 +2,16 @@ package io.github.maseev.alpaca.api.clock;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.time.OffsetDateTime.of;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
+import io.github.maseev.alpaca.api.clock.entity.Clock;
+import io.github.maseev.alpaca.api.clock.entity.ImmutableClock;
 import io.github.maseev.alpaca.http.HttpClient;
 import io.github.maseev.alpaca.http.HttpCode;
 import io.github.maseev.alpaca.http.util.ContentType;
-import io.github.maseev.alpaca.api.clock.entity.Clock;
-import io.github.maseev.alpaca.api.clock.entity.ImmutableClock;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -47,8 +44,6 @@ public class ClockAPITest extends APITest {
           .withBody(toJson(expectedClock), MediaType.JSON_UTF_8)
       );
 
-    Clock clock = api.clock().get().await();
-
-    assertThat(clock, is(equalTo(expectedClock)));
+    expectEntity(api.clock().get(), expectedClock);
   }
 }

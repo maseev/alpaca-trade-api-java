@@ -2,24 +2,25 @@ package io.github.maseev.alpaca.api.order;
 
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static io.github.maseev.alpaca.http.util.StringUtil.requireNonEmpty;
+import static io.github.maseev.alpaca.util.FutureTransformerUtil.transform;
 import static java.lang.String.format;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import io.github.maseev.alpaca.api.order.entity.Order;
+import io.github.maseev.alpaca.api.order.entity.OrderRequest;
 import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.Listenable;
 import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
 import io.github.maseev.alpaca.http.exception.ForbiddenException;
 import io.github.maseev.alpaca.http.exception.UnprocessableException;
 import io.github.maseev.alpaca.http.json.util.DateFormatUtil;
 import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.http.transformer.ValueTransformer;
-import io.github.maseev.alpaca.api.order.entity.Order;
-import io.github.maseev.alpaca.api.order.entity.OrderRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -82,9 +83,9 @@ public class OrderAPI {
    * @param direction The chronological order of response based on the submission time
    * @return a list of {@link Order} for the account
    */
-  public Listenable<List<Order>> get(Status status, int limit, LocalDateTime after,
-                                     LocalDateTime until,
-                                     Direction direction) {
+  public CompletableFuture<List<Order>> get(Status status, int limit, LocalDateTime after,
+                                            LocalDateTime until,
+                                            Direction direction) {
     validate(limit, after, until);
 
     ListenableFuture<Response> future =
@@ -96,7 +97,7 @@ public class OrderAPI {
         .addQueryParam("direction", direction.toString())
         .execute();
 
-    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Order>>() {}), future);
+    return transform(future, new GenericTransformer<>(new TypeReference<List<Order>>() {}));
   }
 
   /**
@@ -110,13 +111,13 @@ public class OrderAPI {
    * @throws ForbiddenException      if the buying power of shares is not sufficient
    * @throws UnprocessableException  if the input parameters are not recognized
    */
-  public Listenable<Order> place(OrderRequest request) throws JsonProcessingException {
+  public CompletableFuture<Order> place(OrderRequest request) throws JsonProcessingException {
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.POST, ENDPOINT)
         .setBody(toJson(request))
         .execute();
 
-    return new Listenable<>(new ValueTransformer<>(Order.class), future);
+    return transform(future, new ValueTransformer<>(Order.class));
   }
 
   /**
@@ -126,13 +127,13 @@ public class OrderAPI {
    * @return The requested {@link Order} object
    * @throws EntityNotFoundException if an Order is not found
    */
-  public Listenable<Order> get(String orderId) {
+  public CompletableFuture<Order> get(String orderId) {
     requireNonEmpty(orderId, "orderId");
 
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT, orderId).execute();
 
-    return new Listenable<>(new ValueTransformer<>(Order.class), future);
+    return transform(future, new ValueTransformer<>(Order.class));
   }
 
   /**
@@ -142,7 +143,7 @@ public class OrderAPI {
    * @return The requested {@link Order} object
    * @throws EntityNotFoundException if an Order is not found
    */
-  public Listenable<Order> getByClientOrderId(String clientOrderId) {
+  public CompletableFuture<Order> getByClientOrderId(String clientOrderId) {
     requireNonEmpty(clientOrderId, "clientOrderId");
 
     ListenableFuture<Response> future =
@@ -150,7 +151,7 @@ public class OrderAPI {
         .addQueryParam("client_order_id", clientOrderId)
         .execute();
 
-    return new Listenable<>(new ValueTransformer<>(Order.class), future);
+    return transform(future, new ValueTransformer<>(Order.class));
   }
 
   /**
@@ -161,13 +162,13 @@ public class OrderAPI {
    * @throws UnprocessableException  if an Order is no longer cancelable (e.g. {@link
    *                                 io.github.maseev.alpaca.api.order.entity.Order.Status#FILLED})
    */
-  public Listenable<Void> cancel(String orderId) {
+  public CompletableFuture<Void> cancel(String orderId) {
     requireNonEmpty(orderId, "orderId");
 
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.DELETE, ENDPOINT, orderId).execute();
 
-    return new Listenable<>(new ValueTransformer<>(Void.class), future);
+    return transform(future, new ValueTransformer<>(Void.class));
   }
 
   private static void validate(int limit, LocalDateTime after, LocalDateTime until) {

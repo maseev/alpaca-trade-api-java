@@ -1,14 +1,15 @@
 package io.github.maseev.alpaca.api.calendar;
 
+import static io.github.maseev.alpaca.util.FutureTransformerUtil.transform;
 import static java.lang.String.format;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import io.github.maseev.alpaca.api.calendar.entity.Calendar;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.transformer.GenericTransformer;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -35,7 +36,7 @@ public class CalendarAPI {
    * @param end The last date to retrieve data for (inclusive)
    * @return the market {@link Calendar}
    */
-  public Listenable<List<Calendar>> get(LocalDate start, LocalDate end) {
+  public CompletableFuture<List<Calendar>> get(LocalDate start, LocalDate end) {
     if (start.isAfter(end)) {
       throw new IllegalArgumentException(
         format("'start' can't be after 'end'; start: %s, end: %s", start, end));
@@ -47,6 +48,7 @@ public class CalendarAPI {
         .addQueryParam("end", end.toString())
         .execute();
 
-    return new Listenable<>(new GenericTransformer<>(new TypeReference<List<Calendar>>() {}), future);
+    return transform(future,
+      new GenericTransformer<>(new TypeReference<List<Calendar>>() {}));
   }
 }

@@ -1,29 +1,24 @@
 package io.github.maseev.alpaca.api.order;
 
-import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static io.github.maseev.alpaca.api.asset.entity.AssetClass.US_EQUITY;
+import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.time.LocalDateTime.of;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.HttpCode;
-import io.github.maseev.alpaca.http.exception.APIException;
-import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
-import io.github.maseev.alpaca.http.exception.ForbiddenException;
-import io.github.maseev.alpaca.http.exception.UnprocessableException;
-import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.api.order.entity.ImmutableOrder;
 import io.github.maseev.alpaca.api.order.entity.ImmutableOrderRequest;
 import io.github.maseev.alpaca.api.order.entity.Order;
 import io.github.maseev.alpaca.api.order.entity.OrderRequest;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.exception.ForbiddenException;
+import io.github.maseev.alpaca.http.exception.UnprocessableException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -89,46 +84,42 @@ public class OrderAPITest extends APITest {
           .withStatusCode(HttpCode.OK.getCode())
           .withBody(toJson(expectedOrders), MediaType.JSON_UTF_8));
 
-    List<Order> orders =
-      api.orders()
-        .get(status, limit, after, until, direction)
-        .await();
-
-    assertThat(orders, is(equalTo(expectedOrders)));
+    expectEntity(api.orders()
+      .get(status, limit, after, until, direction), expectedOrders);
   }
 
   @Test
-  public void cancellingNoLongerCancelableOrderMustThrowException() throws APIException {
+  public void cancellingNoLongerCancelableOrderMustThrowException() throws Exception {
     String orderId = UUID.randomUUID().toString();
 
     setUpMockServer(orderId, HttpCode.UNPROCESSABLE,
       "The order status is not cancelable");
 
-    assertThrows(UnprocessableException.class, () -> api.orders().cancel(orderId).await());
+    expectException(api.orders().cancel(orderId), UnprocessableException.class);
   }
 
   @Test
-  public void cancellingNonexistentOrderMustThrowException() throws APIException {
+  public void cancellingNonexistentOrderMustThrowException() throws Exception {
     String orderId = UUID.randomUUID().toString();
 
     setUpMockServer(orderId, HttpCode.NOT_FOUND,
       "The order doesn't exist");
 
-    assertThrows(EntityNotFoundException.class, () -> api.orders().cancel(orderId).await());
+    expectException(api.orders().cancel(orderId), EntityNotFoundException.class);
   }
 
   @Test
-  public void cancellingValidOrderMustCancelIt() throws APIException {
+  public void cancellingValidOrderMustCancelIt() throws Exception {
     String orderId = UUID.randomUUID().toString();
 
     setUpMockServer(orderId, HttpCode.NO_CONTENT,
       "The order has been cancelled");
 
-    api.orders().cancel(orderId).await();
+    api.orders().cancel(orderId).get();
   }
 
   @Test
-  public void gettingNonExistentOrderMustThrowException() throws APIException {
+  public void gettingNonExistentOrderMustThrowException() throws Exception {
     String orderId = UUID.randomUUID().toString();
 
     mockServer().when(
@@ -143,7 +134,7 @@ public class OrderAPITest extends APITest {
         .withReasonPhrase("Order not found")
     );
 
-    assertThrows(EntityNotFoundException.class, () -> api.orders().get(orderId).await());
+    expectException(api.orders().get(orderId), EntityNotFoundException.class);
   }
 
   @Test
@@ -190,13 +181,11 @@ public class OrderAPITest extends APITest {
         .withBody(toJson(expectedOrder), MediaType.JSON_UTF_8)
     );
 
-    Order order = api.orders().get(orderId).await();
-
-    assertThat(order, is(equalTo(expectedOrder)));
+    expectEntity(api.orders().get(orderId), expectedOrder);
   }
 
   @Test
-  public void gettingNonExistentOrderByClientIdMustThrowException() throws APIException {
+  public void gettingNonExistentOrderByClientIdMustThrowException() throws Exception {
     String clientOrderId = UUID.randomUUID().toString();
 
     mockServer().when(
@@ -212,8 +201,7 @@ public class OrderAPITest extends APITest {
         .withReasonPhrase("Order not found")
     );
 
-    assertThrows(EntityNotFoundException.class,
-      () -> api.orders().getByClientOrderId(clientOrderId).await());
+    expectException(api.orders().getByClientOrderId(clientOrderId), EntityNotFoundException.class);
   }
 
   @Test
@@ -262,9 +250,7 @@ public class OrderAPITest extends APITest {
         .withBody(toJson(expectedOrder), MediaType.JSON_UTF_8)
     );
 
-    Order order = api.orders().getByClientOrderId(clientOrderId).await();
-
-    assertThat(order, is(equalTo(expectedOrder)));
+    expectEntity(api.orders().getByClientOrderId(clientOrderId), expectedOrder);
   }
 
   @Test
@@ -323,9 +309,7 @@ public class OrderAPITest extends APITest {
         .withBody(toJson(expectedOrder), MediaType.JSON_UTF_8)
     );
 
-    Order order = api.orders().place(orderRequest).await();
-
-    assertThat(order, is(equalTo(expectedOrder)));
+    expectEntity(api.orders().place(orderRequest), expectedOrder);
   }
 
   @Test
@@ -356,7 +340,7 @@ public class OrderAPITest extends APITest {
         .withReasonPhrase("Buying power is not sufficient")
     );
 
-    assertThrows(ForbiddenException.class, () -> api.orders().place(request).await());
+    expectException(api.orders().place(request), ForbiddenException.class);
   }
 
   private void setUpMockServer(String expectedOrderId,

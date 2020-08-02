@@ -1,11 +1,12 @@
 package io.github.maseev.alpaca.api.account;
 
 import static io.github.maseev.alpaca.http.HttpClient.HttpMethod.GET;
+import static io.github.maseev.alpaca.util.FutureTransformerUtil.transform;
 
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.ValueTransformer;
 import io.github.maseev.alpaca.api.account.entity.Account;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.transformer.ValueTransformer;
+import java.util.concurrent.CompletableFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -34,9 +35,9 @@ public class AccountAPI {
    *
    * @return the {@link Account} associated with the API key
    */
-  public Listenable<Account> get() {
+  public CompletableFuture<Account> get() {
     ListenableFuture<Response> future = httpClient.prepare(GET, ENDPOINT).execute();
 
-    return new Listenable<>(new ValueTransformer<>(Account.class), future);
+    return transform(future, new ValueTransformer<>(Account.class));
   }
 }

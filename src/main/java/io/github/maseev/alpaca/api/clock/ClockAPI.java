@@ -1,9 +1,11 @@
 package io.github.maseev.alpaca.api.clock;
 
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.Listenable;
-import io.github.maseev.alpaca.http.transformer.ValueTransformer;
+import static io.github.maseev.alpaca.util.FutureTransformerUtil.transform;
+
 import io.github.maseev.alpaca.api.clock.entity.Clock;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.transformer.ValueTransformer;
+import java.util.concurrent.CompletableFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 
@@ -26,10 +28,10 @@ public class ClockAPI {
    *
    * @return the market {@link Clock}
    */
-  public Listenable<Clock> get() {
+  public CompletableFuture<Clock> get() {
     ListenableFuture<Response> future =
       httpClient.prepare(HttpClient.HttpMethod.GET, ENDPOINT).execute();
 
-    return new Listenable<>(new ValueTransformer<>(Clock.class), future);
+    return transform(future, new ValueTransformer<>(Clock.class));
   }
 }

@@ -3,24 +3,19 @@ package io.github.maseev.alpaca.api.position;
 import static io.github.maseev.alpaca.http.json.util.JsonUtil.toJson;
 import static java.math.BigDecimal.valueOf;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.HttpCode;
-import io.github.maseev.alpaca.http.exception.APIException;
-import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
-import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.api.asset.entity.AssetClass;
 import io.github.maseev.alpaca.api.entity.Exchange;
 import io.github.maseev.alpaca.api.position.entity.ImmutablePosition;
 import io.github.maseev.alpaca.api.position.entity.Position;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.exception.EntityNotFoundException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -64,13 +59,11 @@ public class PositionAPITest extends APITest {
           .withStatusCode(HttpCode.OK.getCode())
           .withBody(toJson(expectedPositions), MediaType.JSON_UTF_8));
 
-    List<Position> positions = api.positions().get().await();
-
-    assertThat(positions, is(equalTo(expectedPositions)));
+    expectEntity(api.positions().get(), expectedPositions);
   }
 
   @Test
-  public void gettingNonExistentPositionMustThrowException() throws APIException {
+  public void gettingNonExistentPositionMustThrowException() throws Exception {
     String symbol = UUID.randomUUID().toString();
 
     mockServer()
@@ -86,7 +79,7 @@ public class PositionAPITest extends APITest {
           .withStatusCode(HttpCode.NOT_FOUND.getCode())
           .withReasonPhrase("Position not found"));
 
-    assertThrows(EntityNotFoundException.class, () ->api.positions().get(symbol).await());
+    expectException(api.positions().get(symbol), EntityNotFoundException.class);
   }
 
   @Test
@@ -124,8 +117,6 @@ public class PositionAPITest extends APITest {
           .withStatusCode(HttpCode.OK.getCode())
           .withBody(toJson(expectedPosition), MediaType.JSON_UTF_8));
 
-    Position position = api.positions().get(expectedPosition.symbol()).await();
-
-    assertThat(position, is(equalTo(expectedPosition)));
+    expectEntity(api.positions().get(expectedPosition.symbol()), expectedPosition);
   }
 }

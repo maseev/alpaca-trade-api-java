@@ -6,23 +6,18 @@ import static java.math.BigDecimal.valueOf;
 import static java.time.OffsetDateTime.of;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.common.net.MediaType;
 import io.github.maseev.alpaca.APITest;
-import io.github.maseev.alpaca.http.HttpClient;
-import io.github.maseev.alpaca.http.HttpCode;
-import io.github.maseev.alpaca.http.exception.APIException;
-import io.github.maseev.alpaca.http.exception.UnprocessableException;
-import io.github.maseev.alpaca.http.util.ContentType;
 import io.github.maseev.alpaca.api.bar.entity.Bar;
 import io.github.maseev.alpaca.api.bar.entity.BarMimic;
 import io.github.maseev.alpaca.api.bar.entity.ImmutableBar;
+import io.github.maseev.alpaca.http.HttpClient;
+import io.github.maseev.alpaca.http.HttpCode;
+import io.github.maseev.alpaca.http.exception.UnprocessableException;
+import io.github.maseev.alpaca.http.util.ContentType;
 import java.time.Instant;
 import java.time.Month;
 import java.time.OffsetDateTime;
@@ -75,12 +70,8 @@ public class BarAPITest extends APITest {
             MediaType.JSON_UTF_8)
       );
 
-    Map<String, List<Bar>> bars =
-      api.bars()
-        .get(symbol, timeframe, start, end, timeInclusive, 10)
-        .await();
-
-    assertThat(bars, is(equalTo(expectedBars)));
+    expectEntity(api.bars()
+      .get(symbol, timeframe, start, end, timeInclusive, 10), expectedBars);
   }
 
   @Test
@@ -125,16 +116,12 @@ public class BarAPITest extends APITest {
             MediaType.JSON_UTF_8)
       );
 
-    Map<String, List<Bar>> bars =
-      api.bars()
-        .get(symbol, timeframe, start, end, timeInclusive, 10)
-        .await();
-
-    assertThat(bars, is(equalTo(expectedBars)));
+    expectEntity(api.bars()
+      .get(symbol, timeframe, start, end, timeInclusive, 10), expectedBars);
   }
 
   @Test
-  public void gettingNonExistentSymbolBarsMustThrowException() throws APIException {
+  public void gettingNonExistentSymbolBarsMustThrowException() throws Exception {
     String symbol = "ZZZZ";
     BarAPI.Timeframe timeframe = BarAPI.Timeframe.DAY;
     OffsetDateTime start =
@@ -161,9 +148,7 @@ public class BarAPITest extends APITest {
           .withReasonPhrase("The parameters are not well formed")
       );
 
-    assertThrows(UnprocessableException.class,
-      () -> api.bars()
-        .get(symbol, timeframe, start, end, timeInclusive, 10)
-        .await());
+    expectException(api.bars()
+      .get(symbol, timeframe, start, end, timeInclusive, 10), UnprocessableException.class);
   }
 }
